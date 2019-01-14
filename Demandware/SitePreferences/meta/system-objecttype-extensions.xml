@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata xmlns="http://www.demandware.com/xml/impex/metadata/2006-10-31">
+    <type-extension type-id="SitePreferences">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="EDQAddressLayout">
+                <display-name xml:lang="x-default">Address Layout</display-name>
+                <description xml:lang="x-default">Define your preferred address layout to show your data</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+                <default-value>Ellucian</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="EDQDevUrls">
+                <display-name xml:lang="x-default">Development URLs</display-name>
+                <description xml:lang="x-default">URLs that points to development staging</description>
+                <type>enum-of-string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">https://edqprofservus.blob.core.windows.net/assets/production/edq.js</display>
+                        <value>EDQJS</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">https://edqprofservus.blob.core.windows.net/assets/dev/global-intuitive-unicorn.css</display>
+                        <value>GlobalIntuitiveCSS</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">https://edqprofservus.blob.core.windows.net/assets/dev/global-intuitive-unicorn.js</display>
+                        <value>GlobalIntuitiveJS</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">https://edqprofservus.blob.core.windows.net/assets/dev/pro-web.css</display>
+                        <value>VerificationEngineCSS</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">https://edqprofservus.blob.core.windows.net/assets/dev/verification-unicorn.js</display>
+                        <value>VerificationEngineJS</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">https://edqprofservus.blob.core.windows.net/assets/dev/email-unicorn.js</display>
+                        <value>EmailValidationJS</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">https://edqprofservus.blob.core.windows.net/assets/dev/phone-unicorn.js</display>
+                        <value>PhoneValidationJS</value>
+                    </value-definition>
+                </value-definitions>
+            </attribute-definition>
+            <attribute-definition attribute-id="EDQEmailEnable">
+                <display-name xml:lang="x-default">Email Enable</display-name>
+                <description xml:lang="x-default">Activates/desactivates email validation</description>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="EDQPhoneEnable">
+                <display-name xml:lang="x-default">Phone Enable</display-name>
+                <description xml:lang="x-default">Activates/desactivates phone validation</description>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="EDQPreferedAddressSearchEngine">
+                <display-name xml:lang="x-default">Prefered address search engine</display-name>
+                <description xml:lang="x-default">Select your preferred address engine</description>
+                <type>enum-of-string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">Both</display>
+                        <value>Both</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Global Intuitive</display>
+                        <value>GlobalIntuitive</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Verification Engine</display>
+                        <value>VerificationEngine</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">None</display>
+                        <value>None</value>
+                    </value-definition>
+                </value-definitions>
+            </attribute-definition>
+            <attribute-definition attribute-id="EDQProdUrls">
+                <display-name xml:lang="x-default">Production Urls</display-name>
+                <description xml:lang="x-default">URLs pointing to unicorn/pegasus production</description>
+                <type>enum-of-string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">https://edqprofservus.blob.core.windows.net/assets/production/edq.js</display>
+                        <value>EDQJS</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">https://edqprofservus.blob.core.windows.net/assets/production/global-intuitive-unicorn.css</display>
+                        <value>GlobalIntuitiveCSS</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">https://edqprofservus.blob.core.windows.net/assets/production/global-intuitive-unicorn.js</display>
+                        <value>GlobalIntuitiveJS</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">https://edqprofservus.blob.core.windows.net/assets/production/pro-web.css</display>
+                        <value>VerificationEngineCSS</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">https://edqprofservus.blob.core.windows.net/assets/production/verification-unicorn.js</display>
+                        <value>VerificationEngineJS</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">https://edqprofservus.blob.core.windows.net/assets/production/email-unicorn.js</display>
+                        <value>EmailValidationJS</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">https://edqprofservus.blob.core.windows.net/assets/production/verification-unicorn.js</display>
+                        <value>PhoneValidationJS</value>
+                    </value-definition>
+                </value-definitions>
+            </attribute-definition>
+            <attribute-definition attribute-id="EDQStaging">
+                <display-name xml:lang="x-default">Staging</display-name>
+                <description xml:lang="x-default">Select the staging to run the product</description>
+                <type>enum-of-string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">Production</display>
+                        <value>Production</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Development</display>
+                        <value>Development</value>
+                    </value-definition>
+                </value-definitions>
+            </attribute-definition>
+            <attribute-definition attribute-id="EDQToken">
+                <display-name xml:lang="x-default">EDQ Token</display-name>
+                <description xml:lang="x-default">Token provided to be able to use Experian products.</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="EDQValidateEmail">
+                <display-name xml:lang="x-default">Email validation</display-name>
+                <description xml:lang="x-default">Force email validation to prevent the page going through</description>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="EDQValidatePhone">
+                <display-name xml:lang="x-default">Phone validation</display-name>
+                <description xml:lang="x-default">Force phone validation to prevent the page going through</description>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="EDQ">
+                <display-name xml:lang="x-default">EDQ Config</display-name>
+                <attribute attribute-id="EDQToken"/>
+                <attribute attribute-id="EDQEmailEnable"/>
+                <attribute attribute-id="EDQValidateEmail"/>
+                <attribute attribute-id="EDQPhoneEnable"/>
+                <attribute attribute-id="EDQValidatePhone"/>
+                <attribute attribute-id="EDQPreferedAddressSearchEngine"/>
+                <attribute attribute-id="EDQAddressLayout"/>
+                <attribute attribute-id="EDQStaging"/>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+</metadata>

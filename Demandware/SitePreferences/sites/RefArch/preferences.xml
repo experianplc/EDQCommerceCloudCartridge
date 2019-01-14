@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<preferences xmlns="http://www.demandware.com/xml/impex/preferences/2007-03-31">
+    <custom-preferences>
+        <all-instances/>
+        <development>
+            <preference preference-id="EDQAddressLayout">Ellucian</preference>
+            <preference preference-id="EDQEmailEnable">true</preference>
+            <preference preference-id="EDQPhoneEnable">true</preference>
+            <preference preference-id="EDQPreferedAddressSearchEngine">Both</preference>
+            <preference preference-id="EDQStaging">Development</preference>
+            <preference preference-id="EDQToken">7a0400d8-9d2e-4cab-8da5-1564588a1fa1</preference>
+            <preference preference-id="EDQValidateEmail">false</preference>
+            <preference preference-id="EDQValidatePhone">false</preference>
+        </development>
+    </custom-preferences>
+</preferences>
+

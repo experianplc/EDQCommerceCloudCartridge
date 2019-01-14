@@ -1,0 +1,112 @@
+<iscontent type="text/html" charset="UTF-8" compact="true"/>
+<iscomment>
+TASK:101728 Change Validate Button
+</iscomment>
+<isif condition="${URLUtils.continueURL().toString().search('Address') != -1}">
+	<button class="apply-button" type="button" id="form-submit"><span>${Resource.msg('global.apply','locale',null)}</span></button>
+</isif>
+<isif condition="${URLUtils.continueURL().toString().search('COShipping') != -1}">
+	<button class="button-fancy-large" type="button" id="form-submit"><span>${Resource.msg('global.continuebilling','locale',null)}</span></button>
+</isif>
+<isif condition="${URLUtils.continueURL().toString().search('COBilling') != -1}">
+	<button class="button-fancy-large" type="button" id="form-submit"><span>${Resource.msg('global.continueplaceorder','locale',null)}</span></button>
+</isif>
+<script type="text/javascript">
+	/*BUG:99207*/
+	$(this).on('DOMNodeInserted',function() {
+		if (document.querySelector('#edq-overlay-container')) {
+			var element = document.getElementById("edq-overlay-container");
+			if (element.className != 'ui-dialog') {
+				element.classList.add("ui-dialog");
+			}
+		}
+	});
+	
+	function edqValidateAddressCallBack() { 
+		try {
+			var edqProWebResponse = document.querySelector('#form-submit');
+
+			if (edqProWebResponse.hasAttribute('edq-metadata')) {
+				if (edqProWebResponse.getAttribute('edq-metadata'))
+				{
+					var edqResponse = JSON.parse(edqProWebResponse.getAttribute('edq-metadata'));
+					if (btnIndex) {
+						buttonSelector[btnIndex].style.display = "inline-block";
+					} else {
+						document.querySelector(edqLineButton).style.display = "inline-block";
+					}
+					document.querySelector('#form-submit').style.display = "none";
+					document.getElementById(edqLineState).value = edqResponse["State code"];
+					document.querySelector('#form-submit').removeAttribute('edq-metadata');
+					document.querySelector(edqLineButton).click();
+				}
+			}
+		} catch(error) {  }
+	}
+
+	var modalFiledSelectorAddressOne = '#' + '<isprint value="${Resource.msg('EDQ.VerificationEngine.modalFiledSelectorAddressOne','EDQ',null)}"/>'; 
+	var modalFieldSelectorAddressTwo = '#' + '<isprint value="${Resource.msg('EDQ.VerificationEngine.modalFiledSelectorAddressTwo','EDQ',null)}"/>';
+	var modalFieldSelectorLocality = '#' + '<isprint value="${Resource.msg('EDQ.VerificationEngine.modalFiledSelectorLocality','EDQ',null)}"/>';
+	var modalFieldSelectorProvince = '#' + '<isprint value="${Resource.msg('EDQ.VerificationEngine.modalFiledSelectorProvince','EDQ',null)}"/>';
+	var modalFieldSelectorPostal = '#' + '<isprint value="${Resource.msg('EDQ.VerificationEngine.modalFiledSelectorPostal','EDQ',null)}"/>';
+	/* This is intended to hide the form button just 
+	 * to show verification engine button in the form
+	 */
+	if (document.querySelector(edqLineButton)) {
+		document.querySelector(edqLineButton).style.display = "none";
+	}
+
+	window.EdqConfig.PRO_WEB_TIMEOUT= 2500;
+	window.EdqConfig.PRO_WEB_AUTH_TOKEN='<isprint value="${dw.system.Site.current.preferences.custom.EDQToken}"/>';
+	window.EdqConfig.PRO_WEB_SUBMIT_TRIGGERS= [
+		{
+			type: 'click',
+			element: document.querySelector('#form-submit'),
+		}
+	];
+	window.EdqConfig.PRO_WEB_LAYOUT= '<isprint value="${dw.system.Site.current.preferences.custom.EDQAddressLayout}"/>';
+	window.EdqConfig.PRO_WEB_COUNTRY= countryAlpha3(document.getElementById(edqLineCountry).value);
+	window.EdqConfig.PRO_WEB_CALLBACK= 'edqValidateAddressCallBack()';
+	window.EdqConfig.PRO_WEB_MAPPING= [
+		{
+			field: document.getElementById(edqLineAddress1),
+			elements: ['Formatted Address 2'],
+			modalFieldSelector: modalFiledSelectorAddressOne,
+		},
+		{
+			field: document.getElementById(edqLineAddress2),
+			elements: ['AddressLine2'],
+			modalFieldSelector: modalFieldSelectorAddressTwo,
+		},
+		{
+			field: document.getElementById(edqLineCity),
+			elements: ['City name'],
+			modalFieldSelector: modalFieldSelectorLocality,
+		},
+		{
+			field: document.getElementById(edqLineState),
+			elements: ['State code'],
+			modalFieldSelector: modalFieldSelectorProvince,
+		},
+		{
+			field: document.getElementById(edqLinePostal),
+			separator: '-',
+			elements: ['ZIP Code', '+4 code'],
+			modalFieldSelector: modalFieldSelectorPostal,
+		},
+	];
+</script>
+<isif condition="${dw.system.Site.current.preferences.custom.EDQStaging == 'Development'}">
+    <isloop items="${dw.object.SystemObjectMgr.describe('SitePreferences').getCustomAttributeDefinition('EDQDevUrls').values}" var="dev">
+        <isif condition="${dev.value == 'VerificationEngineJS'}">
+            <script src="<isprint value="${dev.displayValue}"/>"></script>
+        </isif>
+    </isloop>
+<iselseif condition="${dw.system.Site.current.preferences.custom.EDQStaging == 'Production'}">
+    <isloop items="${dw.object.SystemObjectMgr.describe('SitePreferences').getCustomAttributeDefinition('EDQProdUrls').values}" var="prod">
+        <isif condition="${prod.value == 'VerificationEngineJS'}">
+            <script src="<isprint value="${prod.displayValue}"/>"></script>
+        </isif>
+    </isloop>
+</iselseif>
+</isif>

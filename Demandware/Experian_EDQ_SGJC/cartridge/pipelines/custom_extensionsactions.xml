@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?demandware-pipeline version="2.0"?>
+
+<pipeline group="Extensions">
+  <description>Pipeline to extend Business Manager menu actions and include corresponding templates for visualization, forms and actions</description>
+  <branch basename="SiteAction">
+    <segment>
+      <node>
+        <start-node name="SiteAction"/>
+        <node-display x="0" y="0"/>
+      </node>
+      <simple-transition/>
+      <node>
+        <pipelet-node pipelet-name="Script" pipelet-set-identifier="bc_api">
+          <config-property key="ScriptFile" value="bm_extensionsactions_1.ds"/>
+          <config-property key="Transactional" value="true"/>
+          <key-binding alias="null" key="ScriptLog"/>
+          <key-binding alias="MyDate" key="MyDate"/>
+        </pipelet-node>
+        <node-display x="0" y="1"/>
+      </node>
+      <simple-transition/>
+      <node>
+        <interaction-node transaction-required="false">
+          <template buffered="true" dynamic="false" name="extensions/custom_sitemenupageextension"/>
+        </interaction-node>
+        <node-display x="0" y="1"/>
+      </node>
+    </segment>
+  </branch>
+  <branch basename="AdminAction">
+    <segment>
+      <node>
+        <start-node name="AdminAction"/>
+        <node-display x="1" y="0"/>
+      </node>
+      <simple-transition/>
+      <node>
+        <pipelet-node pipelet-name="Script" pipelet-set-identifier="bc_api">
+          <config-property key="ScriptFile" value="bm_extensionsactions_1.ds"/>
+          <config-property key="Transactional" value="true"/>
+          <key-binding alias="null" key="ScriptLog"/>
+          <key-binding alias="MyDate" key="MyDate"/>
+        </pipelet-node>
+        <node-display x="0" y="1"/>
+      </node>
+      <simple-transition/>
+      <node>
+        <interaction-node transaction-required="false">
+          <template buffered="true" dynamic="false" name="extensions/custom_adminmenupageextension"/>
+        </interaction-node>
+        <node-display x="0" y="1"/>
+      </node>
+    </segment>
+  </branch>
+</pipeline>
