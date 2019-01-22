@@ -4,6 +4,16 @@
  **/
 const vDefaultCountry = 'USA';
 var countryDict = [];
+var edqLineAddress1, edqLineAddress2, edqLineCity, edqLineState, edqLinePostal, edqLineCountry, edqLineEmail, edqLinePhone, edqLineButton;
+var inputSelector = document.querySelectorAll('input');
+var selectSelector = document.querySelectorAll('select');
+var btnIndex;
+var buttonSelector = document.querySelectorAll('button');
+var edqEmailEnable, edqPhoneEnable;
+
+if(!window.EdqConfig)
+    window.EdqConfig = {};
+
 countryDict.push({ key: "AF", value: "AFG" },
     { key: "AX", value: "ALA" },
     { key: "AL", value: "ALB" },
@@ -258,4 +268,211 @@ function countryAlpha3(vAlphaTwo) {
             vAlphaThree = countryDict[i].value;
     }
     return (vAlphaThree) ? vAlphaThree : vDefaultCountry;
+}
+
+for (var i = 0; i < inputSelector.length; i++)
+{
+    if (inputSelector[i].hasAttribute('id')) {
+        edqLineAddress1 = (inputSelector[i].id.toLowerCase().match(/address1/)) ? inputSelector[i].id : edqLineAddress1;
+        edqLineAddress2 = (inputSelector[i].id.toLowerCase().match(/address2/)) ? inputSelector[i].id : edqLineAddress2;
+        edqLineCity = (inputSelector[i].id.toLowerCase().match(/city/)) ? inputSelector[i].id : edqLineCity;
+        edqLinePostal = (inputSelector[i].id.toLowerCase().match(/postal/)) ? inputSelector[i].id : edqLinePostal;
+        edqLinePhone = (inputSelector[i].id.toLowerCase().match(/phone/)) ? inputSelector[i].id : edqLinePhone;
+        edqLineEmail = ((inputSelector[i].id == 'dwfrm_profile_customer_email') 
+            || (inputSelector[i].id == 'dwfrm_billing_billingAddress_email_emailAddress')) ? inputSelector[i].id : edqLineEmail;
+    }
+}
+for (var i = 0; i < selectSelector.length; i++)
+{
+    if (selectSelector[i].hasAttribute('id')) {
+        edqLineState = (selectSelector[i].id.toLowerCase().match(/state/)) ? selectSelector[i].id : edqLineState;
+        edqLineCountry = (selectSelector[i].id.toLowerCase().match(/country/)) ? selectSelector[i].id : edqLineCountry;
+    }
+}
+for (var i = 0; i < buttonSelector.length; i++)
+{
+    if (buttonSelector[i].hasAttribute('name')) {
+        if (buttonSelector[i].name.match(/dwfrm_profile_address_create/)) {
+            edqLineButton = '[name=dwfrm_profile_address_create]';
+        }
+        if (buttonSelector[i].name.match(/dwfrm_profile_address_edit/)) {
+            edqLineButton = '[name=dwfrm_profile_address_edit]';
+        }
+        if (buttonSelector[i].name.match(/dwfrm_singleshipping_shippingAddress_save/)) {
+            edqLineButton = '[name=dwfrm_singleshipping_shippingAddress_save]';
+        }
+        if (buttonSelector[i].name.match(/dwfrm_profile_confirm/)) {
+            edqLineButton = '[name=dwfrm_profile_confirm]';
+        }
+        if (buttonSelector[i].name.match(/dwfrm_billing_save/)) {
+            edqLineButton = '[name=dwfrm_billing_save]';
+            enableButtonDisable(false);
+            /**Forcing the button to set the addlistener because the button is set as disabled since the page load 
+             * that's why we're setting just this case here; this case just happens in SiteGenesis billing form. **/
+            buttonSelector[i].addEventListener("mouseover", edqVerificationCallback);
+            /*TASK:101728 Change Validate Button*/
+            buttonSelector[i].style.display = "none";
+            btnIndex = i;
+        }
+    }
+}
+if (document.getElementById(edqLinePhone)) { document.getElementById(edqLinePhone).addEventListener("mouseover", function() {enableButtonDisable(false);}); }
+if (document.getElementById(edqLineEmail)) { document.getElementById(edqLineEmail).addEventListener("mouseover", function() {enableButtonDisable(false);}); }
+if (document.querySelector(edqLineButton)) { document.querySelector(edqLineButton).addEventListener("mouseover", edqVerificationCallback); }
+
+function edqVerificationCallback() {
+    if ((edqEmailEnable) && (edqLineEmail)) { edqEmailValidationCallback(); }
+    if ((edqPhoneEnable) && (edqLinePhone)) { edqPhoneValidationCallback(); }
+}
+    
+function edqEmailValidation(edqToken) {
+    window.EdqConfig.EMAIL_VALIDATE_AUTH_TOKEN=edqToken;
+    window.EdqConfig.EMAIL_ELEMENTS=[
+        document.getElementById(edqLineEmail)
+    ];
+}
+
+function edqPhoneValidation(edqToken) {
+    window.EdqConfig.GLOBAL_PHONE_VALIDATE_AUTH_TOKEN=edqToken;
+    window.EdqConfig.REVERSE_PHONE_APPEND_MAPPINGS= [];
+    window.EdqConfig.PHONE_ELEMENTS= [
+        document.getElementById(edqLinePhone)
+    ];
+}
+
+function edqGlobalIntuitive(edqToken) {
+    window.EdqConfig.GLOBAL_INTUITIVE_AUTH_TOKEN=edqToken;
+    window.EdqConfig.GLOBAL_INTUITIVE_ISO3_COUNTRY=countryAlpha3(document.getElementById(edqLineCountry).value);
+    window.EdqConfig.GLOBAL_INTUITIVE_ELEMENT= document.getElementById(edqLineAddress1);
+    window.EdqConfig.GLOBAL_INTUITIVE_MAPPING= [
+            {
+                field: document.getElementById(edqLineAddress1),
+                elements: ['address.addressLine1']
+            },
+            {
+                field: document.getElementById(edqLineAddress2),
+                elements: ['address.addressLine2']
+            },
+            {
+                field: document.getElementById(edqLineCity),
+                elements: ['address.locality']
+            },
+            {
+                field: document.getElementById(edqLineState),
+                elements: ['address.province']
+            },
+            {
+                field: document.getElementById(edqLinePostal),
+                elements: ['address.postalCode']
+            },
+    ];
+}
+
+function edqVerificationEngine(edqToken, edqProWebLayout) {
+    /* This is intended to hide the form button just 
+	 * to show verification engine button in the form*/
+	if (document.querySelector(edqLineButton)) {
+		document.querySelector(edqLineButton).style.display = "none";
+    }
+    var modalFiledSelectorAddressOne = '#interaction-address--original-address-line-one'; 
+	var modalFieldSelectorAddressTwo = '#interaction-address--original-address-line-two';
+	var modalFieldSelectorLocality = '#interaction-address--original-locality';
+	var modalFieldSelectorProvince = '#interaction-address--original-province';
+    var modalFieldSelectorPostal = '#interaction-address--original-postal-code';
+    
+    window.EdqConfig.PRO_WEB_TIMEOUT= 2500;
+	window.EdqConfig.PRO_WEB_AUTH_TOKEN=edqToken;
+	window.EdqConfig.PRO_WEB_SUBMIT_TRIGGERS= [
+		{
+			type: 'click',
+			element: document.querySelector('#form-submit'),
+		}
+	];
+	window.EdqConfig.PRO_WEB_LAYOUT= edqProWebLayout;
+	window.EdqConfig.PRO_WEB_COUNTRY= countryAlpha3(document.getElementById(edqLineCountry).value);
+	window.EdqConfig.PRO_WEB_CALLBACK= 'edqValidateAddressCallBack()';
+	window.EdqConfig.PRO_WEB_MAPPING= [
+		{
+			field: document.getElementById(edqLineAddress1),
+			elements: ['Formatted Address 2'],
+			modalFieldSelector: modalFiledSelectorAddressOne,
+		},
+		{
+			field: document.getElementById(edqLineAddress2),
+			elements: ['AddressLine2'],
+			modalFieldSelector: modalFieldSelectorAddressTwo,
+		},
+		{
+			field: document.getElementById(edqLineCity),
+			elements: ['City name'],
+			modalFieldSelector: modalFieldSelectorLocality,
+		},
+		{
+			field: document.getElementById(edqLineState),
+			elements: ['State code'],
+			modalFieldSelector: modalFieldSelectorProvince,
+		},
+		{
+			field: document.getElementById(edqLinePostal),
+			separator: '-',
+			elements: ['ZIP Code', '+4 code'],
+			modalFieldSelector: modalFieldSelectorPostal,
+		},
+	];
+}
+
+function enableButtonDisable(buttonStatus) { 
+    document.querySelector(edqLineButton).disabled = buttonStatus;
+}
+
+function edqPhoneValidationCallback(blnEdqValidatePhone) {
+		if (blnEdqValidatePhone) {
+			var edqSelectorResponse = document.getElementById(edqLinePhone);
+			if (edqSelectorResponse.hasAttribute('edq-metadata')) {
+				var edqPhoneResponse = JSON.parse(edqSelectorResponse.getAttribute('edq-metadata'));
+
+				if ((edqPhoneResponse["Certainty"] == 'Verified'))
+				{
+					enableButtonDisable(false);
+				} else {
+					enableButtonDisable(true);
+				} 
+			}
+		}
+	 }
+function edqEmailValidationCallback(blnEdqValidateEmail) {
+    if (blnEdqValidateEmail) {
+        var edqSelectorResponse = document.getElementById(edqLineEmail);
+        if (edqSelectorResponse.hasAttribute('edq-metadata')) {
+            var edqEmailResponse = JSON.parse(edqSelectorResponse.getAttribute('edq-metadata'));
+            if ((edqEmailResponse["Certainty"] == 'verified')
+            || (edqEmailResponse["Certainty"] == 'unknown'))
+            {
+                enableButtonDisable(false);
+            } else {
+                enableButtonDisable(true);
+            } 
+        }
+    }
+}
+function edqValidateAddressCallBack() { 
+    try {
+        var edqProWebResponse = document.querySelector('#form-submit');
+
+        if (edqProWebResponse.hasAttribute('edq-metadata')) {
+            if (edqProWebResponse.getAttribute('edq-metadata'))
+            {
+                var edqResponse = JSON.parse(edqProWebResponse.getAttribute('edq-metadata'));
+                if (btnIndex) {
+                    buttonSelector[btnIndex].style.display = "inline-block";
+                } else {
+                    document.querySelector(edqLineButton).style.display = "inline-block";
+                }
+                document.querySelector('#form-submit').style.display = "none";
+                document.getElementById(edqLineState).value = edqResponse["State code"];
+                document.querySelector('#form-submit').removeAttribute('edq-metadata');
+                document.querySelector(edqLineButton).click();
+            }
+        }
+    } catch(error) {  }
 }
