@@ -2,109 +2,11 @@
 <script src="${URLUtils.staticURL('/js/jquery.min.js')}"></script>
 <script src="${URLUtils.staticURL('/js/EDQUtils.js')}"></script>
 <script type="text/javascript">
-    var edqLineAddress1, edqLineAddress2, edqLineCity, edqLineState, edqLinePostal, edqLineCountry, edqLineEmail, edqLinePhone, edqLineButton;
+	edqEmailEnable = '<isprint value="${dw.system.Site.current.preferences.custom.EDQEmailEnable}"/>';
+	edqPhoneEnable = '<isprint value="${dw.system.Site.current.preferences.custom.EDQPhoneEnable}"/>';
 
-	var inputSelector = document.querySelectorAll('input');
-	for (var i = 0; i < inputSelector.length; i++)
-	{
-		if (inputSelector[i].hasAttribute('id')) {
-			edqLineAddress1 = (inputSelector[i].id.toLowerCase().match(/address1/)) ? inputSelector[i].id : edqLineAddress1;
-			edqLineAddress2 = (inputSelector[i].id.toLowerCase().match(/address2/)) ? inputSelector[i].id : edqLineAddress2;
-			edqLineCity = (inputSelector[i].id.toLowerCase().match(/city/)) ? inputSelector[i].id : edqLineCity;
-			edqLinePostal = (inputSelector[i].id.toLowerCase().match(/postal/)) ? inputSelector[i].id : edqLinePostal;
-			edqLinePhone = (inputSelector[i].id.toLowerCase().match(/phone/)) ? inputSelector[i].id : edqLinePhone;
-			edqLineEmail = ((inputSelector[i].id == '<isprint value="${pdict.CurrentForms.profile.customer.email.htmlName}"/>') 
-				|| (inputSelector[i].id == '<isprint value="${pdict.CurrentForms.billing.billingAddress.email.emailAddress.htmlName}"/>')) ? inputSelector[i].id : edqLineEmail;
-		}
-	}
-
-	var selectSelector = document.querySelectorAll('select');
-	for (var i = 0; i < selectSelector.length; i++)
-	{
-		if (selectSelector[i].hasAttribute('id')) {
-			edqLineState = (selectSelector[i].id.toLowerCase().match(/state/)) ? selectSelector[i].id : edqLineState;
-			edqLineCountry = (selectSelector[i].id.toLowerCase().match(/country/)) ? selectSelector[i].id : edqLineCountry;
-		}
-	}
-
-	var btnIndex;
-	var buttonSelector = document.querySelectorAll('button');
-	for (var i = 0; i < buttonSelector.length; i++)
-	{
-		if (buttonSelector[i].hasAttribute('name')) {
-			if (buttonSelector[i].name.match(/<isprint value="${pdict.CurrentForms.profile.address.create.htmlName}"/>/)) {
-					edqLineButton = '[name=<isprint value="${pdict.CurrentForms.profile.address.create.htmlName}"/>]';
-			}
-			if (buttonSelector[i].name.match(/<isprint value="${pdict.CurrentForms.profile.address.edit.htmlName}"/>/)) {
-					edqLineButton = '[name=<isprint value="${pdict.CurrentForms.profile.address.edit.htmlName}"/>]';
-			}
-			if (buttonSelector[i].name.match(/<isprint value="${pdict.CurrentForms.singleshipping.shippingAddress.save.htmlName}"/>/)) {
-					edqLineButton = '[name=<isprint value="${pdict.CurrentForms.singleshipping.shippingAddress.save.htmlName}"/>]';
-			}
-			if (buttonSelector[i].name.match(/<isprint value="${pdict.CurrentForms.profile.confirm.htmlName}"/>/)) {
-					edqLineButton = '[name=<isprint value="${pdict.CurrentForms.profile.confirm.htmlName}"/>]';
-			}
-			if (buttonSelector[i].name.match(/<isprint value="${pdict.CurrentForms.billing.save.htmlName}"/>/)) {
-					edqLineButton = '[name=<isprint value="${pdict.CurrentForms.billing.save.htmlName}"/>]';
-					enableButtonDisable(false);
-					/**Forcing the button to set the addlistener because the button is set as disabled since the page load 
-					 * that's why we're setting just this case here; this case just happens in SiteGenesis billing form. **/
-					buttonSelector[i].addEventListener("mouseover", edqVerificationCallback);
-					/*TASK:101728 Change Validate Button*/
-					buttonSelector[i].style.display = "none";
-					btnIndex = i;
-			}
-		}
-	}
-
-	if (document.getElementById(edqLinePhone)) { document.getElementById(edqLinePhone).addEventListener("mouseover", function() {enableButtonDisable(false);}); }
-	if (document.getElementById(edqLineEmail)) { document.getElementById(edqLineEmail).addEventListener("mouseover", function() {enableButtonDisable(false);}); }
-	if (document.querySelector(edqLineButton)) { document.querySelector(edqLineButton).addEventListener("mouseover", edqVerificationCallback); }
-
-	function edqVerificationCallback() {
-		if ((<isprint value="${dw.system.Site.current.preferences.custom.EDQEmailEnable}"/>) && (edqLineEmail)) { edqEmailValidationCallback(); }
-		if ((<isprint value="${dw.system.Site.current.preferences.custom.EDQPhoneEnable}"/>) && (edqLinePhone)) { edqPhoneValidationCallback(); }
-	}
-
-	function enableButtonDisable(buttonStatus) { document.querySelector(edqLineButton).disabled = buttonStatus; }
-
-	function edqPhoneValidationCallback() {
-		if (<isprint value="${dw.system.Site.current.preferences.custom.EDQValidatePhone}"/>) {
-			var edqSelectorResponse = document.getElementById(edqLinePhone);
-			if (edqSelectorResponse.hasAttribute('edq-metadata')) {
-				var edqPhoneResponse = JSON.parse(edqSelectorResponse.getAttribute('edq-metadata'));
-
-				if ((edqPhoneResponse["Certainty"] == 'Verified'))
-				{
-					enableButtonDisable(false);
-				} else {
-					enableButtonDisable(true);
-				} 
-			}
-		}
-	 }
-
-	 function edqEmailValidationCallback() {
-	 	if (<isprint value="${dw.system.Site.current.preferences.custom.EDQValidateEmail}"/>) {
-			var edqSelectorResponse = document.getElementById(edqLineEmail);
-			if (edqSelectorResponse.hasAttribute('edq-metadata')) {
-				var edqEmailResponse = JSON.parse(edqSelectorResponse.getAttribute('edq-metadata'));
-				if ((edqEmailResponse["Certainty"] == 'verified')
-				|| (edqEmailResponse["Certainty"] == 'unknown'))
-				{
-					if (edqEmailResponse["Certainty"] == 'unknown') {
-						document.getElementById(edqLineEmail).style.backgroundImage = "url('data:image/png;base64,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')";
-					}
-					enableButtonDisable(false);
-				} else {
-					enableButtonDisable(true);
-				} 
-			}
-		}
-	}
-
-	 if(!window.EdqConfig)
-		window.EdqConfig = {};
+	edqPhoneValidationCallback(<isprint value="${dw.system.Site.current.preferences.custom.EDQValidatePhone}"/>);
+	edqEmailValidationCallback(<isprint value="${dw.system.Site.current.preferences.custom.EDQValidateEmail}"/>);
 </script>
 <isif condition="${URLUtils.continueURL().toString().search('Address') != -1 || URLUtils.continueURL().toString().search('COShipping') != -1 || URLUtils.continueURL().toString().search('COBilling') != -1}">
 	<isif condition="${dw.system.Site.current.preferences.custom.EDQPreferedAddressSearchEngine.value == 'VerificationEngine'}">
