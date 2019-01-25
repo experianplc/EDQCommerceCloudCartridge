@@ -1,19 +1,34 @@
+const vDefaultCountry = 'USA';
+var edqLineAddress1, 
+    edqLineAddress2, 
+    edqLineCity, 
+    edqLineState, 
+    edqLinePostal, 
+    edqLineCountry, 
+    edqLineEmail, 
+    edqLinePhone, 
+    edqLineButton,
+    btnIndex,
+    edqEmailEnable, 
+    edqPhoneEnable,
+    blnEdqValidateEmail, 
+    blnEdqValidatePhone, 
+    edqToken, 
+    edqProWebLayout,
+    modalFiledSelectorAddressOne = '#interaction-address--original-address-line-one', 
+    modalFieldSelectorAddressTwo = '#interaction-address--original-address-line-two',
+    modalFieldSelectorLocality = '#interaction-address--original-locality',
+    modalFieldSelectorProvince = '#interaction-address--original-province',
+    modalFieldSelectorPostal = '#interaction-address--original-postal-code';
+var inputSelector = document.querySelectorAll('input[id]');
+var selectSelector = document.querySelectorAll('select[id]');
+var buttonSelector = document.querySelectorAll('button[name]');
+window.EdqConfig = window.EdqConfig || {}
 /**Demandware uses ISO-2 codes for countries
  * This dictionary is intended to capture ISO-2 codes into ISO-3 codes
  * for Pegasus/Unicorn libraries
  **/
-const vDefaultCountry = 'USA';
 var countryDict = [];
-var edqLineAddress1, edqLineAddress2, edqLineCity, edqLineState, edqLinePostal, edqLineCountry, edqLineEmail, edqLinePhone, edqLineButton;
-var inputSelector = document.querySelectorAll('input');
-var selectSelector = document.querySelectorAll('select');
-var btnIndex;
-var buttonSelector = document.querySelectorAll('button');
-var edqEmailEnable, edqPhoneEnable;
-
-if(!window.EdqConfig)
-    window.EdqConfig = {};
-
 countryDict.push({ key: "AF", value: "AFG" },
     { key: "AX", value: "ALA" },
     { key: "AL", value: "ALB" },
@@ -269,78 +284,93 @@ function countryAlpha3(vAlphaTwo) {
     }
     return (vAlphaThree) ? vAlphaThree : vDefaultCountry;
 }
-
-for (var i = 0; i < inputSelector.length; i++)
-{
-    if (inputSelector[i].hasAttribute('id')) {
-        edqLineAddress1 = (inputSelector[i].id.toLowerCase().match(/address1/)) ? inputSelector[i].id : edqLineAddress1;
-        edqLineAddress2 = (inputSelector[i].id.toLowerCase().match(/address2/)) ? inputSelector[i].id : edqLineAddress2;
-        edqLineCity = (inputSelector[i].id.toLowerCase().match(/city/)) ? inputSelector[i].id : edqLineCity;
-        edqLinePostal = (inputSelector[i].id.toLowerCase().match(/postal/)) ? inputSelector[i].id : edqLinePostal;
-        edqLinePhone = (inputSelector[i].id.toLowerCase().match(/phone/)) ? inputSelector[i].id : edqLinePhone;
-        edqLineEmail = ((inputSelector[i].id == 'dwfrm_profile_customer_email') 
-            || (inputSelector[i].id == 'dwfrm_billing_billingAddress_email_emailAddress')) ? inputSelector[i].id : edqLineEmail;
-    }
+/***
+ * Set values to EDQ variables
+ ***/
+for (var i = 0; i < inputSelector.length; i++) {
+    edqLineAddress1 = (inputSelector[i].id.toLowerCase().match(/address1/)) ? inputSelector[i].id : edqLineAddress1;
+    edqLineAddress2 = (inputSelector[i].id.toLowerCase().match(/address2/)) ? inputSelector[i].id : edqLineAddress2;
+    edqLineCity = (inputSelector[i].id.toLowerCase().match(/city/)) ? inputSelector[i].id : edqLineCity;
+    edqLinePostal = (inputSelector[i].id.toLowerCase().match(/postal/)) ? inputSelector[i].id : edqLinePostal;
+    edqLinePhone = (inputSelector[i].id.toLowerCase().match(/phone/)) ? inputSelector[i].id : edqLinePhone;
+    edqLineEmail = ((inputSelector[i].id == 'dwfrm_profile_customer_email') 
+        || (inputSelector[i].id == 'dwfrm_billing_billingAddress_email_emailAddress')) ? inputSelector[i].id : edqLineEmail;
 }
-for (var i = 0; i < selectSelector.length; i++)
-{
-    if (selectSelector[i].hasAttribute('id')) {
-        edqLineState = (selectSelector[i].id.toLowerCase().match(/state/)) ? selectSelector[i].id : edqLineState;
-        edqLineCountry = (selectSelector[i].id.toLowerCase().match(/country/)) ? selectSelector[i].id : edqLineCountry;
-    }
+for (var i = 0; i < selectSelector.length; i++) {
+    edqLineState = (selectSelector[i].id.toLowerCase().match(/state/)) ? selectSelector[i].id : edqLineState;
+    edqLineCountry = (selectSelector[i].id.toLowerCase().match(/country/)) ? selectSelector[i].id : edqLineCountry;
 }
-for (var i = 0; i < buttonSelector.length; i++)
-{
-    if (buttonSelector[i].hasAttribute('name')) {
-        if (buttonSelector[i].name.match(/dwfrm_profile_address_create/)) {
-            edqLineButton = '[name=dwfrm_profile_address_create]';
-        }
-        if (buttonSelector[i].name.match(/dwfrm_profile_address_edit/)) {
-            edqLineButton = '[name=dwfrm_profile_address_edit]';
-        }
-        if (buttonSelector[i].name.match(/dwfrm_singleshipping_shippingAddress_save/)) {
-            edqLineButton = '[name=dwfrm_singleshipping_shippingAddress_save]';
-        }
-        if (buttonSelector[i].name.match(/dwfrm_profile_confirm/)) {
-            edqLineButton = '[name=dwfrm_profile_confirm]';
-        }
-        if (buttonSelector[i].name.match(/dwfrm_billing_save/)) {
-            edqLineButton = '[name=dwfrm_billing_save]';
-            enableButtonDisable(false);
-            /**Forcing the button to set the addlistener because the button is set as disabled since the page load 
-             * that's why we're setting just this case here; this case just happens in SiteGenesis billing form. **/
-            buttonSelector[i].addEventListener("mouseover", edqVerificationCallback);
-            /*TASK:101728 Change Validate Button*/
-            buttonSelector[i].style.display = "none";
-            btnIndex = i;
-        }
+for (var i = 0; i < buttonSelector.length; i++) {
+    if (buttonSelector[i].name.match(/dwfrm_profile_address_create/)) {
+        edqLineButton = '[name=dwfrm_profile_address_create]';
+    }
+    if (buttonSelector[i].name.match(/dwfrm_profile_address_edit/)) {
+        edqLineButton = '[name=dwfrm_profile_address_edit]';
+    }
+    if (buttonSelector[i].name.match(/dwfrm_singleshipping_shippingAddress_save/)) {
+        edqLineButton = '[name=dwfrm_singleshipping_shippingAddress_save]';
+    }
+    if (buttonSelector[i].name.match(/dwfrm_profile_confirm/)) {
+        edqLineButton = '[name=dwfrm_profile_confirm]';
+    }
+    if (buttonSelector[i].name.match(/dwfrm_billing_save/)) {
+        edqLineButton = '[name=dwfrm_billing_save]';
+        enableButtonDisable(false);
+        /**Forcing the button to set the addlistener because the button is set as disabled since the page load 
+         * that's why we're setting just this case here; this case just happens in SiteGenesis billing form. **/
+        buttonSelector[i].addEventListener("mouseover", edqVerificationCallback);
+        /*TASK:101728 Change Validate Button*/
+        buttonSelector[i].style.display = "none";
+        btnIndex = i;
     }
 }
 if (document.getElementById(edqLinePhone)) { document.getElementById(edqLinePhone).addEventListener("mouseover", function() {enableButtonDisable(false);}); }
 if (document.getElementById(edqLineEmail)) { document.getElementById(edqLineEmail).addEventListener("mouseover", function() {enableButtonDisable(false);}); }
 if (document.querySelector(edqLineButton)) { document.querySelector(edqLineButton).addEventListener("mouseover", edqVerificationCallback); }
-
+if (document.querySelector('#form-submit')) { document.querySelector('#form-submit').addEventListener("mouseover", edqVerificationCallback); }
 function edqVerificationCallback() {
-    if ((edqEmailEnable) && (edqLineEmail)) { edqEmailValidationCallback(); }
-    if ((edqPhoneEnable) && (edqLinePhone)) { edqPhoneValidationCallback(); }
+    if ((edqEmailEnable) && (edqLineEmail)) { edqPhoneEmailValidationCallback(blnEdqValidateEmail, document.getElementById(edqLineEmail)); }
+    if ((edqPhoneEnable) && (edqLinePhone)) { edqPhoneEmailValidationCallback(blnEdqValidatePhone, document.getElementById(edqLinePhone)); }
 }
-    
-function edqEmailValidation(edqToken) {
+function enableButtonDisable(buttonStatus) { 
+    document.querySelector(edqLineButton).disabled = buttonStatus;
+}
+function edqPhoneEmailValidationCallback(blnValidationOption, edqSelectorResponse) {
+    if (!edqSelectorResponse) { return; }
+    if ((blnValidationOption) && (edqSelectorResponse.hasAttribute('edq-metadata'))) {
+        var edqMetaDataResponse = JSON.parse(edqSelectorResponse.getAttribute('edq-metadata'));
+        if ((edqMetaDataResponse["Certainty"].toLowerCase() == 'verified') || (edqMetaDataResponse["Certainty"].toLowerCase() == 'unknown')) {
+            enableButtonDisable(false);
+        } else {
+            enableButtonDisable(true);
+        }
+    }
+}
+/**
+ * Email validation
+ */
+function edqEmailValidation() {
     window.EdqConfig.EMAIL_VALIDATE_AUTH_TOKEN=edqToken;
+    window.EdqConfig.EMAIL_TIMEOUT=15000;
     window.EdqConfig.EMAIL_ELEMENTS=[
         document.getElementById(edqLineEmail)
     ];
 }
-
-function edqPhoneValidation(edqToken) {
+/**
+ * Phone validation
+ */
+function edqPhoneValidation() {
     window.EdqConfig.GLOBAL_PHONE_VALIDATE_AUTH_TOKEN=edqToken;
+    window.EdqConfig.PHONE_TIMEOUT=3500;
     window.EdqConfig.REVERSE_PHONE_APPEND_MAPPINGS= [];
     window.EdqConfig.PHONE_ELEMENTS= [
         document.getElementById(edqLinePhone)
     ];
 }
-
-function edqGlobalIntuitive(edqToken) {
+/**
+ * Global Intuitive
+ */
+function edqGlobalIntuitive() {
     window.EdqConfig.GLOBAL_INTUITIVE_AUTH_TOKEN=edqToken;
     window.EdqConfig.GLOBAL_INTUITIVE_ISO3_COUNTRY=countryAlpha3(document.getElementById(edqLineCountry).value);
     window.EdqConfig.GLOBAL_INTUITIVE_ELEMENT= document.getElementById(edqLineAddress1);
@@ -367,20 +397,31 @@ function edqGlobalIntuitive(edqToken) {
             },
     ];
 }
-
-function edqVerificationEngine(edqToken, edqProWebLayout) {
+/**
+ * Verification Engine
+ */
+function edqValidateAddressCallBack() {
+    var edqProWebResponse = document.querySelector('#form-submit');
+    if (!edqProWebResponse.hasAttribute('edq-metadata')) { return; }
+    var edqResponse = JSON.parse(edqProWebResponse.getAttribute('edq-metadata'));
+    document.querySelector('#form-submit').style.display = "none";
+    document.getElementById(edqLineState).value = edqResponse["State code"];
+    document.querySelector('#form-submit').removeAttribute('edq-metadata');
+    if (btnIndex) {
+        buttonSelector[btnIndex].style.display = "inline-block";
+        buttonSelector[btnIndex].click();
+    } else {
+        document.querySelector(edqLineButton).style.display = "inline-block";
+        document.querySelector(edqLineButton).click();
+    }
+}
+function edqVerificationEngine() {
     /* This is intended to hide the form button just 
 	 * to show verification engine button in the form*/
 	if (document.querySelector(edqLineButton)) {
 		document.querySelector(edqLineButton).style.display = "none";
     }
-    var modalFiledSelectorAddressOne = '#interaction-address--original-address-line-one'; 
-	var modalFieldSelectorAddressTwo = '#interaction-address--original-address-line-two';
-	var modalFieldSelectorLocality = '#interaction-address--original-locality';
-	var modalFieldSelectorProvince = '#interaction-address--original-province';
-    var modalFieldSelectorPostal = '#interaction-address--original-postal-code';
-    
-    window.EdqConfig.PRO_WEB_TIMEOUT= 2500;
+    window.EdqConfig.PRO_WEB_TIMEOUT= 3500;
 	window.EdqConfig.PRO_WEB_AUTH_TOKEN=edqToken;
 	window.EdqConfig.PRO_WEB_SUBMIT_TRIGGERS= [
 		{
@@ -419,60 +460,4 @@ function edqVerificationEngine(edqToken, edqProWebLayout) {
 			modalFieldSelector: modalFieldSelectorPostal,
 		},
 	];
-}
-
-function enableButtonDisable(buttonStatus) { 
-    document.querySelector(edqLineButton).disabled = buttonStatus;
-}
-
-function edqPhoneValidationCallback(blnEdqValidatePhone) {
-		if (blnEdqValidatePhone) {
-			var edqSelectorResponse = document.getElementById(edqLinePhone);
-			if (edqSelectorResponse.hasAttribute('edq-metadata')) {
-				var edqPhoneResponse = JSON.parse(edqSelectorResponse.getAttribute('edq-metadata'));
-
-				if ((edqPhoneResponse["Certainty"] == 'Verified'))
-				{
-					enableButtonDisable(false);
-				} else {
-					enableButtonDisable(true);
-				} 
-			}
-		}
-	 }
-function edqEmailValidationCallback(blnEdqValidateEmail) {
-    if (blnEdqValidateEmail) {
-        var edqSelectorResponse = document.getElementById(edqLineEmail);
-        if (edqSelectorResponse.hasAttribute('edq-metadata')) {
-            var edqEmailResponse = JSON.parse(edqSelectorResponse.getAttribute('edq-metadata'));
-            if ((edqEmailResponse["Certainty"] == 'verified')
-            || (edqEmailResponse["Certainty"] == 'unknown'))
-            {
-                enableButtonDisable(false);
-            } else {
-                enableButtonDisable(true);
-            } 
-        }
-    }
-}
-function edqValidateAddressCallBack() { 
-    try {
-        var edqProWebResponse = document.querySelector('#form-submit');
-
-        if (edqProWebResponse.hasAttribute('edq-metadata')) {
-            if (edqProWebResponse.getAttribute('edq-metadata'))
-            {
-                var edqResponse = JSON.parse(edqProWebResponse.getAttribute('edq-metadata'));
-                if (btnIndex) {
-                    buttonSelector[btnIndex].style.display = "inline-block";
-                } else {
-                    document.querySelector(edqLineButton).style.display = "inline-block";
-                }
-                document.querySelector('#form-submit').style.display = "none";
-                document.getElementById(edqLineState).value = edqResponse["State code"];
-                document.querySelector('#form-submit').removeAttribute('edq-metadata');
-                document.querySelector(edqLineButton).click();
-            }
-        }
-    } catch(error) {  }
 }
