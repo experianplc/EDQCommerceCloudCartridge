@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>Experian_EDQ_SFRA</name>
+	<comment></comment>
+	<projects>
+		<project>app_storefront_base</project>
+		<project>DigitalServer</project>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>com.demandware.studio.core.beehiveElementBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>com.demandware.studio.core.beehiveNature</nature>
+	</natures>
+</projectDescription>
