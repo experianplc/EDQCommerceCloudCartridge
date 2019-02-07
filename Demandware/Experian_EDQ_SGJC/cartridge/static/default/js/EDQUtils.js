@@ -1,32 +1,25 @@
 const vDefaultCountry = 'USA';
-var edqLineAddress1, 
-    edqLineAddress2, 
-    edqLineCity, 
-    edqLineState, 
-    edqLinePostal, 
-    edqLineCountry, 
-    edqLineEmail, 
-    edqLinePhone, 
-    edqLineButton,
-    btnIndex,
+var edqAddressLine1Selector,
+    edqAddressLine2Selector,
+    edqCityLineSelector,
+    edqPostalLineSelector,
+    edqStateLineSelector,
+    edqCountryLineSelector, 
+    edqEmailLineSelector, 
+    edqPhoneLineSelectors, 
+    edqCurrentSubmitButtonSelector,
+    edqCurrentSubmitButtonSelectorIndex,
     edqEmailEnable, 
     edqPhoneEnable,
-    blnEdqValidateEmail, 
-    blnEdqValidatePhone, 
-    edqToken, 
-    edqProWebLayout,
-    modalFiledSelectorAddressOne = '#interaction-address--original-address-line-one', 
-    modalFieldSelectorAddressTwo = '#interaction-address--original-address-line-two',
-    modalFieldSelectorLocality = '#interaction-address--original-locality',
-    modalFieldSelectorProvince = '#interaction-address--original-province',
-    modalFieldSelectorPostal = '#interaction-address--original-postal-code';
+    edqValidateEmail, 
+    edqValidatePhone, 
+    edqAuthorizationToken, 
+    edqVerificationEngineAddressLayout;
 var inputSelector = document.querySelectorAll('input[id]');
 var selectSelector = document.querySelectorAll('select[id]');
 var buttonSelector = document.querySelectorAll('button[name]');
 window.EdqConfig = window.EdqConfig || {}
-/**Demandware uses ISO-2 codes for countries
- * This dictionary is intended to capture ISO-2 codes into ISO-3 codes
- * for Pegasus/Unicorn libraries
+/**Demandware uses ISO-2 codes for countries. This dictionary is intended to capture ISO-2 codes into ISO-3 codes for Pegasus/Unicorn libraries
  **/
 var countryDict = [];
 countryDict.push({ key: "AF", value: "AFG" },
@@ -277,63 +270,60 @@ countryDict.push({ key: "AF", value: "AFG" },
     { key: "ZM", value: "ZMB" },
     { key: "ZW", value: "ZWE" });
 function countryAlpha3(vAlphaTwo) { 
-    var vAlphaThree;
-    for (var i = 0; i < countryDict.length; i++) {
-        if (vAlphaTwo.toUpperCase() == countryDict[i].key)
-            vAlphaThree = countryDict[i].value;
-    }
-    return (vAlphaThree) ? vAlphaThree : vDefaultCountry;
+    var iso2ToIso3CountryDict;
+    countryDict.forEach((val) => iso2ToIso3CountryDict = (vAlphaTwo.match(val.key)) ? val.value : iso2ToIso3CountryDict);
+    return (iso2ToIso3CountryDict) ? iso2ToIso3CountryDict : vDefaultCountry;
 }
 /***
  * Set values to EDQ variables
  ***/
 for (var i = 0; i < inputSelector.length; i++) {
-    edqLineAddress1 = (inputSelector[i].id.toLowerCase().match(/address1/)) ? inputSelector[i].id : edqLineAddress1;
-    edqLineAddress2 = (inputSelector[i].id.toLowerCase().match(/address2/)) ? inputSelector[i].id : edqLineAddress2;
-    edqLineCity = (inputSelector[i].id.toLowerCase().match(/city/)) ? inputSelector[i].id : edqLineCity;
-    edqLinePostal = (inputSelector[i].id.toLowerCase().match(/postal/)) ? inputSelector[i].id : edqLinePostal;
-    edqLinePhone = (inputSelector[i].id.toLowerCase().match(/phone/)) ? inputSelector[i].id : edqLinePhone;
-    edqLineEmail = ((inputSelector[i].id == 'dwfrm_profile_customer_email') 
-        || (inputSelector[i].id == 'dwfrm_billing_billingAddress_email_emailAddress')) ? inputSelector[i].id : edqLineEmail;
+    edqAddressLine1Selector = (inputSelector[i].id.toLowerCase().match(/address1/)) ? inputSelector[i].id : edqAddressLine1Selector;
+    edqAddressLine2Selector = (inputSelector[i].id.toLowerCase().match(/address2/)) ? inputSelector[i].id : edqAddressLine2Selector;
+    edqCityLineSelector = (inputSelector[i].id.toLowerCase().match(/city/)) ? inputSelector[i].id : edqCityLineSelector;
+    edqPostalLineSelector = (inputSelector[i].id.toLowerCase().match(/postal/)) ? inputSelector[i].id : edqPostalLineSelector;
+    edqPhoneLineSelectors = (inputSelector[i].id.toLowerCase().match(/phone/)) ? inputSelector[i].id : edqPhoneLineSelectors;
+    edqEmailLineSelector = ((inputSelector[i].id == 'dwfrm_profile_customer_email') 
+        || (inputSelector[i].id == 'dwfrm_billing_billingAddress_email_emailAddress')) ? inputSelector[i].id : edqEmailLineSelector;
 }
 for (var i = 0; i < selectSelector.length; i++) {
-    edqLineState = (selectSelector[i].id.toLowerCase().match(/state/)) ? selectSelector[i].id : edqLineState;
-    edqLineCountry = (selectSelector[i].id.toLowerCase().match(/country/)) ? selectSelector[i].id : edqLineCountry;
+    edqStateLineSelector = (selectSelector[i].id.toLowerCase().match(/state/)) ? selectSelector[i].id : edqStateLineSelector;
+    edqCountryLineSelector = (selectSelector[i].id.toLowerCase().match(/country/)) ? selectSelector[i].id : edqCountryLineSelector;
 }
 for (var i = 0; i < buttonSelector.length; i++) {
     if (buttonSelector[i].name.match(/dwfrm_profile_address_create/)) {
-        edqLineButton = '[name=dwfrm_profile_address_create]';
+        edqCurrentSubmitButtonSelector = '[name=dwfrm_profile_address_create]';
     }
     if (buttonSelector[i].name.match(/dwfrm_profile_address_edit/)) {
-        edqLineButton = '[name=dwfrm_profile_address_edit]';
+        edqCurrentSubmitButtonSelector = '[name=dwfrm_profile_address_edit]';
     }
     if (buttonSelector[i].name.match(/dwfrm_singleshipping_shippingAddress_save/)) {
-        edqLineButton = '[name=dwfrm_singleshipping_shippingAddress_save]';
+        edqCurrentSubmitButtonSelector = '[name=dwfrm_singleshipping_shippingAddress_save]';
     }
     if (buttonSelector[i].name.match(/dwfrm_profile_confirm/)) {
-        edqLineButton = '[name=dwfrm_profile_confirm]';
+        edqCurrentSubmitButtonSelector = '[name=dwfrm_profile_confirm]';
     }
     if (buttonSelector[i].name.match(/dwfrm_billing_save/)) {
-        edqLineButton = '[name=dwfrm_billing_save]';
+        edqCurrentSubmitButtonSelector = '[name=dwfrm_billing_save]';
         enableButtonDisable(false);
         /**Forcing the button to set the addlistener because the button is set as disabled since the page load 
          * that's why we're setting just this case here; this case just happens in SiteGenesis billing form. **/
         buttonSelector[i].addEventListener("mouseover", edqVerificationCallback);
         /*TASK:101728 Change Validate Button*/
         buttonSelector[i].style.display = "none";
-        btnIndex = i;
+        edqCurrentSubmitButtonSelectorIndex = i;
     }
 }
-if (document.getElementById(edqLinePhone)) { document.getElementById(edqLinePhone).addEventListener("mouseover", function() {enableButtonDisable(false);}); }
-if (document.getElementById(edqLineEmail)) { document.getElementById(edqLineEmail).addEventListener("mouseover", function() {enableButtonDisable(false);}); }
-if (document.querySelector(edqLineButton)) { document.querySelector(edqLineButton).addEventListener("mouseover", edqVerificationCallback); }
+if (document.getElementById(edqPhoneLineSelectors)) { document.getElementById(edqPhoneLineSelectors).addEventListener("mouseover", function() {enableButtonDisable(false);}); }
+if (document.getElementById(edqEmailLineSelector)) { document.getElementById(edqEmailLineSelector).addEventListener("mouseover", function() {enableButtonDisable(false);}); }
+if (document.querySelector(edqCurrentSubmitButtonSelector)) { document.querySelector(edqCurrentSubmitButtonSelector).addEventListener("mouseover", edqVerificationCallback); }
 if (document.querySelector('#form-submit')) { document.querySelector('#form-submit').addEventListener("mouseover", edqVerificationCallback); }
 function edqVerificationCallback() {
-    if ((edqEmailEnable) && (edqLineEmail)) { edqPhoneEmailValidationCallback(blnEdqValidateEmail, document.getElementById(edqLineEmail)); }
-    if ((edqPhoneEnable) && (edqLinePhone)) { edqPhoneEmailValidationCallback(blnEdqValidatePhone, document.getElementById(edqLinePhone)); }
+    if ((edqEmailEnable) && (edqEmailLineSelector)) { edqPhoneEmailValidationCallback(edqValidateEmail, document.getElementById(edqEmailLineSelector)); }
+    if ((edqPhoneEnable) && (edqPhoneLineSelectors)) { edqPhoneEmailValidationCallback(edqValidatePhone, document.getElementById(edqPhoneLineSelectors)); }
 }
 function enableButtonDisable(buttonStatus) { 
-    document.querySelector(edqLineButton).disabled = buttonStatus;
+    document.querySelector(edqCurrentSubmitButtonSelector).disabled = buttonStatus;
 }
 function edqPhoneEmailValidationCallback(blnValidationOption, edqSelectorResponse) {
     if (!edqSelectorResponse) { return; }
@@ -348,116 +338,120 @@ function edqPhoneEmailValidationCallback(blnValidationOption, edqSelectorRespons
 }
 /**
  * Email validation
+ * Sets the configuation to use email validation
  */
-function edqEmailValidation() {
-    window.EdqConfig.EMAIL_VALIDATE_AUTH_TOKEN=edqToken;
+function edqSetEmailValidationConfiguration() {
+    window.EdqConfig.EMAIL_VALIDATE_AUTH_TOKEN=edqAuthorizationToken;
     window.EdqConfig.EMAIL_TIMEOUT=15000;
     window.EdqConfig.EMAIL_ELEMENTS=[
-        document.getElementById(edqLineEmail)
+        document.getElementById(edqEmailLineSelector)
     ];
 }
 /**
  * Phone validation
+ * Sets the configuation to use phone validation
  */
-function edqPhoneValidation() {
-    window.EdqConfig.GLOBAL_PHONE_VALIDATE_AUTH_TOKEN=edqToken;
+function edqSetPhoneValidationConfiguration() {
+    window.EdqConfig.GLOBAL_PHONE_VALIDATE_AUTH_TOKEN=edqAuthorizationToken;
     window.EdqConfig.PHONE_TIMEOUT=3500;
     window.EdqConfig.REVERSE_PHONE_APPEND_MAPPINGS= [];
     window.EdqConfig.PHONE_ELEMENTS= [
-        document.getElementById(edqLinePhone)
+        document.getElementById(edqPhoneLineSelectors)
     ];
 }
 /**
  * Global Intuitive
+ * Sets the configuation to use global intuitive
  */
-function edqGlobalIntuitive() {
-    window.EdqConfig.GLOBAL_INTUITIVE_AUTH_TOKEN=edqToken;
-    window.EdqConfig.GLOBAL_INTUITIVE_ISO3_COUNTRY=countryAlpha3(document.getElementById(edqLineCountry).value);
-    window.EdqConfig.GLOBAL_INTUITIVE_ELEMENT= document.getElementById(edqLineAddress1);
+function edqSetGlobalIntuitiveConfiguration() {
+    window.EdqConfig.GLOBAL_INTUITIVE_AUTH_TOKEN=edqAuthorizationToken;
+    window.EdqConfig.GLOBAL_INTUITIVE_ISO3_COUNTRY=countryAlpha3(document.getElementById(edqCountryLineSelector).value);
+    window.EdqConfig.GLOBAL_INTUITIVE_ELEMENT= document.getElementById(edqAddressLine1Selector);
     window.EdqConfig.GLOBAL_INTUITIVE_MAPPING= [
             {
-                field: document.getElementById(edqLineAddress1),
+                field: document.getElementById(edqAddressLine1Selector),
                 elements: ['address.addressLine1']
             },
             {
-                field: document.getElementById(edqLineAddress2),
+                field: document.getElementById(edqAddressLine2Selector),
                 elements: ['address.addressLine2']
             },
             {
-                field: document.getElementById(edqLineCity),
+                field: document.getElementById(edqCityLineSelector),
                 elements: ['address.locality']
             },
             {
-                field: document.getElementById(edqLineState),
+                field: document.getElementById(edqStateLineSelector),
                 elements: ['address.province']
             },
             {
-                field: document.getElementById(edqLinePostal),
+                field: document.getElementById(edqPostalLineSelector),
                 elements: ['address.postalCode']
             },
     ];
 }
 /**
  * Verification Engine
+ * Sets the configuation to use verification engine
  */
 function edqValidateAddressCallBack() {
     var edqProWebResponse = document.querySelector('#form-submit');
     if (!edqProWebResponse.hasAttribute('edq-metadata')) { return; }
     var edqResponse = JSON.parse(edqProWebResponse.getAttribute('edq-metadata'));
     document.querySelector('#form-submit').style.display = "none";
-    document.getElementById(edqLineState).value = edqResponse["State code"];
+    document.getElementById(edqStateLineSelector).value = edqResponse["State code"];
     document.querySelector('#form-submit').removeAttribute('edq-metadata');
-    if (btnIndex) {
-        buttonSelector[btnIndex].style.display = "inline-block";
-        buttonSelector[btnIndex].click();
+    if (edqCurrentSubmitButtonSelectorIndex) {
+        buttonSelector[edqCurrentSubmitButtonSelectorIndex].style.display = "inline-block";
+        buttonSelector[edqCurrentSubmitButtonSelectorIndex].click();
     } else {
-        document.querySelector(edqLineButton).style.display = "inline-block";
-        document.querySelector(edqLineButton).click();
+        document.querySelector(edqCurrentSubmitButtonSelector).style.display = "inline-block";
+        document.querySelector(edqCurrentSubmitButtonSelector).click();
     }
 }
-function edqVerificationEngine() {
+function edqSetVerificationEngineConfiguration() {
     /* This is intended to hide the form button just 
 	 * to show verification engine button in the form*/
-	if (document.querySelector(edqLineButton)) {
-		document.querySelector(edqLineButton).style.display = "none";
+	if (document.querySelector(edqCurrentSubmitButtonSelector)) {
+		document.querySelector(edqCurrentSubmitButtonSelector).style.display = "none";
     }
     window.EdqConfig.PRO_WEB_TIMEOUT= 3500;
-	window.EdqConfig.PRO_WEB_AUTH_TOKEN=edqToken;
+	window.EdqConfig.PRO_WEB_AUTH_TOKEN=edqAuthorizationToken;
 	window.EdqConfig.PRO_WEB_SUBMIT_TRIGGERS= [
 		{
 			type: 'click',
 			element: document.querySelector('#form-submit'),
 		}
 	];
-	window.EdqConfig.PRO_WEB_LAYOUT= edqProWebLayout;
-	window.EdqConfig.PRO_WEB_COUNTRY= countryAlpha3(document.getElementById(edqLineCountry).value);
+	window.EdqConfig.PRO_WEB_LAYOUT= edqVerificationEngineAddressLayout;
+	window.EdqConfig.PRO_WEB_COUNTRY= countryAlpha3(document.getElementById(edqCountryLineSelector).value);
 	window.EdqConfig.PRO_WEB_CALLBACK= 'edqValidateAddressCallBack()';
 	window.EdqConfig.PRO_WEB_MAPPING= [
 		{
-			field: document.getElementById(edqLineAddress1),
+			field: document.getElementById(edqAddressLine1Selector),
 			elements: ['Formatted Address 2'],
-			modalFieldSelector: modalFiledSelectorAddressOne,
+			modalFieldSelector: '#interaction-address--original-address-line-one',
 		},
 		{
-			field: document.getElementById(edqLineAddress2),
+			field: document.getElementById(edqAddressLine2Selector),
 			elements: ['AddressLine2'],
-			modalFieldSelector: modalFieldSelectorAddressTwo,
+			modalFieldSelector: '#interaction-address--original-address-line-two',
 		},
 		{
-			field: document.getElementById(edqLineCity),
+			field: document.getElementById(edqCityLineSelector),
 			elements: ['City name'],
-			modalFieldSelector: modalFieldSelectorLocality,
+			modalFieldSelector: '#interaction-address--original-locality',
 		},
 		{
-			field: document.getElementById(edqLineState),
+			field: document.getElementById(edqStateLineSelector),
 			elements: ['State code'],
-			modalFieldSelector: modalFieldSelectorProvince,
+			modalFieldSelector: '#interaction-address--original-province',
 		},
 		{
-			field: document.getElementById(edqLinePostal),
+			field: document.getElementById(edqPostalLineSelector),
 			separator: '-',
 			elements: ['ZIP Code', '+4 code'],
-			modalFieldSelector: modalFieldSelectorPostal,
+			modalFieldSelector: '#interaction-address--original-postal-code',
 		},
 	];
 }

@@ -3,8 +3,6 @@
 	<name>Experian_EDQ_SFRA</name>
 	<comment></comment>
 	<projects>
-		<project>app_storefront_base</project>
-		<project>DigitalServer</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

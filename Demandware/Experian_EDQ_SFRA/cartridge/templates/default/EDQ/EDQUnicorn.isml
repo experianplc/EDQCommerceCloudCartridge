@@ -1,115 +1,12 @@
 <iscontent type="text/html" charset="UTF-8" compact="true"/>
 <script src="${URLUtils.staticURL('/js/EDQUtils.js')}"></script>
 <script type="text/javascript">
-    var edqLineAddress1, edqLineAddress2, edqLineCity, edqLineState, edqLinePostal, edqLineCountry, edqLineEmail, edqLinePhone = [], edqLineButton;
-
-	var inputSelector = document.querySelectorAll('input');
-	var selectSelector = document.querySelectorAll('select');
-
-	function setEdqInputVariables (vPageLocation, vInputContent = '') {
-		for (var i = 0; i < inputSelector.length; i++)
-		{
-			if (inputSelector[i].hasAttribute('id')) {
-				if (window.location.href.toLowerCase().match(vPageLocation)) {
-					if ((inputSelector[i].id.toLowerCase().match(vInputContent)) || (vInputContent == '')) {
-						edqLineAddress1 = (inputSelector[i].id.toLowerCase().match(/address1|addressone/)) ? inputSelector[i].id : edqLineAddress1;
-						edqLineAddress2 = (inputSelector[i].id.toLowerCase().match(/address2|addresstwo/)) ? inputSelector[i].id : edqLineAddress2;
-						edqLineCity = (inputSelector[i].id.toLowerCase().match(/city/)) ? inputSelector[i].id : edqLineCity;
-						edqLinePostal = (inputSelector[i].id.toLowerCase().match(/zipcode/)) ? inputSelector[i].id : edqLinePostal;
-					}
-					if (inputSelector[i].id.toLowerCase().match(/phone/)) { edqLinePhone.push(inputSelector[i]); }
-					edqLineEmail = ((inputSelector[i].id == 'registration-form-email') || (inputSelector[i].id == 'email')) ? inputSelector[i].id : edqLineEmail;
-				}
-			}
-		}
-	}
-	function setEdqSelectVaraibles (vPageLocation, vInputContent = '') {
-		for (var i = 0; i < selectSelector.length; i++)
-		{
-			if (selectSelector[i].hasAttribute('id')) {
-				if (window.location.href.toLowerCase().match(vPageLocation)) {
-					if ((selectSelector[i].id.toLowerCase().match(vInputContent)) || (vInputContent == '')) {
-						edqLineState = (selectSelector[i].id.toLowerCase().match(/state/)) ? selectSelector[i].id : edqLineState;
-						edqLineCountry = (selectSelector[i].id.toLowerCase().match(/country/)) ? selectSelector[i].id : edqLineCountry;
-					}
-				}
-			}
-		}
-	}
-
-	if (window.location.href.toLowerCase().match(/checkout/)) {
-		setEdqInputVariables('checkout', 'shipping');
-		setEdqSelectVaraibles('checkout', 'shipping');
-	} else if (window.location.href.toLowerCase().match(/login/)) {
-		setEdqInputVariables('login');
-		setEdqSelectVaraibles('login');
-	} else if (window.location.href.toLowerCase().match(/address/)) {
-		setEdqInputVariables('address');
-		setEdqSelectVaraibles('address');
-	}
-
-	var buttonSelector = document.querySelectorAll('button');
-	for (var i = 0; i < buttonSelector.length; i++)
-	{
-		if (buttonSelector[i].hasAttribute('name')) {
-			if (window.location.href.match(/Checkout/)) {
-				if (buttonSelector[i].hasAttribute('value')) {
-					edqLineButton = (buttonSelector[i].value.toLowerCase().match(/shipping/)) ? '[value=submit-shipping]' : edqLineButton;
-					buttonSelector[i].addEventListener("mouseover", edqVerificationCallback);
-				}
-			} else {
-				edqLineButton = (buttonSelector[i].name.toLowerCase().match(/save/)) ? '[name=save]' : edqLineButton;
-				// edqLineButton = (buttonSelector[i].name.toLowerCase().match(/submit/)) ? '[name=submit]' : edqLineButton;
-				buttonSelector[i].addEventListener("mouseover", edqVerificationCallback);
-			}
-		}
-	}
-
-	if (document.getElementById(edqLinePhone)) { document.getElementById(edqLinePhone).addEventListener("mouseover", function() {enableButtonDisable(false);}); }
-	if (document.getElementById(edqLineEmail)) { document.getElementById(edqLineEmail).addEventListener("mouseover", function() {enableButtonDisable(false);}); }
-	
-	function edqVerificationCallback() {
-		if ((<isprint value="${dw.system.Site.current.preferences.custom.EDQEmailEnable}"/>) && (edqLineEmail)) { edqEmailValidationCallback(); }
-		if ((<isprint value="${dw.system.Site.current.preferences.custom.EDQPhoneEnable}"/>) && (edqLinePhone)) { edqPhoneValidationCallback(); }
-	}
-
-	function enableButtonDisable(buttonStatus) { document.querySelector(edqLineButton).disabled = buttonStatus; }
-	function edqPhoneValidationCallback() {
-	 	/* TASK:101729 Allow users to continue with invalid email or phone */
-		if (<isprint value="${dw.system.Site.current.preferences.custom.EDQValidatePhone}"/>) {
-			var edqSelectorResponse = document.getElementById(edqLinePhone);
-			if (edqSelectorResponse.hasAttribute('edq-metadata')) {
-				var edqPhoneResponse = JSON.parse(edqSelectorResponse.getAttribute('edq-metadata'));
-
-				if ((edqPhoneResponse["Certainty"] == 'Verified'))
-				{
-					enableButtonDisable(false);
-				} else {
-					enableButtonDisable(true);
-				} 
-			}
-		}
-	 }
-
-	 function edqEmailValidationCallback() {
-	 	/* TASK:101729 Allow users to continue with invalid email or phone */
-	 	if (<isprint value="${dw.system.Site.current.preferences.custom.EDQValidateEmail}"/>) {
-			var edqSelectorResponse = document.getElementById(edqLineEmail);
-			if (edqSelectorResponse.hasAttribute('edq-metadata')) {
-				var edqEmailResponse = JSON.parse(edqSelectorResponse.getAttribute('edq-metadata'));
-				if ((edqEmailResponse["Certainty"] == 'verified')
-				|| (edqEmailResponse["Certainty"] == 'unknown'))
-				{
-					enableButtonDisable(false);
-				} else {
-					enableButtonDisable(true);
-				} 
-			}
-		}
-	}
-
-	if(!window.EdqConfig)
-		window.EdqConfig = {};
+    edqEmailEnable = <isprint value="${dw.system.Site.current.preferences.custom.EDQEmailEnable}"/>;
+	edqPhoneEnable = <isprint value="${dw.system.Site.current.preferences.custom.EDQPhoneEnable}"/>;
+	edqValidatePhone = <isprint value="${dw.system.Site.current.preferences.custom.EDQValidatePhone}"/>;
+	edqValidateEmail = <isprint value="${dw.system.Site.current.preferences.custom.EDQValidateEmail}"/>;
+	edqAuthorizationToken = '<isprint value="${dw.system.Site.current.preferences.custom.EDQToken}"/>';
+	pageCheckoutStage = '<isprint value="${pdict.currentStage}"/>';
 </script>
 <isif condition="${URLUtils.continueURL().toString().search('Address') != -1 || URLUtils.continueURL().toString().search('Checkout') != -1}">
 	<isif condition="${dw.system.Site.current.preferences.custom.EDQPreferedAddressSearchEngine.value == 'VerificationEngine'}">
