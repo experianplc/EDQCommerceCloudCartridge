@@ -324,6 +324,7 @@ function edqVerificationCallback() {
 }
 function enableButtonDisable(buttonStatus) { 
     document.querySelector(edqCurrentSubmitButtonSelector).disabled = buttonStatus;
+    if (document.getElementById('form-submit')) { document.getElementById('form-submit').disabled = buttonStatus; }
 }
 function edqPhoneEmailValidationCallback(blnValidationOption, edqSelectorResponse) {
     if (!edqSelectorResponse) { return; }
