@@ -1,7 +1,7 @@
 # EDQ for Salesforce Commerce Cloud
 ######  Version 19.1.0
 
-![GitHub Logo](https://account.demandware.com/dwsso/XUI/themes/salesforce/images/2016sf_CommerceCloud_logo_RGB.png?v=14.1.0)
+![SalesforceLogo](https://account.demandware.com/dwsso/XUI/themes/salesforce/images/2016sf_CommerceCloud_logo_RGB.png?v=14.1.0)
 
 ##  1\. Summary
 The EDQ Commerce Cloud cartridge verifies customer address, phone and email data in real time during registration, shipping, billing and address touchpoints; this cartridge supports both SiteGenesis (SGJC) and Storefront (SFRA) workflows.
@@ -15,7 +15,7 @@ The EDQ Commerce Cloud cartridge contains verification engine, global intuitive,
 Email validation engine will verify your email at the moment you finish typing down your email in the email field box and once you lose focus on the email field the email validation engine will start working letting you know if is a valid or an invalid email.
 To configure your email validation, you need to access the Business Manager and go to EDQ Config **(`Select Site > Merchant Tools > Site Preferences > Custom Site Preferences Group > EDQ Config`)** and look for the email options.
 
-![EmailOptions](https://github.com/JoseCastilloExperian/edqCommerceCloud/blob/master/EDQ%20Cartridge%20Manual%20imgs/211EmailOptions.png)
+![EmailOptions](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/211EmailOptions.png)
 
 * Email enable option will enable/disable email validation in your store.
 * Email validation option will enable/disable the page to prevent on going through. 
@@ -24,20 +24,20 @@ The store touchpoints for email validation are:
 * Registration form.
 * Billing/Payment form.
 
-![EmailSFRA](https://github.com/JoseCastilloExperian/edqCommerceCloud/blob/master/EDQ%20Cartridge%20Manual%20imgs/211SFRAview.png)
+![EmailSFRA](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/211SFRAview.png)
 
 Email validation can result in two potential outcomes.
 
 Verification Level | Description | Icon
 ------------ | ------------- | -------------
-Verified | Email exists, or is a company internal email, is reachable and is valid. | ![verifiedIcon](https://github.com/JoseCastilloExperian/edqCommerceCloud/blob/master/EDQ%20Cartridge%20Manual%20imgs/verifiedIcon.png)
-Invalid | Mailbox or domain does not exist or is unreachable, illegitimate or disposable. | ![invalidIcon](https://github.com/JoseCastilloExperian/edqCommerceCloud/blob/master/EDQ%20Cartridge%20Manual%20imgs/invalidIcon.png)
+Verified | Email exists, or is a company internal email, is reachable and is valid. | ![verifiedIcon](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/verifiedIcon.png)
+Invalid | Mailbox or domain does not exist or is unreachable, illegitimate or disposable. | ![invalidIcon](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/invalidIcon.png)
 
 ####  2.1.2\. Phone Validation
 Phone validation engine will verify your phone at the moment you finish typing down your phone in the phone field box and once you lose focus on the phone field, the phone validation engine will start working letting you know if is a valid or an invalid phone.
 To configure your phone validation, you need to access the Business Manager and go to EDQ Config **(`Select Site > Merchant Tools > Site Preferences > Custom Site Preferences Group > EDQ Config`)** and look for the phone options.
 
-![PhoneOptions](https://github.com/JoseCastilloExperian/edqCommerceCloud/blob/master/EDQ%20Cartridge%20Manual%20imgs/212%20PhoneOptions.png)
+![PhoneOptions](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/212%20PhoneOptions.png)
 
 * Phone enable option will enable/disable phone validation in your store.
 * Phone validation option will enable/disable the page to prevent on going through.
@@ -47,27 +47,27 @@ The store touchpoints for phone validation are:
 * Add/Edit Address form.
 * Billing/Payment form.
 
-![PhoneSFRAView](https://github.com/JoseCastilloExperian/edqCommerceCloud/blob/master/EDQ%20Cartridge%20Manual%20imgs/212SFRAView.png)
+![PhoneSFRAView](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/212SFRAView.png)
 
 Phone validation can result in two potential outcomes.
 
 Verification Level | Description | Icon
 ------------ | ------------- | -------------
-Verified | Phone matched to a high confidence and returned as a valid number. | ![verifiedIcon](https://github.com/JoseCastilloExperian/edqCommerceCloud/blob/master/EDQ%20Cartridge%20Manual%20imgs/verifiedIcon.png)
-Invalid | Could not match the number and returned as an invalid number. | ![invalidIcon](https://github.com/JoseCastilloExperian/edqCommerceCloud/blob/master/EDQ%20Cartridge%20Manual%20imgs/invalidIcon.png)
+Verified | Phone matched to a high confidence and returned as a valid number. | ![verifiedIcon](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/verifiedIcon.png)
+Invalid | Could not match the number and returned as an invalid number. | ![invalidIcon](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/invalidIcon.png)
 
 ####  2.1.3\. Verification Engine
 Verification engine will verify and correct your address; once you type down your address in the respective address fields and press the page form submitting button; verification engine will verify your address and will give you the correct answer for it. 
 
-![VerificationSFRAView](https://github.com/JoseCastilloExperian/edqCommerceCloud/blob/master/EDQ%20Cartridge%20Manual%20imgs/213SFRAView.png)
+![VerificationSFRAView](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/213SFRAView.png)
 
 In case verification engine needs the user interaction to complete the address provided by the user; verification engine will provide an “confirm updated address” box to complete your address in real time; by typing down the address in the address input field, it will give you options with accurate addresses matching the address with the information provided by the user and finally by selecting one of the options it will autocomplete the addresses fields in the address form with correct and valid address and may continue with the store process.
 
-![VerificationSFRAView](https://github.com/JoseCastilloExperian/edqCommerceCloud/blob/master/EDQ%20Cartridge%20Manual%20imgs/213SFRAView2.png)
+![VerificationSFRAView](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/213SFRAView2.png)
 
 To configure verification engine, you need to access the Business Manager and go to EDQ Config **(`Select Site > Merchant Tools > Site Preferences > Custom Site Preferences Group > EDQ Config`)** and look for the verification engine options.
 
-![VerificationOptions](https://github.com/JoseCastilloExperian/edqCommerceCloud/blob/master/EDQ%20Cartridge%20Manual%20imgs/213verificationOptions.png)
+![VerificationOptions](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/213verificationOptions.png)
 
 * Preferred address search engine option will let you choose between the address search engine options (choose verification engine to only use this selected engine).
 * Address layout option let you choose the layout in which the data is going to be shown in the store (ask to your Experian consultant about the existing layouts).
@@ -79,15 +79,15 @@ The store touchpoints for phone validation are:
 ####  2.1.4\. Global Intuitive
 Global intuitive will correct your address in real time while your typing down your address in the address field box; it will display some options to match the address your typing down; select the correct address your typing down from the list above.
 
-![globalSFRAView](https://github.com/JoseCastilloExperian/edqCommerceCloud/blob/master/EDQ%20Cartridge%20Manual%20imgs/214SFRAView.png)
+![globalSFRAView](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/214SFRAView.png)
 
 And automatically global intuitive will fill the rest of the address fields in the form.
 
-![globalSFRAView](https://github.com/JoseCastilloExperian/edqCommerceCloud/blob/master/EDQ%20Cartridge%20Manual%20imgs/214SFRAView2.png)
+![globalSFRAView](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/214SFRAView2.png)
 
 To configure global intuitive, you need to access the Business Manager and go to EDQ Config **(`Select Site > Merchant Tools > Site Preferences > Custom Site Preferences Group > EDQ Config`)** and look for the global intuitive option.
 
-![globalOptions](https://github.com/JoseCastilloExperian/edqCommerceCloud/blob/master/EDQ%20Cartridge%20Manual%20imgs/214globalOptions.png)
+![globalOptions](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/214globalOptions.png)
 
 * Preferred address search engine option will let you choose between the address search engine options (choose verification engine to only use this selected engine).
 
@@ -134,7 +134,7 @@ This integration process will require access to the following:
 7.	Select the cartridge you want to add to your digital server
 8.	Press **“Apply and Close”** button
 
-![EclipseIDE](https://github.com/JoseCastilloExperian/edqCommerceCloud/blob/master/EDQ%20Cartridge%20Manual%20imgs/311EclipseIDE.png)
+![EclipseIDE](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/311EclipseIDE.png)
 
 #### 3.1.2\. Business Manager
 Register your cartridge.
@@ -144,19 +144,19 @@ Register your cartridge.
 4.	Add the cartridge name **“Experian_EDQ_SGJC”** (if your using SiteGenesis or choose Experian_EDQ_SFRA if your using SFRA) into the “Cartridges” input-box (cartridges take preference from left to right).
 5.	Click **“Apply”** button.
 
-![BM](https://github.com/JoseCastilloExperian/edqCommerceCloud/blob/master/EDQ%20Cartridge%20Manual%20imgs/312BM.png)
+![BM](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/312BM.png)
 
 #### 3.1.3\. Site Preferences
 1.	Log into your Business Manager and go to **Administration > Site Development > Site Import & Export**
 2.	On the Import section with the tag name Upload Archive check the Local option then select the file **“SitePreferences.zip”**; then press the Upload button
 
-![SitePreferences](https://github.com/JoseCastilloExperian/edqCommerceCloud/blob/master/EDQ%20Cartridge%20Manual%20imgs/313SitePreferences.png)
+![SitePreferences](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/313SitePreferences.png)
 
 3.	Select the file and then press the Import button
 4.	Press the Ok button on the top of this section
 To check if the imported site preferences go to Administration > Site Development > System Object Types and look for the option Site Preferences; then click Attribute Definitions option and find all Site Preferences needed for EDQ cartridge.
 
-![SitePreferences2](https://github.com/JoseCastilloExperian/edqCommerceCloud/blob/master/EDQ%20Cartridge%20Manual%20imgs/313SitePreferences2.png)
+![SitePreferences2](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/313SitePreferences2.png)
 
 ###  3.2 Custom Code
 ####  3.2.1\. Sitegenesis JavaScript Controller
@@ -164,69 +164,69 @@ To check if the imported site preferences go to Administration > Site Developmen
 1.	Go to your SiteGenesis core cartridge and open the template located in **templates > default > components > header > htmlhead_UI.isml**
 2.	Copy the next header line at the end of the file **“htmlhead_UI.isml”** file `<isinclude template="EDQ/EDQHeaders" />`
 
-![SGJCEDQHeaders](https://github.com/JoseCastilloExperian/edqCommerceCloud/blob/master/EDQ%20Cartridge%20Manual%20imgs/321EDQHeaders.png)
+![SGJCEDQHeaders](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/321EDQHeaders.png)
 
 **EDQUnicorn integration**
 1.	Go to SiteGenesis core cartridge and open the template located in **templates > default > account > addressbook > addressdetails.isml**
 2.	Copy the next line <isinclude template="EDQ/EDQUnicorn" /> before the buttons definition in **“addressdetails.isml”** file.
 
-![SGJCEDQUnicorn1](https://github.com/JoseCastilloExperian/edqCommerceCloud/blob/master/EDQ%20Cartridge%20Manual%20imgs/321EDQUnicorn1.png)
+![SGJCEDQUnicorn1](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/321EDQUnicorn1.png)
 
 3.	Go to SiteGenesis core cartridge and open the template located in **templates > default > account > user > registration.isml**
 4.	Copy the next line `<isinclude template="EDQ/EDQUnicorn" />` before the ending tag `</isdecorate>` in **“registration.isml”** file.
 
-![SGJCEDQUnicorn2](https://github.com/JoseCastilloExperian/edqCommerceCloud/blob/master/EDQ%20Cartridge%20Manual%20imgs/321EDQUnicorn2.png)
+![SGJCEDQUnicorn2](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/321EDQUnicorn2.png)
 
 5.	Go to SiteGenesis core cartridge and open the template located in **templates > default > checkout > billing > billing.isml**
 6.	Copy the next line `<isinclude template="EDQ/EDQUnicorn" />` before the ending tag `</isdecorate>` in **“billing.isml”** file.
 
-![SGJCEDQUnicorn3](https://github.com/JoseCastilloExperian/edqCommerceCloud/blob/master/EDQ%20Cartridge%20Manual%20imgs/321EDQUnicorn3.png)
+![SGJCEDQUnicorn3](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/321EDQUnicorn3.png)
 
 7.	Go to SiteGenesis core cartridge and open the template located in **templates > default > checkout > shipping > singleshipping.isml**
 8.	Copy the next line `<isinclude template="EDQ/EDQUnicorn" />` before the ending tag `</isdecorate>` in **“singleshipping.isml”** file.
 
-![SGJCEDQUnicorn4](https://github.com/JoseCastilloExperian/edqCommerceCloud/blob/master/EDQ%20Cartridge%20Manual%20imgs/321EDQUnicorn4.png)
+![SGJCEDQUnicorn4](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/321EDQUnicorn4.png)
 
 ####  3.2.2\. Storefront Reference Architecture
 **EDQHeaders integration**
 1.	Go to Storefront base cartridge and open the template located in **templates > default > common > htmlHead.isml.**
 2.	Copy the next header line at the end of the file **“htmlHead.isml”** file `<isinclude template="EDQ/EDQHeaders" />`
 
-![SFRAEDQHeaders](https://github.com/JoseCastilloExperian/edqCommerceCloud/blob/master/EDQ%20Cartridge%20Manual%20imgs/322EDQHeaders.png)
+![SFRAEDQHeaders](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/322EDQHeaders.png)
 
 **EDQUnicorn integration**
 1.	Go to Storefront base cartridge and open the template located in **templates > default > account > components > registerForm.isml**
 2.	Copy the next line at the end of **“registerForm.isml”** file `<isinclude template="EDQ/EDQUnicorn" />`
 3.	In the button section add an attribute **“name”** with the label **“save”** to the submit button.
 
-![SFRAEDQUnicorn1](https://github.com/JoseCastilloExperian/edqCommerceCloud/blob/master/EDQ%20Cartridge%20Manual%20imgs/322EDQUnicorn1.png)
+![SFRAEDQUnicorn1](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/322EDQUnicorn1.png)
 
 4.	Go to Storefront base cartridge and open the template located in **templates > default > account > addressForm.isml**
 5.	Copy the next line in **“addressForm.isml”** file `<isinclude template="EDQ/EDQUnicorn" />` after the submit button as shown below.
 6.	In the button section add an attribute **“name”** with the label **“save”** to the submit button.
 
-![SFRAEDQUnicorn2](https://github.com/JoseCastilloExperian/edqCommerceCloud/blob/master/EDQ%20Cartridge%20Manual%20imgs/322EDQUnicorn2.png)
+![SFRAEDQUnicorn2](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/322EDQUnicorn2.png)
 
 7.	Go to Storefront base cartridge and open the template located in **templates > default > checkout > checkout.isml**
 8.	Copy the next line `<isinclude template="EDQ/EDQUnicorn" />` after the checkout workflow buttons in **“checkout.isml”** file.
 
-![SFRAEDQUnicorn3](https://github.com/JoseCastilloExperian/edqCommerceCloud/blob/master/EDQ%20Cartridge%20Manual%20imgs/322EDQUnicorn3.png)
+![SFRAEDQUnicorn3](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/322EDQUnicorn3.png)
 
 9.	In the `<!-- Step 1: Shipping -->` section add an attribute `id` with the label `editShipping` to the html span tag.
 
-![SFRAEDQUnicorn4](https://github.com/JoseCastilloExperian/edqCommerceCloud/blob/master/EDQ%20Cartridge%20Manual%20imgs/322EDQUnicorn4.png)
+![SFRAEDQUnicorn4](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/322EDQUnicorn4.png)
 
 10.	In the `<!-- Step 2: Payment and Billing-->` section add an attribute `id` with the label `editPayment` to the html span tag.
 
-![SFRAEDQUnicorn5](https://github.com/JoseCastilloExperian/edqCommerceCloud/blob/master/EDQ%20Cartridge%20Manual%20imgs/322EDQUnicorn5.png)
+![SFRAEDQUnicorn5](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/322EDQUnicorn5.png)
 
 Once these files are modified; you need to upload them into your sandbox instance:
 * If your cloud server has the Auto-Upload option active, save all files and all new cartridges are going to be uploaded to your sandbox instance.
 * If you want to upload manually from Eclipse
-1.	Click the cloud server icon ![cloudServerIcon](https://github.com/JoseCastilloExperian/edqCommerceCloud/blob/master/EDQ%20Cartridge%20Manual%20imgs/cloudServerIcon.png)
+1.	Click the cloud server icon ![cloudServerIcon](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/cloudServerIcon.png)
 2.	Choose the option **Upload Cartridges.**
 
-![uploadCartridges](https://github.com/JoseCastilloExperian/edqCommerceCloud/blob/master/EDQ%20Cartridge%20Manual%20imgs/uploadCartridges.png)
+![uploadCartridges](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/uploadCartridges.png)
 
 ### 3.3\. Testing
 For both (sitegenesis and storefront reference architecture) stores the testing touchpoints are the same.
@@ -234,30 +234,30 @@ For both (sitegenesis and storefront reference architecture) stores the testing 
 ####  3.3.1\. Email Validation
 In the create account page type down your email in the email input field and the email validation engine will verify your email once you lose focus on the email field, the email validation engine will start working letting you know if is a valid or an invalid email.
 
-![TestingEmail](https://github.com/JoseCastilloExperian/edqCommerceCloud/blob/master/EDQ%20Cartridge%20Manual%20imgs/331SFRAEmailView.png)
+![TestingEmail](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/331SFRAEmailView.png)
 
 ####  3.3.2\. Phone Validation
 In the create account page type down your phone and phone validation engine will verify your phone once you lose focus on the phone field, the phone validation engine will start working letting you know if is a valid or an invalid phone.
 
-![TestingPhone](https://github.com/JoseCastilloExperian/edqCommerceCloud/blob/master/EDQ%20Cartridge%20Manual%20imgs/332SFRAPhoneView.png)
+![TestingPhone](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/332SFRAPhoneView.png)
 
 ####  3.3.3\. Verification Engine
 Once your logged into your store go to you profile and add new address; type down an address in the address input fields and verification engine will verify and correct your address once you press the page form submitting button; verification engine will verify your address and will give you the correct address for it. 
 
-![TestingVerification](https://github.com/JoseCastilloExperian/edqCommerceCloud/blob/master/EDQ%20Cartridge%20Manual%20imgs/333SFRAVerificationView.png)
+![TestingVerification](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/333SFRAVerificationView.png)
 
 In case verification engine needs the user interaction to complete the address provided by the user; verification engine will provide an “confirm updated address” box to complete your address in real time; by typing down the address in the address input field, it will give you options with accurate addresses matching the address with the information provided by the user and finally by selecting one of the options it will autocomplete the addresses fields in the address form with correct and valid address and may continue with the store process.
 
-![TestingVerification2](https://github.com/JoseCastilloExperian/edqCommerceCloud/blob/master/EDQ%20Cartridge%20Manual%20imgs/333SFRAVerificationView2.png)
+![TestingVerification2](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/333SFRAVerificationView2.png)
 
 ####  3.3.4\. Global Intuitive
 Once your logged into your store go to you profile and add new address; start typing down an address in the address input field and global intuitive will display some options to match the address your typing down; select the correct address your typing down from the list above.
 
-![TestingGlobal](https://github.com/JoseCastilloExperian/edqCommerceCloud/blob/master/EDQ%20Cartridge%20Manual%20imgs/334SFRAGlobalView.png)
+![TestingGlobal](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/334SFRAGlobalView.png)
 
 And automatically global intuitive will fill the rest of the address fields in the form.
 
-![TestingGlobal2](https://github.com/JoseCastilloExperian/edqCommerceCloud/blob/master/EDQ%20Cartridge%20Manual%20imgs/334SFRAGlobalView2.png)
+![TestingGlobal2](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/334SFRAGlobalView2.png)
 
 ##  4\. Operations, Maintenance
 ### 4.1\. Availability
@@ -291,7 +291,7 @@ Once the EDQ SitePreferences are uploaded in the business manager; choose your s
    1. Production
    1. Development
 
-![EDQConfig](https://github.com/JoseCastilloExperian/edqCommerceCloud/blob/master/EDQ%20Cartridge%20Manual%20imgs/510EDQConfig.png)
+![EDQConfig](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/510EDQConfig.png)
 
 ### 5.3\. Storefront Functionality
 For each storefront touchpoint 
