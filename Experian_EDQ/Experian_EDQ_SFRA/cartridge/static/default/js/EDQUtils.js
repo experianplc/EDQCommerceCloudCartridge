@@ -400,9 +400,6 @@ function edqSetPhoneValidationConfiguration() {
  * Sets the configuation to use global intuitive
  */
 function edqSetGlobalIntuitiveConfiguration() {
-    if (document.getElementById(edqCountryLineSelector).value == "") {
-        document.getElementById(edqCountryLineSelector).value = "US";
-    }
     window.EdqConfig.GLOBAL_INTUITIVE_AUTH_TOKEN=edqAuthorizationToken;
     window.EdqConfig.GLOBAL_INTUITIVE_ISO3_COUNTRY=countryAlpha3(document.getElementById(edqCountryLineSelector).value);
     window.EdqConfig.GLOBAL_INTUITIVE_ELEMENT= document.getElementById(edqAddressLine1Selector);
@@ -428,22 +425,40 @@ function edqSetGlobalIntuitiveConfiguration() {
             elements: ['address.postalCode']
         },
     ];
-    if (document.querySelector('.shipping-content')) {
-        document.querySelector('.shipping-content').addEventListener("click", function() {
+}
+function setCheckoutFormEvents() {
+    if (document.getElementById(edqCountryLineSelector).value == "") {
+        document.getElementById(edqCountryLineSelector).value = "US";
+    }
+    if (document.querySelector('.shipment-selector-block')) {
+        document.querySelector('.shipment-selector-block').addEventListener("click", function() {
             setEdqInputSelectors('shipping');
             setEdqSelectSelectors('shipping');
+            removeMultipleEDQSuggestion();
             edqSetGlobalIntuitiveConfiguration();
             EDQ.address.globalIntuitive.activateValidation(document.getElementById('shippingAddressOne'));
         });
     }
-    if (document.querySelector('.payment-form')) {
-        document.querySelector('.payment-form').addEventListener("click", function() {
+    if (document.querySelector('.address-selector-block')) {
+        document.querySelector('.address-selector-block').addEventListener("click", function() {
             setEdqInputSelectors('billing');
             setEdqSelectSelectors('billing');
+            removeMultipleEDQSuggestion();
             edqSetGlobalIntuitiveConfiguration();
             EDQ.address.globalIntuitive.activateValidation(document.getElementById('billingAddressOne'));
         });
     }
+}
+/**
+ * BUG-108100
+ * Remove all edq-verification-suggestion-box that are created so we have only one box active.
+ * */
+function removeMultipleEDQSuggestion() {
+	var edqSuggestionBoxLength = document.querySelectorAll("#edq-verification-suggestion-box").length;
+	for (var i=0; i < edqSuggestionBoxLength; i++) {
+		var edqSuggestionBox = document.querySelector("#edq-verification-suggestion-box");
+		edqSuggestionBox.parentNode.removeChild(edqSuggestionBox);
+	}
 }
 /**
  * Verification Engine
@@ -451,7 +466,6 @@ function edqSetGlobalIntuitiveConfiguration() {
  */
 function edqValidateAddressCallBack() {
     var edqProWebResponse = document.querySelector('#form-submit');
-    // if (!edqProWebResponse.hasAttribute('edq-metadata')) { return; }
     if (edqProWebResponse.getAttribute('edq-metadata')) {
         var edqMetaDataResponse = JSON.parse(edqProWebResponse.getAttribute('edq-metadata'));
         document.getElementById(edqStateLineSelector).value = edqMetaDataResponse["State code"];
