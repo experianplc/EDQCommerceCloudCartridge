@@ -8,7 +8,7 @@ The EDQ Commerce Cloud cartridge verify address and validates phone and email da
 
 ##  2\. Component Overview
 ###  2.1\. Functional Overview
-The EDQ Commerce Cloud cartridge contains address verification with Pro Web and Global Intuitive, as well Global Phone Validate and Email Validate functionality. The sections below describe each of these workflows in more detail.
+The EDQ Commerce Cloud cartridge contains address verification with Pro Web - Address (Verification Engine) and Global Intuitive, as well Global Phone Validate and Email Validate functionality. The sections below describe each of these workflows in more detail.
 
 ####  2.1.1\. Email Validate
 Email Validation will check your email at the moment you finish typing in the email field box and once you lose focus on the email field the Email Validate will start working letting you know if is a valid or an invalid email.
