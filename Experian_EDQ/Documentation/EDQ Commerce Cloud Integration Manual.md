@@ -64,7 +64,7 @@ In case that your address needs to be corrected and does not match an address; P
 
 [For more information about Pro Web - Address (Verification Engine).](https://www.edq.com/documentation/apis/address-validate/soap/)
 
-![Verification SFRA View](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/213SFRAView2.png)
+![Verification SFRA View 2](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/213SFRAView2.png)
 
 To configure Pro Web - Address (Verification Engine), you need to access the Business Manager and go to EDQ Config **(`Select Site > Merchant Tools > Site Preferences > Custom Site Preferences Group > EDQ Config`)** and look for the verification engine options.
 
@@ -84,7 +84,7 @@ Global Intuitive will correct your address in real time while your typing down y
 
 Global Intuitive will automatically fill the rest of the address fields in the form.
 
-![Global Intuitive SFRA View](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/214SFRAView2.png)
+![Global Intuitive SFRA View 2](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/214SFRAView2.png)
 
 [For more information about Global Intuitive.](https://www.edq.com/documentation/apis/address-validate/global-intuitive/)
 
