@@ -158,66 +158,65 @@ To check the imported site preferences go to **Administration > Site Development
 ###  3.2 Custom Code
 ####  3.2.1\. Sitegenesis JavaScript Controller
 **EDQHeaders integration**
-1.	Go to your SiteGenesis core cartridge and open the template located in **templates > default > components > header > htmlhead_UI.isml**
-2.	Copy the next header line at the end of the file **“htmlhead_UI.isml”** file `<isinclude template="EDQ/EDQHeaders" />`
+1.	Go to Experian_EDQ_SGJC cartridge and open the template located in **templates > default > components > header > htmlhead_UI.isml**
+2.	The header line has been added at the end of the file **“htmlhead_UI.isml”** file `<isinclude template="EDQ/EDQHeaders" />`
 
 ![SGJC EDQ Headers](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/321EDQHeaders.png)
 
 **EDQUnicorn integration**
-1.	Go to SiteGenesis core cartridge and open the template located in **templates > default > account > addressbook > addressdetails.isml**
-2.	Copy the next line <isinclude template="EDQ/EDQUnicorn" /> before the buttons definition in **“addressdetails.isml”** file.
+1.	Go to Experian_EDQ_SGJC cartridge and open the template located in **templates > default > account > addressbook > addressdetails.isml**
+2.	The <isinclude template="EDQ/EDQUnicorn" /> line has been added before the buttons definition in **“addressdetails.isml”** file.
 
 ![SGJC EDQ Unicorn 1](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/321EDQUnicorn1.png)
 
-3.	Go to SiteGenesis core cartridge and open the template located in **templates > default > account > user > registration.isml**
-4.	Copy the next line `<isinclude template="EDQ/EDQUnicorn" />` before the ending tag `</isdecorate>` in **“registration.isml”** file.
+3.	Go to Experian_EDQ_SGJC cartridge and open the template located in **templates > default > account > user > registration.isml**
+4.	The `<isinclude template="EDQ/EDQUnicorn" />` line has been added before the ending tag `</isdecorate>` in **“registration.isml”** file.
 
 ![SGJC EDQ Unicorn 2](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/321EDQUnicorn2.png)
 
-5.	Go to SiteGenesis core cartridge and open the template located in **templates > default > checkout > billing > billing.isml**
-6.	Copy the next line `<isinclude template="EDQ/EDQUnicorn" />` before the ending tag `</isdecorate>` in **“billing.isml”** file.
+5.	Go to Experian_EDQ_SGJC cartridge and open the template located in **templates > default > checkout > billing > billing.isml**
+6.	The `<isinclude template="EDQ/EDQUnicorn" />` line has been added before the ending tag `</isdecorate>` in **“billing.isml”** file.
 
 ![SGJC EDQ Unicorn 3](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/321EDQUnicorn3.png)
 
-7.	Go to SiteGenesis core cartridge and open the template located in **templates > default > checkout > shipping > singleshipping.isml**
-8.	Copy the next line `<isinclude template="EDQ/EDQUnicorn" />` before the ending tag `</isdecorate>` in **“singleshipping.isml”** file.
+7.	Go to Experian_EDQ_SGJC cartridge and open the template located in **templates > default > checkout > shipping > singleshipping.isml**
+8.	The `<isinclude template="EDQ/EDQUnicorn" />` line has been added before the ending tag `</isdecorate>` in **“singleshipping.isml”** file.
 
 ![SGJC EDQ Unicorn 4](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/321EDQUnicorn4.png)
 
 ####  3.2.2\. Storefront Reference Architecture
 **EDQHeaders integration**
-1.	Go to Storefront base cartridge and open the template located in **templates > default > common > htmlHead.isml.**
-2.	Copy the next header line at the end of the file **“htmlHead.isml”** file `<isinclude template="EDQ/EDQHeaders" />`
+1.	Go to Experian_EDQ_SFRA cartridge and open the template located in **templates > default > common > htmlHead.isml.**
+2. The `<isinclude template="EDQ/EDQHeaders" />` line has been added at the end of **“htmlHead.isml”** file.
 
 ![SFRA EDQ Headers](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/322EDQHeaders.png)
 
 **EDQUnicorn integration**
-1.	Go to Storefront base cartridge and open the template located in **templates > default > account > components > registerForm.isml**
-2.	Copy the next line at the end of **“registerForm.isml”** file `<isinclude template="EDQ/EDQUnicorn" />`
-3.	In the button section add an attribute **“name”** with the label **“save”** to the submit button.
+1.	Go to Experian_EDQ_SFRA cartridge and open the template located in **templates > default > account > components > registerForm.isml**
+2.	The **“registerForm.isml”** line has been added at the end of file `<isinclude template="EDQ/EDQUnicorn" />`
+3.	In the button section the attribute **“name”** with the label **“save”** to the submit button has been added.
 
 ![SFRA EDQ Unicorn 1](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/322EDQUnicorn1.png)
 
-4.	Go to Storefront base cartridge and open the template located in **templates > default > account > addressForm.isml**
-5.	Copy the next line in **“addressForm.isml”** file `<isinclude template="EDQ/EDQUnicorn" />` after the submit button as shown below.
-6.	In the button section add an attribute **“name”** with the label **“save”** to the submit button.
+4.	Go to Experian_EDQ_SFRA cartridge and open the template located in **templates > default > account > addressForm.isml**
+5.	In **“addressForm.isml”** file the `<isinclude template="EDQ/EDQUnicorn" />` has been added after the submit button as shown below.
+6.	In the button section the attribute **“name”** with the label **“save”** has been added to the submit button.
 
 ![SFRA EDQ Unicorn 2](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/322EDQUnicorn2.png)
 
-7.	Go to Storefront base cartridge and open the template located in **templates > default > checkout > checkout.isml**
-8.	Copy the next line `<isinclude template="EDQ/EDQUnicorn" />` after the checkout workflow buttons in **“checkout.isml”** file.
+7.	Go to Experian_EDQ_SFRA cartridge and open the template located in **templates > default > checkout > checkout.isml**
+8.	The `<isinclude template="EDQ/EDQUnicorn" />` line has been added after the checkout workflow buttons in **“checkout.isml”** file.
 
 ![SFRA EDQ Unicorn 3](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/322EDQUnicorn3.png)
 
-9.	In the `<!-- Step 1: Shipping -->` section add an attribute `id` with the label `editShipping` to the html span tag.
+9.	In the `<!-- Step 1: Shipping -->` section the attribute `id` with the label `editShipping` has been added to the html span tag.
 
 ![SFRA EDQ Unicorn 4](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/322EDQUnicorn4.png)
 
-10.	In the `<!-- Step 2: Payment and Billing-->` section add an attribute `id` with the label `editPayment` to the html span tag.
+10.	In the `<!-- Step 2: Payment and Billing-->` section the attribute `id` with the label `editPayment` has been added to the html span tag.
 
 ![SFRA EDQ Unicorn 5](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/322EDQUnicorn5.png)
 
-Once these files are modified; you need to upload them into your sandbox instance:
 * If your cloud server has the Auto-Upload option active, save all files and all new cartridges are going to be uploaded to your sandbox instance.
 * If you want to upload manually from Eclipse
 1.	Click the cloud server icon ![Cloud Server Icon](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/cloudServerIcon.png)
