@@ -13,7 +13,7 @@ var edqAddressLine1Selector,
     edqValidateEmail,
     edqValidatePhone,
     edqAuthorizationToken,
-    edqVerificationEngineAddressLayout,
+    edqProWebAddressLayout,
     originalButtonDisplayNextPlaceOrderText,
     originalButtonDisplayPlaceOrderText,
     originalButtonDisplayNextPaymentText,
@@ -272,61 +272,61 @@ countryDict.push({ key: "AF", value: "AFG" },
     { key: "YE", value: "YEM" },
     { key: "ZM", value: "ZMB" },
     { key: "ZW", value: "ZWE" });
-function countryAlpha3(vAlphaTwo) { 
+function countryAlpha3(incomingCountryIso2) { 
     var iso2ToIso3CountryDict;
-    countryDict.forEach((val) => iso2ToIso3CountryDict = (vAlphaTwo.match(val.key)) ? val.value : iso2ToIso3CountryDict);
-    return (iso2ToIso3CountryDict) ? iso2ToIso3CountryDict : vDefaultCountry;
+    countryDict.forEach((val) => iso2ToIso3CountryDict = (incomingCountryIso2.match(val.key)) ? val.value : iso2ToIso3CountryDict);
+    return iso2ToIso3CountryDict || vDefaultCountry;
 }
 /***
  * Set values for EDQ variables
  ***/
-function setEdqInputSelectors (InputSelectorContentLocation = '') {
+function setEdqInputSelectors(InputSelectorContentLocation = '') {
     for (var i = 0; i < inputSelector.length; i++) {
         /**
-         * This InputSelectorContentLocation variable is intended to specify the input address fields that we requiere in case we are using 
+         * This InputSelectorContentLocation variable is intended to specify the input address fields that we require in case we are using 
          * some of these products more than once in a single page, case for checkout page since it has the shipping/payment address on the same page; 
          * if it has blank we won't be needing to set that variable with a specific value and can take the address values from the page.
          */
         if ((inputSelector[i].id.toLowerCase().match(InputSelectorContentLocation)) || (InputSelectorContentLocation == '')) {
-            edqAddressLine1Selector = (inputSelector[i].id.toLowerCase().match(/address1|addressone/)) ? inputSelector[i].id : edqAddressLine1Selector;
-            edqAddressLine2Selector = (inputSelector[i].id.toLowerCase().match(/address2|addresstwo/)) ? inputSelector[i].id : edqAddressLine2Selector;
-            edqCityLineSelector = (inputSelector[i].id.toLowerCase().match(/city/)) ? inputSelector[i].id : edqCityLineSelector;
-            edqPostalLineSelector = (inputSelector[i].id.toLowerCase().match(/zipcode/)) ? inputSelector[i].id : edqPostalLineSelector;
+            edqAddressLine1Selector = (inputSelector[i].id.toLowerCase().match(/address1|addressone/)) ? inputSelector[i] : edqAddressLine1Selector;
+            edqAddressLine2Selector = (inputSelector[i].id.toLowerCase().match(/address2|addresstwo/)) ? inputSelector[i] : edqAddressLine2Selector;
+            edqCityLineSelector = (inputSelector[i].id.toLowerCase().match(/city/)) ? inputSelector[i] : edqCityLineSelector;
+            edqPostalLineSelector = (inputSelector[i].id.toLowerCase().match(/zipcode/)) ? inputSelector[i] : edqPostalLineSelector;
         }
         if (inputSelector[i].id.toLowerCase().match(/phone/)) { edqPhoneLineSelectors.push(inputSelector[i]); }
-        edqEmailLineSelector = ((inputSelector[i].id == 'registration-form-email') || (inputSelector[i].id == 'email')) ? inputSelector[i].id : edqEmailLineSelector;
+        edqEmailLineSelector = ((inputSelector[i].id == 'registration-form-email') || (inputSelector[i].id == 'email')) ? inputSelector[i] : edqEmailLineSelector;
     }
 }
-function setEdqSelectSelectors (InputSelectorContentLocation = '') {
+function setEdqSelectSelectors(InputSelectorContentLocation = '') {
     for (var i = 0; i < selectSelector.length; i++) {
         /**
-         * This InputSelectorContentLocation variable is intended to specify the input address fields that we requiere in case we are using 
+         * This InputSelectorContentLocation variable is intended to specify the input address fields that we require in case we are using 
          * some of these products more than once in a single page, case for checkout page since it has the shipping/payment address on the same page; 
          * if it has blank we won't be needing to set that variable with a specific value and can take the address values from the page.
          */
         if ((selectSelector[i].id.toLowerCase().match(InputSelectorContentLocation)) || (InputSelectorContentLocation == '')) {
-            edqStateLineSelector = (selectSelector[i].id.toLowerCase().match(/state/)) ? selectSelector[i].id : edqStateLineSelector;
-            edqCountryLineSelector = (selectSelector[i].id.toLowerCase().match(/country/)) ? selectSelector[i].id : edqCountryLineSelector;
+            edqStateLineSelector = (selectSelector[i].id.toLowerCase().match(/state/)) ? selectSelector[i] : edqStateLineSelector;
+            edqCountryLineSelector = (selectSelector[i].id.toLowerCase().match(/country/)) ? selectSelector[i] : edqCountryLineSelector;
         }
     }
 }
 for (var i = 0; i < buttonSelector.length; i++) {
     /**
-     * This part is intended to find out the submit button for the checkout page; in this page there are 3 submitn buttons with the label name=submit; 
-     * so for this page the only way to distinguish them is for the label value; this case is just for inbitial load.
+     * This part is intended to find out the submit button for the checkout page; in this page there are 3 submit buttons with the label name=submit; 
+     * so for this page the only way to distinguish them is for the label value; this case is just for initial load.
      */
     if (window.location.href.toLowerCase().match(/checkout/)) {
         if (buttonSelector[i].hasAttribute('value')) {
-            edqCurrentSubmitButtonSelector = (buttonSelector[i].value.toLowerCase().match(/shipping/)) ? '[value=submit-shipping]' : edqCurrentSubmitButtonSelector;
+        	edqCurrentSubmitButtonSelector = (buttonSelector[i].value.toLowerCase().match(/shipping/)) ? buttonSelector[i] : edqCurrentSubmitButtonSelector;
             buttonSelector[i].addEventListener("mouseover", edqEmailPhoneValidationCallback);
         }
     } else {
-        edqCurrentSubmitButtonSelector = (buttonSelector[i].name.toLowerCase().match(/save/)) ? '[name=save]' : edqCurrentSubmitButtonSelector;
+        edqCurrentSubmitButtonSelector = (buttonSelector[i].name.toLowerCase().match(/save/)) ? buttonSelector[i] : edqCurrentSubmitButtonSelector;
         buttonSelector[i].addEventListener("mouseover", edqEmailPhoneValidationCallback);
     }
 }
 /**
- * This window.location is intended to specify the input address fields that we requiere when we get to the checkout page for initial load.
+ * This window.location is intended to specify the input address fields that we require when we get to the checkout page for initial load.
  */
 if (window.location.href.toLowerCase().match(/checkout/)) {
     setEdqInputSelectors('shipping');
@@ -335,14 +335,14 @@ if (window.location.href.toLowerCase().match(/checkout/)) {
     setEdqInputSelectors();
     setEdqSelectSelectors();
 }
-if (document.getElementById(edqEmailLineSelector)) { document.getElementById(edqEmailLineSelector).addEventListener("mouseover", function() {enableButtonDisable(false);}); }
+if (edqEmailLineSelector) { edqEmailLineSelector.addEventListener("mouseover", function() {enableButtonDisable(false);}); }
 if (edqPhoneLineSelectors) { edqPhoneLineSelectors.forEach(phoneSelector => { phoneSelector.addEventListener("mouseover", function() {enableButtonDisable(false);}) }); }
 function edqEmailPhoneValidationCallback() {
     if ((edqEmailEnable) && (edqEmailLineSelector)) { edqEmailValidationCallback(); }
     if ((edqPhoneEnable) && (edqPhoneLineSelectors)) { edqPhoneValidationCallback(); }
 }
 function enableButtonDisable(buttonStatus) { 
-    document.querySelector(edqCurrentSubmitButtonSelector).disabled = buttonStatus;
+	edqCurrentSubmitButtonSelector.disabled = buttonStatus;
     if (document.getElementById('form-submit')) { document.getElementById('form-submit').disabled = buttonStatus; }
 }
 function edqPhoneValidationCallback() {
@@ -363,9 +363,8 @@ function edqPhoneValidationCallback() {
 function edqEmailValidationCallback() {
     /* TASK:101729 Allow users to continue with invalid email or phone */
     if (edqValidateEmail) {
-        var edqSelectorResponse = document.getElementById(edqEmailLineSelector);
-        if (edqSelectorResponse.hasAttribute('edq-metadata')) {
-            var edqEmailResponse = JSON.parse(edqSelectorResponse.getAttribute('edq-metadata'));
+        if (edqEmailLineSelector.hasAttribute('edq-metadata')) {
+            var edqEmailResponse = JSON.parse(edqEmailLineSelector.getAttribute('edq-metadata'));
             if ((edqEmailResponse["Certainty"] == 'verified') || (edqEmailResponse["Certainty"] == 'unknown')) {
                 enableButtonDisable(false);
             } else {
@@ -376,13 +375,13 @@ function edqEmailValidationCallback() {
 }
 /**
  * Email validation
- * Sets the configuation to use email validation
+ * Sets the configuration to use email validation
  */
 function edqSetEmailValidationConfiguration() {
     window.EdqConfig.EMAIL_VALIDATE_AUTH_TOKEN=edqAuthorizationToken;
     window.EdqConfig.EMAIL_TIMEOUT=15000;
     window.EdqConfig.EMAIL_ELEMENTS=[
-        document.getElementById(edqEmailLineSelector)
+        edqEmailLineSelector
     ];
 }
 /**
@@ -401,34 +400,34 @@ function edqSetPhoneValidationConfiguration() {
  */
 function edqSetGlobalIntuitiveConfiguration() {
     window.EdqConfig.GLOBAL_INTUITIVE_AUTH_TOKEN=edqAuthorizationToken;
-    window.EdqConfig.GLOBAL_INTUITIVE_ISO3_COUNTRY=countryAlpha3(document.getElementById(edqCountryLineSelector).value);
-    window.EdqConfig.GLOBAL_INTUITIVE_ELEMENT= document.getElementById(edqAddressLine1Selector);
+    window.EdqConfig.GLOBAL_INTUITIVE_ISO3_COUNTRY=countryAlpha3(edqCountryLineSelector.value);
+    window.EdqConfig.GLOBAL_INTUITIVE_ELEMENT= edqAddressLine1Selector;
     window.EdqConfig.GLOBAL_INTUITIVE_MAPPING= [
         {
-            field: document.getElementById(edqAddressLine1Selector),
+            field: edqAddressLine1Selector,
             elements: ['address.addressLine1']
         },
         {
-            field: document.getElementById(edqAddressLine2Selector),
+            field: edqAddressLine2Selector,
             elements: ['address.addressLine2']
         },
         {
-            field: document.getElementById(edqCityLineSelector),
+            field: edqCityLineSelector,
             elements: ['address.locality']
         },
         {
-            field: document.getElementById(edqStateLineSelector),
+            field: edqStateLineSelector,
             elements: ['address.province']
         },
         {
-            field: document.getElementById(edqPostalLineSelector),
+            field: edqPostalLineSelector,
             elements: ['address.postalCode']
         },
     ];
 }
 function setCheckoutFormEvents() {
-    if (document.getElementById(edqCountryLineSelector).value == "") {
-        document.getElementById(edqCountryLineSelector).value = "US";
+    if (edqCountryLineSelector.value === "") {
+        edqCountryLineSelector.value = "US";
     }
     if (document.querySelector('.shipment-selector-block')) {
         document.querySelector('.shipment-selector-block').addEventListener("click", function() {
@@ -461,61 +460,62 @@ function removeMultipleEDQSuggestion() {
 	}
 }
 /**
- * Verification Engine
- * Sets the configuation to use verification engine
+ * Pro Web - Address (Verification Engine)
+ * Sets the configuration to use Pro Web - Address (Verification Engine)
  */
 function edqValidateAddressCallBack() {
     var edqProWebResponse = document.querySelector('#form-submit');
     if (edqProWebResponse.getAttribute('edq-metadata')) {
         var edqMetaDataResponse = JSON.parse(edqProWebResponse.getAttribute('edq-metadata'));
-        document.getElementById(edqStateLineSelector).value = edqMetaDataResponse["State code"];
-        document.querySelector('#form-submit').removeAttribute('edq-metadata');
+        edqStateLineSelector.value = edqMetaDataResponse["State code"];
+        //document.querySelector('#form-submit').removeAttribute('edq-metadata');
     }
-    document.querySelector(edqCurrentSubmitButtonSelector).style.display = "inline-block";
+    edqCurrentSubmitButtonSelector.style.display = "inline-block";
     document.querySelector('#form-submit').style.display = "none";
     if ((pageCheckoutStage) && (pageCheckoutStage.match(/shipping/))) {
         pageCheckoutStage = 'payment';
         var edqLastButton = edqCurrentSubmitButtonSelector;
-        document.querySelector(edqCurrentSubmitButtonSelector).style.display = "none";
-        setButtonConfigurationCallback('billing', '[value=submit-payment]', originalButtonDisplayNextPlaceOrderText);
-        edqSetVerificationEngineConfiguration();
-        document.querySelector(edqLastButton).click();
+        edqCurrentSubmitButtonSelector.style.display = "none";
+        setButtonConfigurationCallback('billing', 'button[value=submit-payment]', originalButtonDisplayNextPlaceOrderText);
+        edqSetProWebConfiguration();
+        edqLastButton.click();
     } else if ((pageCheckoutStage) && (pageCheckoutStage.match(/payment/))) {
         pageCheckoutStage = '';
         var edqLastButton = edqCurrentSubmitButtonSelector;
-        document.querySelector(edqCurrentSubmitButtonSelector).style.display = "none";
-        setButtonConfigurationCallback('', '[value=place-order]', originalButtonDisplayPlaceOrderText)
-        document.querySelector(edqLastButton).click();
-    } else { document.querySelector(edqCurrentSubmitButtonSelector).click(); }
+        edqCurrentSubmitButtonSelector.style.display = "none";
+        setButtonConfigurationCallback('', 'button[value=place-order]', originalButtonDisplayPlaceOrderText)
+        edqLastButton.click();
+    } else { edqCurrentSubmitButtonSelector.click(); }
 }
 function setButtonConfigurationCallback(selectorCurrentLocation, currentSubmitButton, currentSubmitButtonDisplayText) {
+	var edqProWebSubmitButton = document.querySelector('#form-submit'); 
 	setEdqInputSelectors(selectorCurrentLocation);
     setEdqSelectSelectors(selectorCurrentLocation);
-    edqCurrentSubmitButtonSelector = currentSubmitButton;
-    document.querySelector('#form-submit').innerText = currentSubmitButtonDisplayText;
-    document.querySelector('#form-submit').style.display = "inline-block";
-    document.querySelector(edqCurrentSubmitButtonSelector).style.display = "none";
+    edqCurrentSubmitButtonSelector = document.querySelector(currentSubmitButton);
+    edqProWebSubmitButton.innerText = currentSubmitButtonDisplayText;
+    edqProWebSubmitButton.style.display = "inline-block";
+    edqCurrentSubmitButtonSelector.style.display = "none";
 }
-function edqSetVerificationEngineConfiguration() {
+function edqSetProWebConfiguration() {
     /** TASK:101727 Potential misconfiguration of checkout process 
      * This elements uses mousedown **/
     if (document.getElementById("editShipping")) {
         document.getElementById("editShipping").addEventListener("mousedown", function() {
             pageCheckoutStage = 'shipping';
-            setButtonConfigurationCallback('shipping', '[value=submit-payment]', originalButtonDisplayNextPaymentText);
-            edqSetVerificationEngineConfiguration();
+            setButtonConfigurationCallback('shipping', 'button[value=submit-payment]', originalButtonDisplayNextPaymentText);
+            edqSetProWebConfiguration();
         });
     }
     if (document.getElementById("editPayment")) {
         document.getElementById("editPayment").addEventListener("mousedown", function() {
             pageCheckoutStage = 'payment';
-            setButtonConfigurationCallback('billing', '[value=place-order]', originalButtonDisplayNextPlaceOrderText);
-            edqSetVerificationEngineConfiguration();
+            setButtonConfigurationCallback('billing', 'button[value=place-order]', originalButtonDisplayNextPlaceOrderText);
+            edqSetProWebConfiguration();
         });
     }
     /** This is intended to hide the form button just to show verification engine button in the form **/
-    if (document.querySelector(edqCurrentSubmitButtonSelector)) {
-        document.querySelector(edqCurrentSubmitButtonSelector).style.display = "none";
+    if (edqCurrentSubmitButtonSelector) {
+        edqCurrentSubmitButtonSelector.style.display = "none";
     }
     document.getElementById('form-submit').addEventListener("mouseover", edqEmailPhoneValidationCallback);
     window.EdqConfig.PRO_WEB_TIMEOUT= 3500;
@@ -526,32 +526,32 @@ function edqSetVerificationEngineConfiguration() {
             element: document.querySelector('#form-submit'),
         }
     ];
-    window.EdqConfig.PRO_WEB_LAYOUT=edqVerificationEngineAddressLayout;
-    window.EdqConfig.PRO_WEB_COUNTRY=countryAlpha3(document.getElementById(edqCountryLineSelector).value);
+    window.EdqConfig.PRO_WEB_LAYOUT=edqProWebAddressLayout;
+    window.EdqConfig.PRO_WEB_COUNTRY=countryAlpha3(edqCountryLineSelector.value);
     window.EdqConfig.PRO_WEB_CALLBACK='edqValidateAddressCallBack()';
     window.EdqConfig.PRO_WEB_MAPPING=[
         {
-            field: document.getElementById(edqAddressLine1Selector),
+            field: edqAddressLine1Selector,
             elements: ['Formatted Address 2'],
             modalFieldSelector:'#interaction-address--original-address-line-one',
         },
         {
-            field: document.getElementById(edqAddressLine2Selector),
+            field: edqAddressLine2Selector,
             elements: ['AddressLine2'],
             modalFieldSelector:'#interaction-address--original-address-line-two',
         },
         {
-            field: document.getElementById(edqCityLineSelector),
+            field: edqCityLineSelector,
             elements: ['City name'],
             modalFieldSelector:'#interaction-address--original-locality',
         },
         {
-            field: document.getElementById(edqStateLineSelector),
+            field: edqStateLineSelector,
             elements: ['State code'],
             modalFieldSelector:'#interaction-address--original-province',
         },
         {
-            field: document.getElementById(edqPostalLineSelector),
+            field: edqPostalLineSelector,
             separator: '-',
             elements: ['ZIP Code', '+4 code'],
             modalFieldSelector:'#interaction-address--original-postal-code',
