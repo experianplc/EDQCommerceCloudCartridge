@@ -1,10 +1,10 @@
 const vDefaultCountry = 'USA';
-var edqAddressLine1Selector,
-    edqAddressLine2Selector,
-    edqCityLineSelector,
-    edqPostalLineSelector,
-    edqStateLineSelector,
-    edqCountryLineSelector,
+var edqAddressLine1Id,
+    edqAddressLine2Id,
+    edqCityLineId,
+    edqPostalLineId,
+    edqStateLineId,
+    edqCountryLineId,
     edqEmailLineSelector,
     edqPhoneLineSelectors = [],
     edqCurrentSubmitButtonSelector,
@@ -280,40 +280,38 @@ function countryAlpha3(incomingCountryIso2) {
 /***
  * Set values for EDQ variables
  ***/
-function setEdqInputSelectors(InputSelectorContentLocation = '') {
+function setEdqInputSelectors(stageContentLocation = '') {
     for (var i = 0; i < inputSelector.length; i++) {
-        /**
-         * This InputSelectorContentLocation variable is intended to specify the input address fields that we require in case we are using 
-         * some of these products more than once in a single page, case for checkout page since it has the shipping/payment address on the same page; 
-         * if it has blank we won't be needing to set that variable with a specific value and can take the address values from the page.
+        /** In SFRA the checkout web page contains both billing and shipping address input fields in a single page controlled by JavaScripts to hide/show elements.
+         * The stageContentLocation variable is intended to specify the stage(billing/shipping) of the checkout web page to set the proper input address fields 
+         * that we require to set them for billing or shipping address fields, since is they're set in the same web page we need to change its value to use them in the next step.
          */
-        if ((inputSelector[i].id.toLowerCase().match(InputSelectorContentLocation)) || (InputSelectorContentLocation == '')) {
-            edqAddressLine1Selector = (inputSelector[i].id.toLowerCase().match(/address1|addressone/)) ? inputSelector[i] : edqAddressLine1Selector;
-            edqAddressLine2Selector = (inputSelector[i].id.toLowerCase().match(/address2|addresstwo/)) ? inputSelector[i] : edqAddressLine2Selector;
-            edqCityLineSelector = (inputSelector[i].id.toLowerCase().match(/city/)) ? inputSelector[i] : edqCityLineSelector;
-            edqPostalLineSelector = (inputSelector[i].id.toLowerCase().match(/zipcode/)) ? inputSelector[i] : edqPostalLineSelector;
+    	if ((inputSelector[i].id.toLowerCase().match(stageContentLocation)) || (stageContentLocation == '')) {
+    		edqAddressLine1Id = (inputSelector[i].id.toLowerCase().match(/address1|addressone/)) ? inputSelector[i].id : edqAddressLine1Id;
+    		edqAddressLine2Id = (inputSelector[i].id.toLowerCase().match(/address2|addresstwo/)) ? inputSelector[i].id : edqAddressLine2Id;
+            edqCityLineId = (inputSelector[i].id.toLowerCase().match(/city/)) ? inputSelector[i].id : edqCityLineId;
+            edqPostalLineId = (inputSelector[i].id.toLowerCase().match(/zipcode/)) ? inputSelector[i].id : edqPostalLineId;
         }
         if (inputSelector[i].id.toLowerCase().match(/phone/)) { edqPhoneLineSelectors.push(inputSelector[i]); }
         edqEmailLineSelector = ((inputSelector[i].id == 'registration-form-email') || (inputSelector[i].id == 'email')) ? inputSelector[i] : edqEmailLineSelector;
     }
 }
-function setEdqSelectSelectors(InputSelectorContentLocation = '') {
+function setEdqSelectSelectors(stageContentLocation = '') {
     for (var i = 0; i < selectSelector.length; i++) {
-        /**
-         * This InputSelectorContentLocation variable is intended to specify the input address fields that we require in case we are using 
-         * some of these products more than once in a single page, case for checkout page since it has the shipping/payment address on the same page; 
-         * if it has blank we won't be needing to set that variable with a specific value and can take the address values from the page.
+    	/** In SFRA the checkout web page contains both billing and shipping address input fields in a single page controlled by JavaScripts to hide/show elements.
+         * The stageContentLocation variable is intended to specify the stage(billing/shipping) of the checkout web page to set the proper input address fields 
+         * that we require to set them for billing or shipping address fields, since is they're set in the same web page we need to change its value to use them in the next step.
          */
-        if ((selectSelector[i].id.toLowerCase().match(InputSelectorContentLocation)) || (InputSelectorContentLocation == '')) {
-            edqStateLineSelector = (selectSelector[i].id.toLowerCase().match(/state/)) ? selectSelector[i] : edqStateLineSelector;
-            edqCountryLineSelector = (selectSelector[i].id.toLowerCase().match(/country/)) ? selectSelector[i] : edqCountryLineSelector;
+        if ((selectSelector[i].id.toLowerCase().match(stageContentLocation)) || (stageContentLocation == '')) {
+        	edqStateLineId = (selectSelector[i].id.toLowerCase().match(/state/)) ? selectSelector[i].id : edqStateLineId;
+        	edqCountryLineId = (selectSelector[i].id.toLowerCase().match(/country/)) ? selectSelector[i].id : edqCountryLineId;
         }
     }
 }
 for (var i = 0; i < buttonSelector.length; i++) {
-    /**
-     * This part is intended to find out the submit button for the checkout page; in this page there are 3 submit buttons with the label name=submit; 
-     * so for this page the only way to distinguish them is for the label value; this case is just for initial load.
+    /** In SFRA the checkout web page contains both billing and shipping process so we have to set the button we need so 
+     * this part is intended to find out the submit button for the checkout web page; in this page there are 3 submit buttons 
+     * with the label name=submit; so for this page the only way to distinguish them is for the label value; this case is just for initial load.
      */
     if (window.location.href.toLowerCase().match(/checkout/)) {
         if (buttonSelector[i].hasAttribute('value')) {
@@ -326,7 +324,7 @@ for (var i = 0; i < buttonSelector.length; i++) {
     }
 }
 /**
- * This window.location is intended to specify the input address fields that we require when we get to the checkout page for initial load.
+ * This window.location is intended to specify the input address fields that we require when we get to the checkout web page for initial load.
  */
 if (window.location.href.toLowerCase().match(/checkout/)) {
     setEdqInputSelectors('shipping');
@@ -335,47 +333,54 @@ if (window.location.href.toLowerCase().match(/checkout/)) {
     setEdqInputSelectors();
     setEdqSelectSelectors();
 }
-if (edqEmailLineSelector) { edqEmailLineSelector.addEventListener("mouseover", function() {enableButtonDisable(false);}); }
-if (edqPhoneLineSelectors) { edqPhoneLineSelectors.forEach(phoneSelector => { phoneSelector.addEventListener("mouseover", function() {enableButtonDisable(false);}) }); }
+if (edqEmailLineSelector) { edqEmailLineSelector.addEventListener("mouseover", function() {enableButtonDisable(edqCurrentSubmitButtonSelector, false);}); }
+if (edqPhoneLineSelectors) { edqPhoneLineSelectors.forEach(phoneSelector => { phoneSelector.addEventListener("mouseover", function() {enableButtonDisable(edqCurrentSubmitButtonSelector, false);}) }); }
 function edqEmailPhoneValidationCallback() {
     if ((edqEmailEnable) && (edqEmailLineSelector)) { edqEmailValidationCallback(); }
     if ((edqPhoneEnable) && (edqPhoneLineSelectors)) { edqPhoneValidationCallback(); }
 }
-function enableButtonDisable(buttonStatus) { 
-	edqCurrentSubmitButtonSelector.disabled = buttonStatus;
+/**
+ * In the Business Manager there's an option that sets if the email and/or email will allow the user to prevent the 
+ * user going to the next page; so this function will set the button an event listener to catch the result if the 
+ * configuration is set to true; button is disabled when the mouse is over the button and disabled when you focus 
+ * on the email or phone fields. */
+function enableButtonDisable(buttonToDisable, buttonStatus) {
+	buttonToDisable.disabled = buttonStatus;
     if (document.getElementById('form-submit')) { document.getElementById('form-submit').disabled = buttonStatus; }
 }
 function edqPhoneValidationCallback() {
-    /* TASK:101729 Allow users to continue with invalid email or phone */
+    /** TASK:101729 Allow users to continue with invalid phone; 
+     * based on the Business Manager configuration we can set if we want to prevent the user to go through with an invalid phone. */
     if (edqValidatePhone) {
         edqPhoneLineSelectors.forEach(phoneSelector => {
             if (phoneSelector.hasAttribute('edq-metadata')) {
                 var edqPhoneResponse = JSON.parse(phoneSelector.getAttribute('edq-metadata'));
                 if (edqPhoneResponse["Certainty"] == 'Verified') {
-                    enableButtonDisable(false);
+                    enableButtonDisable(edqCurrentSubmitButtonSelector, false);
                 } else {
-                    enableButtonDisable(true);
+                    enableButtonDisable(edqCurrentSubmitButtonSelector, true);
                 }
             }
         });
     }
 }
 function edqEmailValidationCallback() {
-    /* TASK:101729 Allow users to continue with invalid email or phone */
+	/** TASK:101729 Allow users to continue with invalid email; 
+     * based on the Business Manager configuration we can set if we want to prevent the user to go through with an invalid phone. */
     if (edqValidateEmail) {
         if (edqEmailLineSelector.hasAttribute('edq-metadata')) {
             var edqEmailResponse = JSON.parse(edqEmailLineSelector.getAttribute('edq-metadata'));
             if ((edqEmailResponse["Certainty"] == 'verified') || (edqEmailResponse["Certainty"] == 'unknown')) {
-                enableButtonDisable(false);
+                enableButtonDisable(edqCurrentSubmitButtonSelector, false);
             } else {
-                enableButtonDisable(true);
+                enableButtonDisable(edqCurrentSubmitButtonSelector, true);
             } 
         }
     }
 }
 /**
  * Email validation
- * Sets the configuration to use email validation
+ * Sets the configuration to use Email Validate
  */
 function edqSetEmailValidationConfiguration() {
     window.EdqConfig.EMAIL_VALIDATE_AUTH_TOKEN=edqAuthorizationToken;
@@ -386,7 +391,7 @@ function edqSetEmailValidationConfiguration() {
 }
 /**
  * Phone validation
- * Sets the configuation to use phone validation
+ * Sets the configuration to use Global Phone Validate
  */
 function edqSetPhoneValidationConfiguration() {
     window.EdqConfig.GLOBAL_PHONE_VALIDATE_AUTH_TOKEN=edqAuthorizationToken;
@@ -396,38 +401,43 @@ function edqSetPhoneValidationConfiguration() {
 }
 /**
  * Global Intuitive
- * Sets the configuation to use global intuitive
+ * Sets the configuration to use Global Intuitive
  */
 function edqSetGlobalIntuitiveConfiguration() {
     window.EdqConfig.GLOBAL_INTUITIVE_AUTH_TOKEN=edqAuthorizationToken;
-    window.EdqConfig.GLOBAL_INTUITIVE_ISO3_COUNTRY=countryAlpha3(edqCountryLineSelector.value);
-    window.EdqConfig.GLOBAL_INTUITIVE_ELEMENT= edqAddressLine1Selector;
+    window.EdqConfig.GLOBAL_INTUITIVE_ISO3_COUNTRY=countryAlpha3(document.getElementById(edqCountryLineId).value);
+    window.EdqConfig.GLOBAL_INTUITIVE_ELEMENT= document.getElementById(edqAddressLine1Id);
     window.EdqConfig.GLOBAL_INTUITIVE_MAPPING= [
         {
-            field: edqAddressLine1Selector,
+            field: document.getElementById(edqAddressLine1Id),
             elements: ['address.addressLine1']
         },
         {
-            field: edqAddressLine2Selector,
+            field: document.getElementById(edqAddressLine2Id),
             elements: ['address.addressLine2']
         },
         {
-            field: edqCityLineSelector,
+            field: document.getElementById(edqCityLineId),
             elements: ['address.locality']
         },
         {
-            field: edqStateLineSelector,
+            field: document.getElementById(edqStateLineId),
             elements: ['address.province']
         },
         {
-            field: edqPostalLineSelector,
+            field: document.getElementById(edqPostalLineId),
             elements: ['address.postalCode']
         },
     ];
 }
+/** In SFRA the checkout web page contains both billing and shipping in a single page controlled by JavaScript to hide/show elements. 
+ * The setCheckoutFormEvents is intended to set all input address fields variables depending on the stage we are(billing/shipping); 
+ * the selectors choose by this function just appear once the stage is completed; once we click on the selector the other will 
+ * be going to the stage that we're selecting and the will continue the regular workflow.
+ */
 function setCheckoutFormEvents() {
-    if (edqCountryLineSelector.value === "") {
-        edqCountryLineSelector.value = "US";
+    if (document.getElementById(edqCountryLineId).value === "") {
+    	document.getElementById(edqCountryLineId).value = "US";
     }
     if (document.querySelector('.shipment-selector-block')) {
         document.querySelector('.shipment-selector-block').addEventListener("click", function() {
@@ -467,8 +477,8 @@ function edqValidateAddressCallBack() {
     var edqProWebResponse = document.querySelector('#form-submit');
     if (edqProWebResponse.getAttribute('edq-metadata')) {
         var edqMetaDataResponse = JSON.parse(edqProWebResponse.getAttribute('edq-metadata'));
-        edqStateLineSelector.value = edqMetaDataResponse["State code"];
-        //document.querySelector('#form-submit').removeAttribute('edq-metadata');
+        document.getElementById(edqStateLineId).value = edqMetaDataResponse["State code"];
+        document.querySelector('#form-submit').removeAttribute('edq-metadata');
     }
     edqCurrentSubmitButtonSelector.style.display = "inline-block";
     document.querySelector('#form-submit').style.display = "none";
@@ -497,8 +507,9 @@ function setButtonConfigurationCallback(selectorCurrentLocation, currentSubmitBu
     edqCurrentSubmitButtonSelector.style.display = "none";
 }
 function edqSetProWebConfiguration() {
-    /** TASK:101727 Potential misconfiguration of checkout process 
-     * This elements uses mousedown **/
+    /** TASK:101727 Potential misconfiguration of checkout process. 
+     * This element uses mousedown because this event listener is triggered before the form submit event. *
+     */
     if (document.getElementById("editShipping")) {
         document.getElementById("editShipping").addEventListener("mousedown", function() {
             pageCheckoutStage = 'shipping';
@@ -513,7 +524,7 @@ function edqSetProWebConfiguration() {
             edqSetProWebConfiguration();
         });
     }
-    /** This is intended to hide the form button just to show verification engine button in the form **/
+    /** This is intended to hide the form button in initial load of the page; just to show verification engine button in the form. **/
     if (edqCurrentSubmitButtonSelector) {
         edqCurrentSubmitButtonSelector.style.display = "none";
     }
@@ -527,31 +538,31 @@ function edqSetProWebConfiguration() {
         }
     ];
     window.EdqConfig.PRO_WEB_LAYOUT=edqProWebAddressLayout;
-    window.EdqConfig.PRO_WEB_COUNTRY=countryAlpha3(edqCountryLineSelector.value);
+    window.EdqConfig.PRO_WEB_COUNTRY=countryAlpha3(document.getElementById(edqCountryLineId).value);
     window.EdqConfig.PRO_WEB_CALLBACK='edqValidateAddressCallBack()';
     window.EdqConfig.PRO_WEB_MAPPING=[
         {
-            field: edqAddressLine1Selector,
+            field: document.getElementById(edqAddressLine1Id),
             elements: ['Formatted Address 2'],
             modalFieldSelector:'#interaction-address--original-address-line-one',
         },
         {
-            field: edqAddressLine2Selector,
+            field: document.getElementById(edqAddressLine2Id),
             elements: ['AddressLine2'],
             modalFieldSelector:'#interaction-address--original-address-line-two',
         },
         {
-            field: edqCityLineSelector,
+            field: document.getElementById(edqCityLineId),
             elements: ['City name'],
             modalFieldSelector:'#interaction-address--original-locality',
         },
         {
-            field: edqStateLineSelector,
+            field: document.getElementById(edqStateLineId),
             elements: ['State code'],
             modalFieldSelector:'#interaction-address--original-province',
         },
         {
-            field: edqPostalLineSelector,
+            field: document.getElementById(edqPostalLineId),
             separator: '-',
             elements: ['ZIP Code', '+4 code'],
             modalFieldSelector:'#interaction-address--original-postal-code',
