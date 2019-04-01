@@ -12,7 +12,7 @@
                 type="text"
                 class="form-control"
                 id="registration-form-fname"
-                <isprint value=${pdict.profileForm.customer.firstname.attributes} encoding="off" />>
+                <isprint value=${pdict.profileForm.customer.firstname.attributes} encoding="htmlsinglequote" />>
             <div class="invalid-feedback"></div>
         </div>
 
@@ -25,7 +25,7 @@
                 type="text"
                 class="form-control"
                 id="registration-form-lname"
-                <isprint value=${pdict.profileForm.customer.lastname.attributes} encoding="off" />>
+                <isprint value=${pdict.profileForm.customer.lastname.attributes} encoding="htmlsinglequote" />>
             <div class="invalid-feedback"></div>
         </div>
 
@@ -38,7 +38,7 @@
                 type="text"
                 class="form-control"
                 id="registration-form-phone"
-                <isprint value=${pdict.profileForm.customer.phone.attributes} encoding="off" />
+                <isprint value=${pdict.profileForm.customer.phone.attributes} encoding="htmlsinglequote" />
                 placeholder="${Resource.msg('example.phone','forms',null)}">
             <div class="invalid-feedback"></div>
         </div>
@@ -52,7 +52,7 @@
                 type="text"
                 class="form-control"
                 id="registration-form-email"
-                <isprint value=${pdict.profileForm.customer.email.attributes} encoding="off" />>
+                <isprint value=${pdict.profileForm.customer.email.attributes} encoding="htmlsinglequote" />>
             <div class="invalid-feedback"></div>
         </div>
 
@@ -65,7 +65,7 @@
                 type="text"
                 class="form-control"
                 id="registration-form-email-confirm"
-                <isprint value=${pdict.profileForm.customer.emailconfirm.attributes} encoding="off" />>
+                <isprint value=${pdict.profileForm.customer.emailconfirm.attributes} encoding="htmlsinglequote" />>
             <div class="invalid-feedback"></div>
         </div>
 
@@ -79,7 +79,7 @@
                 class="form-control"
                 id="registration-form-password"
                 autocomplete="off"
-                <isprint value=${pdict.profileForm.login.password.attributes} encoding="off" />>
+                <isprint value=${pdict.profileForm.login.password.attributes} encoding="htmlsinglequote" />>
             <div class="invalid-feedback"></div>
         </div>
 
@@ -93,7 +93,7 @@
                 class="form-control"
                 id="registration-form-password-confirm"
                 autocomplete="off"
-                <isprint value=${pdict.profileForm.login.passwordconfirm.attributes} encoding="off" />>
+                <isprint value=${pdict.profileForm.login.passwordconfirm.attributes} encoding="htmlsinglequote" />>
             <div class="invalid-feedback"></div>
         </div>
 
@@ -101,7 +101,7 @@
             <input
                 type="checkbox"
                 class="custom-control-input" id="add-to-email-list"
-                <isprint value=${pdict.profileForm.customer.addtoemaillist.attributes} encoding="off" />
+                <isprint value=${pdict.profileForm.customer.addtoemaillist.attributes} encoding="htmlsinglequote" />
             >
             <label class="custom-control-label" for="add-to-email-list">
                 <isprint value="${pdict.profileForm.customer.addtoemaillist.label}" encoding="htmlcontent" />

@@ -2,7 +2,7 @@
     action="${URLUtils.url('Address-SaveAddress', 'addressId', pdict.addressId)}"
     class="address-form"
     method="POST"
-    <isprint value="${pdict.addressForm.attributes}" encoding="off" />>
+    <isprint value="${pdict.addressForm.attributes}" encoding="htmlsinglequote" />>
     <!-- Address Title -->
     <div class="form-group
         ${pdict.addressForm.addressId.mandatory === true ? 'required' : ''}">
@@ -11,7 +11,7 @@
             <isprint value="${pdict.addressForm.addressId.label}" encoding="htmlcontent" />
         </label>
         <input type="text" class="form-control" id="addressId"
-            <isprint value="${pdict.addressForm.addressId.attributes}" encoding="off" />>
+            <isprint value="${pdict.addressForm.addressId.attributes}" encoding="htmlsinglequote" />>
         <div class="invalid-feedback"></div>
     </div>
 
@@ -25,7 +25,7 @@
                     <isprint value="${pdict.addressForm.firstName.label}" encoding="htmlcontent" />
                 </label>
                 <input type="text" class="form-control" id="firstName"
-                    <isprint value="${pdict.addressForm.firstName.attributes}" encoding="off" />
+                    <isprint value="${pdict.addressForm.firstName.attributes}" encoding="htmlsinglequote" />
                     autocomplete="given-name">
                 <div class="invalid-feedback"></div>
             </div>
@@ -39,7 +39,7 @@
                     <isprint value="${pdict.addressForm.lastName.label}" encoding="htmlcontent" />
                 </label>
                 <input type="text" class="form-control" id="lastName"
-                    <isprint value="${pdict.addressForm.lastName.attributes}" encoding="off" />
+                    <isprint value="${pdict.addressForm.lastName.attributes}" encoding="htmlsinglequote" />
                     autocomplete="family-name">
                 <div class="invalid-feedback"></div>
             </div>
@@ -53,7 +53,7 @@
             <isprint value="${pdict.addressForm.address1.label}" encoding="htmlcontent" />
         </label>
         <input type="text" class="form-control" id="address1"
-            <isprint value="${pdict.addressForm.address1.attributes}" encoding="off" />
+            <isprint value="${pdict.addressForm.address1.attributes}" encoding="htmlsinglequote" />
             autocomplete="address-line1">
         <div class="invalid-feedback"></div>
     </div>
@@ -65,7 +65,7 @@
             <isprint value="${pdict.addressForm.address2.label}" encoding="htmlcontent" />
         </label>
         <input type="text" class="form-control" id="address2"
-            <isprint value="${pdict.addressForm.address2.attributes}" encoding="off" />
+            <isprint value="${pdict.addressForm.address2.attributes}" encoding="htmlsinglequote" />
             autocomplete="billing address-line2">
         <div class="invalid-feedback"></div>
     </div>
@@ -80,7 +80,7 @@
                     <isprint value="${pdict.addressForm.country.label}" encoding="htmlcontent" />
                 </label>
                 <select class="form-control" id="country"
-                    <isprint value="${pdict.addressForm.country.attributes}" encoding="off" />
+                    <isprint value="${pdict.addressForm.country.attributes}" encoding="htmlsinglequote" />
                     autocomplete="country">
                     <isloop items=${pdict.addressForm.country.options} var="country">
                         <option id="${country.id}" value="${country.htmlValue}" <isif condition="${country.selected}">selected</isif>>${country.label}</option>
@@ -98,7 +98,7 @@
                     <isprint value="${pdict.addressForm.states.stateCode.label}" encoding="htmlcontent" />
                 </label>
                 <select class="form-control" id="state"
-                    <isprint value="${pdict.addressForm.states.stateCode.attributes}" encoding="off" />
+                    <isprint value="${pdict.addressForm.states.stateCode.attributes}" encoding="htmlsinglequote" />
                     autocomplete="address-level1">
                     <isloop items=${pdict.addressForm.states.stateCode.options} var="state">
                         <option id="${state.id}" value="${state.htmlValue}" <isif condition="${state.selected}">selected</isif>>${state.label || ' '}</option>
@@ -119,7 +119,7 @@
                     <isprint value="${pdict.addressForm.city.label}" encoding="htmlcontent" />
                 </label>
                 <input type="text" class="form-control" id="city"
-                    <isprint value="${pdict.addressForm.city.attributes}" encoding="off" />
+                    <isprint value="${pdict.addressForm.city.attributes}" encoding="htmlsinglequote" />
                     autocomplete="address-level2">
                 <div class="invalid-feedback"></div>
             </div>
@@ -133,7 +133,7 @@
                     <isprint value="${pdict.addressForm.postalCode.label}" encoding="htmlcontent" />
                 </label>
                 <input type="text" class="form-control" id="zipCode"
-                    <isprint value="${pdict.addressForm.postalCode.attributes}" encoding="off" />
+                    <isprint value="${pdict.addressForm.postalCode.attributes}" encoding="htmlsinglequote" />
                     autocomplete="postal-code">
                 <div class="invalid-feedback"></div>
             </div>
@@ -147,7 +147,7 @@
             <isprint value="${pdict.addressForm.phone.label}" encoding="htmlcontent" />
         </label>
         <input type="text" class="form-control" id="phone"
-            <isprint value="${pdict.addressForm.phone.attributes}" encoding="off" />
+            <isprint value="${pdict.addressForm.phone.attributes}" encoding="htmlsinglequote" />
             autocomplete="tel">
         <div class="invalid-feedback"></div>
     </div>

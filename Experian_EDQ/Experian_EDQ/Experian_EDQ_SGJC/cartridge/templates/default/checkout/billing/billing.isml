@@ -66,7 +66,7 @@
         </isif>
 
         <isscript>
-            var currentCountry = require('~/cartridge/scripts/util/Countries').getCurrent(pdict);
+            var currentCountry = require('*/cartridge/scripts/util/Countries').getCurrent(pdict);
         </isscript>
         <isdynamicform formobject="${pdict.CurrentForms.billing.billingAddress.addressFields}" formdata="${currentCountry.dynamicForms.addressDetails}"/>
 
@@ -213,12 +213,12 @@
         <input type="hidden" name="${dw.web.CSRFProtection.getTokenName()}" value="${dw.web.CSRFProtection.generateToken()}"/>
 
     </form>
-    <isscript>
-        importScript("util/ViewHelpers.ds");
-        var addressForm = pdict.CurrentForms.billing.billingAddress.addressFields;
-        var countries = ViewHelpers.getCountriesAndRegions(addressForm);
-        var json = JSON.stringify(countries);
-    </isscript>
-    <script>window.Countries = <isprint value="${json}" encoding="off"/>;</script>
+	<isscript>
+		importScript("util/ViewHelpers.ds");
+		var addressForm = pdict.CurrentForms.profile.address;
+		var countries = ViewHelpers.getCountriesAndRegions(addressForm);
+		var json = JSON.stringify(countries);
+	</isscript>
+	<script>window.Countries = <isprint value="${json}" />;</script>
 
 </isdecorate>

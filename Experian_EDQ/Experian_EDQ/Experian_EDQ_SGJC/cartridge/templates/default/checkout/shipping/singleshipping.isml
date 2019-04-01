@@ -67,7 +67,7 @@
                     </isif>
 
                     <isscript>
-                        var currentCountry = require('~/cartridge/scripts/util/Countries').getCurrent(pdict);
+                        var currentCountry = require('*/cartridge/scripts/util/Countries').getCurrent(pdict);
                     </isscript>
                     <isdynamicform formobject="${pdict.CurrentForms.singleshipping.shippingAddress.addressFields}" formdata="${currentCountry.dynamicForms.addressDetails}"/>
 
@@ -130,11 +130,11 @@
 
     </form>
     <isscript>
-        importScript("util/ViewHelpers.ds");
-        var addressForm = pdict.CurrentForms.singleshipping.shippingAddress.addressFields;
-        var countries = ViewHelpers.getCountriesAndRegions(addressForm);
-        var json = JSON.stringify(countries);
-    </isscript>
-    <script>window.Countries = <isprint value="${json}" encoding="off"/>;</script>
+		importScript("util/ViewHelpers.ds");
+		var addressForm = pdict.CurrentForms.profile.address;
+		var countries = ViewHelpers.getCountriesAndRegions(addressForm);
+		var json = JSON.stringify(countries);
+	</isscript>
+	<script>window.Countries = <isprint value="${json}" />;</script>
 
 </isdecorate>
