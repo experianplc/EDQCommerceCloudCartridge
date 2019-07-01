@@ -2,11 +2,14 @@
 <script src="${URLUtils.staticURL('/js/jquery.min.js')}"></script>
 <script src="${URLUtils.staticURL('/js/EDQUtils.js')}"></script>
 <script type="text/javascript">
+	vDefaultCountry = '<isprint value="${dw.system.Site.current.preferences.custom.countryCode}"/>';
 	edqAuthorizationToken = '<isprint value="${dw.system.Site.current.preferences.custom.EDQToken}"/>';
 	edqEmailEnable = <isprint value="${dw.system.Site.current.preferences.custom.EDQEmailEnable}"/>;
 	edqPhoneEnable = <isprint value="${dw.system.Site.current.preferences.custom.EDQPhoneEnable}"/>;
 	edqValidatePhone = <isprint value="${dw.system.Site.current.preferences.custom.EDQValidatePhone}"/>;
 	edqValidateEmail = <isprint value="${dw.system.Site.current.preferences.custom.EDQValidateEmail}"/>;
+	edqDataSetCode = '<isprint value="${dw.system.Site.current.preferences.custom.EDQDataSetCode}"/>';
+	edqDataSetUsage = <isprint value="${dw.system.Site.current.preferences.custom.EDQDataSetUsage}"/>;
 </script>
 <isif condition="${URLUtils.continueURL().toString().search('Address') != -1 || URLUtils.continueURL().toString().search('COShipping') != -1 || URLUtils.continueURL().toString().search('COBilling') != -1}">
 	<isif condition="${dw.system.Site.current.preferences.custom.EDQPreferedAddressSearchEngine.value == 'VerificationEngine'}">

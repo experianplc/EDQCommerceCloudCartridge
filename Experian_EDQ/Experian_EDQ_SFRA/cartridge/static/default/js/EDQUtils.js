@@ -1,5 +1,5 @@
-const vDefaultCountry = 'USA';
-var edqAddressLine1Id,
+var vDefaultCountry, 
+	edqAddressLine1Id,
     edqAddressLine2Id,
     edqCityLineId,
     edqPostalLineId,
@@ -17,7 +17,9 @@ var edqAddressLine1Id,
     originalButtonDisplayNextPlaceOrderText,
     originalButtonDisplayPlaceOrderText,
     originalButtonDisplayNextPaymentText,
-    pageCheckoutStage;
+    pageCheckoutStage,
+    edqDataSetUsage,
+    edqDataSetCode;
 var inputSelector = document.querySelectorAll('input[id]');
 var selectSelector = document.querySelectorAll('select[id]');
 var buttonSelector = document.querySelectorAll('button[name]');
@@ -407,6 +409,12 @@ function edqSetGlobalIntuitiveConfiguration() {
     window.EdqConfig.GLOBAL_INTUITIVE_AUTH_TOKEN=edqAuthorizationToken;
     window.EdqConfig.GLOBAL_INTUITIVE_ISO3_COUNTRY=countryAlpha3(document.getElementById(edqCountryLineId).value);
     window.EdqConfig.GLOBAL_INTUITIVE_ELEMENT= document.getElementById(edqAddressLine1Id);
+    /**
+     * Feature 118583
+     * Configuration option to include Data Sets for Global Intuitive
+     */
+    if (edqDataSetUsage) 
+    	window.EdqConfig.GLOBAL_INTUITIVE_DATASET=edqDataSetCode;
     window.EdqConfig.GLOBAL_INTUITIVE_MAPPING= [
         {
             field: document.getElementById(edqAddressLine1Id),
