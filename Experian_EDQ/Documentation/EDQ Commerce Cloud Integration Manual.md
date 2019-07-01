@@ -93,6 +93,8 @@ To configure Global Intuitive, you need to access the Business Manager and go to
 ![Global Intuitive Options](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/214globalOptions.png)
 
 * The preferred address search engine option will let you choose between the address search engine options (choose verification engine to only use this selected engine).
+* The Data Set Code option will let you set a code to use datasets in case the country ISO code requires it.
+* The Activates or deactivates Data Set usage option will let you choose to activate or deactivate Data Set usage.
 
 The store touchpoints for Global Intuitive are:
 * Add/Edit Address form.

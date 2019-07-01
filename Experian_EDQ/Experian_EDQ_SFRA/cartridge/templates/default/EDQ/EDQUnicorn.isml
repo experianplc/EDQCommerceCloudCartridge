@@ -1,11 +1,14 @@
 <iscontent type="text/html" charset="UTF-8" compact="true"/>
 <script src="${URLUtils.staticURL('/js/EDQUtils.js')}"></script>
 <script type="text/javascript">
+	vDefaultCountry = '<isprint value="${dw.system.Site.current.preferences.custom.countryCode}"/>';
     edqEmailEnable = <isprint value="${dw.system.Site.current.preferences.custom.EDQEmailEnable}"/>;
 	edqPhoneEnable = <isprint value="${dw.system.Site.current.preferences.custom.EDQPhoneEnable}"/>;
 	edqValidatePhone = <isprint value="${dw.system.Site.current.preferences.custom.EDQValidatePhone}"/>;
 	edqValidateEmail = <isprint value="${dw.system.Site.current.preferences.custom.EDQValidateEmail}"/>;
 	edqAuthorizationToken = '<isprint value="${dw.system.Site.current.preferences.custom.EDQToken}"/>';
+	edqDataSetCode = '<isprint value="${dw.system.Site.current.preferences.custom.EDQDataSetCode}"/>';
+	edqDataSetUsage = <isprint value="${dw.system.Site.current.preferences.custom.EDQDataSetUsage}"/>;
 	pageCheckoutStage = '<isprint value="${pdict.currentStage}"/>';
 </script>
 <isif condition="${URLUtils.continueURL().toString().search('Address') != -1 || URLUtils.continueURL().toString().search('Checkout') != -1}">

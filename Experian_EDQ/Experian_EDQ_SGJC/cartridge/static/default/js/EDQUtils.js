@@ -1,5 +1,5 @@
-const vDefaultCountry = 'USA';
-var edqAddressLine1Selector,
+var vDefaultCountry,
+	edqAddressLine1Selector,
     edqAddressLine2Selector,
     edqCityLineSelector,
     edqPostalLineSelector,
@@ -14,7 +14,9 @@ var edqAddressLine1Selector,
     edqValidateEmail, 
     edqValidatePhone, 
     edqAuthorizationToken, 
-    edqProWebAddressLayout;
+    edqProWebAddressLayout,
+    edqDataSetUsage,
+    edqDataSetCode;
 var inputSelector = document.querySelectorAll('input[id]');
 var selectSelector = document.querySelectorAll('select[id]');
 var buttonSelector = document.querySelectorAll('button[name]');
@@ -374,6 +376,12 @@ function edqSetPhoneValidationConfiguration() {
 function edqSetGlobalIntuitiveConfiguration() {
     window.EdqConfig.GLOBAL_INTUITIVE_AUTH_TOKEN=edqAuthorizationToken;
     window.EdqConfig.GLOBAL_INTUITIVE_ISO3_COUNTRY=countryAlpha3(edqCountryLineSelector.value);
+    /**
+     * Feature 118583
+     * Configuration option to include Data Sets for Global Intuitive
+     */
+    if (edqDataSetUsage) 
+    	window.EdqConfig.GLOBAL_INTUITIVE_DATASET=edqDataSetCode;
     window.EdqConfig.GLOBAL_INTUITIVE_ELEMENT= edqAddressLine1Selector;
     window.EdqConfig.GLOBAL_INTUITIVE_MAPPING= [
             {
