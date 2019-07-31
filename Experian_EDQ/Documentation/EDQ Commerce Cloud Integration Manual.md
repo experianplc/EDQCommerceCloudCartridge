@@ -72,6 +72,8 @@ To configure Pro Web - Address (Verification Engine), you need to access the Bus
 
 * The preferred address search engine option will let you choose between the address search engine options (choose verification engine to only use this selected engine).
 * The address layout option lets you choose the structure in which your address will be returned.
+* The Pro Web callback validation will let the user to use a custom function to manage the page transition for the store. 
+* The customer custom Callback name will let you add the function name that is going to be exceuted in the Pro Web - Address (Verification Engine) as a second callback.  
 
 The store touchpoints for Pro Web - Address (Verification Engine) are:
 * Add/Edit Address form.
@@ -95,6 +97,8 @@ To configure Global Intuitive, you need to access the Business Manager and go to
 * The preferred address search engine option will let you choose between the address search engine options (choose verification engine to only use this selected engine).
 * The Data Set Code option will let you set a code to use datasets in case the country ISO code requires it.
 * The Activates or deactivates Data Set usage option will let you choose to activate or deactivate Data Set usage.
+* The DataSet Code will let you set the dataset that will be use for an especific country.
+* The activates or deactivates Dataset usage will let you use the dataset function; it should be false for countries that don't need datasets. 
 
 The store touchpoints for Global Intuitive are:
 * Add/Edit Address form.
@@ -287,6 +291,10 @@ Once the EDQ SitePreferences are uploaded in the business manager; choose your s
 8. Staging (Enum of String): Select one option between:
    1. Production
    1. Development
+9. DataSet Code (String): Code to use datasets in case the country ISO code requires it.
+10. Activates or deactivates DataSet usage (Boolean): Activates or deactivates Data Set usage (only use for Non USA).
+11. Customer CallbackName (String): Name for the custom customer function to be triggered.
+12. Pro Web Callback validation (Boolean): Activates or deactivates page transition from the callback.
 
 ![EDQ Config](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/510EDQConfig.png)
 
