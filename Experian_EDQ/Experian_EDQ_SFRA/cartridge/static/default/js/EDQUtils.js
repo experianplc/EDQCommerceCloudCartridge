@@ -19,7 +19,9 @@ var vDefaultCountry,
     originalButtonDisplayNextPaymentText,
     pageCheckoutStage,
     edqDataSetUsage,
-    edqDataSetCode;
+    edqDataSetCode,
+    edqProWebCallbackValidation,
+    edqCustomCallbackName;
 var inputSelector = document.querySelectorAll('input[id]');
 var selectSelector = document.querySelectorAll('select[id]');
 var buttonSelector = document.querySelectorAll('button[name]');
@@ -482,13 +484,23 @@ function removeMultipleEDQSuggestion() {
  * Sets the configuration to use Pro Web - Address (Verification Engine)
  */
 function edqValidateAddressCallBack() {
+	var edqProWebMetaDataJSON;
     var edqProWebResponse = document.querySelector('#form-submit');
     if (edqProWebResponse.getAttribute('edq-metadata')) {
-        var edqMetaDataResponse = JSON.parse(edqProWebResponse.getAttribute('edq-metadata'));
-        document.getElementById(edqStateLineId).value = edqMetaDataResponse["State code"];
+    	edqProWebMetaDataJSON = JSON.parse(edqProWebResponse.getAttribute('edq-metadata'));
+        document.getElementById(edqStateLineId).value = edqProWebMetaDataJSON["State code"];
         document.querySelector('#form-submit').removeAttribute('edq-metadata');
     }
-    edqCurrentSubmitButtonSelector.style.display = "inline-block";
+    if (edqProWebCallbackValidation) {
+    	if (edqProWebExecuteTransitionCallBack(edqProWebMetaDataJSON)) {
+    		edqCheckoutPageWorkflows();
+    	}
+    } else {
+    	edqCheckoutPageWorkflows();
+    }
+}
+function edqCheckoutPageWorkflows() {
+	edqCurrentSubmitButtonSelector.style.display = "inline-block";
     document.querySelector('#form-submit').style.display = "none";
     if ((pageCheckoutStage) && (pageCheckoutStage.match(/shipping/))) {
         pageCheckoutStage = 'payment';
@@ -501,7 +513,7 @@ function edqValidateAddressCallBack() {
         pageCheckoutStage = '';
         var edqLastButton = edqCurrentSubmitButtonSelector;
         edqCurrentSubmitButtonSelector.style.display = "none";
-        setButtonConfigurationCallback('', 'button[value=place-order]', originalButtonDisplayPlaceOrderText)
+        setButtonConfigurationCallback('', 'button[value=place-order]', originalButtonDisplayPlaceOrderText);
         edqLastButton.click();
     } else { edqCurrentSubmitButtonSelector.click(); }
 }
@@ -548,6 +560,7 @@ function edqSetProWebConfiguration() {
     window.EdqConfig.PRO_WEB_LAYOUT=edqProWebAddressLayout;
     window.EdqConfig.PRO_WEB_COUNTRY=countryAlpha3(document.getElementById(edqCountryLineId).value);
     window.EdqConfig.PRO_WEB_CALLBACK='edqValidateAddressCallBack()';
+    //window.EdqConfig.PRO_WEB_CALLBACK2=function() { console.log("You should see this after verification and before page transitions "); };
     window.EdqConfig.PRO_WEB_MAPPING=[
         {
             field: document.getElementById(edqAddressLine1Id),
@@ -576,4 +589,14 @@ function edqSetProWebConfiguration() {
             modalFieldSelector:'#interaction-address--original-postal-code',
         },
     ];
+}
+function edqProWebExecuteTransitionCallBack(edqProWebMetaDataJSON) { 
+	var edqCustomFunctionName = edqCustomCallbackName;
+	var edqJsonParameter = [edqProWebMetaDataJSON];
+	var edqCustomTransitionCallback = window[edqCustomFunctionName];
+	try {
+		if (typeof edqCustomTransitionCallback === "function") {
+			return edqCustomTransitionCallback.apply(null, edqJsonParameter);
+		} else return true;
+	} catch { return true; }
 }

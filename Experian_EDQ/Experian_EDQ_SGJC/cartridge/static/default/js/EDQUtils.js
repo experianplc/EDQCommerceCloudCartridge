@@ -16,7 +16,9 @@ var vDefaultCountry,
     edqAuthorizationToken, 
     edqProWebAddressLayout,
     edqDataSetUsage,
-    edqDataSetCode;
+    edqDataSetCode,
+    edqProWebCallbackValidation,
+    edqCustomCallbackName;
 var inputSelector = document.querySelectorAll('input[id]');
 var selectSelector = document.querySelectorAll('select[id]');
 var buttonSelector = document.querySelectorAll('button[name]');
@@ -413,16 +415,25 @@ function edqSetGlobalIntuitiveConfiguration() {
 function edqValidateAddressCallBack() {
     var edqProWebResponse = document.querySelector('#form-submit');
     if (!edqProWebResponse.hasAttribute('edq-metadata')) { return; }
-    var edqResponse = JSON.parse(edqProWebResponse.getAttribute('edq-metadata'));
+    var edqProWebMetaDataJSON = JSON.parse(edqProWebResponse.getAttribute('edq-metadata'));
     document.querySelector('#form-submit').style.display = "none";
-    edqStateLineSelector.value = edqResponse["State code"];
-    if (edqCurrentSubmitButtonSelectorIndex) {
-        buttonSelector[edqCurrentSubmitButtonSelectorIndex].style.display = "inline-block";
-        buttonSelector[edqCurrentSubmitButtonSelectorIndex].click();
+    edqStateLineSelector.value = edqProWebMetaDataJSON["State code"];
+    if (edqProWebCallbackValidation) {
+    	if (edqProWebExecuteTransitionCallBack(edqProWebMetaDataJSON)) {
+    		edqCheckoutPageWorkflows();
+    	}
     } else {
-        edqCurrentSubmitButtonSelector.style.display = "inline-block";
-        edqCurrentSubmitButtonSelector.click();
+    	edqCheckoutPageWorkflows();
     }
+}
+function edqCheckoutPageWorkflows() {
+	if (edqCurrentSubmitButtonSelectorIndex) {
+	    buttonSelector[edqCurrentSubmitButtonSelectorIndex].style.display = "inline-block";
+	    buttonSelector[edqCurrentSubmitButtonSelectorIndex].click();
+	} else {
+	    edqCurrentSubmitButtonSelector.style.display = "inline-block";
+	    edqCurrentSubmitButtonSelector.click();
+	}
 }
 function edqSetProWebConfiguration() {
 	/** This is intended to hide the form button in initial load of the page; just to show verification engine button in the form. **/
@@ -468,4 +479,14 @@ function edqSetProWebConfiguration() {
 			modalFieldSelector: '#interaction-address--original-postal-code',
 		},
 	];
+}
+function edqProWebExecuteTransitionCallBack(edqProWebMetaDataJSON) { 
+	var edqCustomFunctionName = edqCustomCallbackName;
+	var edqJsonParameter = [edqProWebMetaDataJSON];
+	var edqCustomTransitionCallback = window[edqCustomFunctionName];
+	try {
+		if (typeof edqCustomTransitionCallback === "function") {
+			return edqCustomTransitionCallback.apply(null, edqJsonParameter);
+		} else return true;
+	} catch { return true; }
 }

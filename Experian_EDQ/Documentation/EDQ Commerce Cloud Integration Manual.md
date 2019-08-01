@@ -72,12 +72,67 @@ To configure Pro Web - Address (Verification Engine), you need to access the Bus
 
 * The preferred address search engine option will let you choose between the address search engine options (choose verification engine to only use this selected engine).
 * The address layout option lets you choose the structure in which your address will be returned.
-* The Pro Web callback validation will let the user to use a custom function to manage the page transition for the store. 
-* The customer custom Callback name will let you add the function name that is going to be exceuted in the Pro Web - Address (Verification Engine) as a second callback.  
+* The Pro Web callback validation will let users specify a custom function to manage page transitions. 
+* The Pro Web Custom Transition Callback will let you specify a name of a function that will be called in order to define custom transition logic when using Pro Web - Address (Verification Engine). 
 
 The store touchpoints for Pro Web - Address (Verification Engine) are:
 * Add/Edit Address form.
 * Billing/Payment form.
+
+#### Pro Web Custom Transition Callback
+To enable the Pro Web Callback Transition go to the Business Manager and go to the EDQ Config **(`Select Site > Merchant Tools > Site Preferences > Custom Site Preferences Group > EDQ Config`)** and look for the Pro Web Callback Validation option and set the value to true.
+
+![Verification Callback Validation](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/213verificationCallbackValidation.PNG)
+
+After enabling the Pro Web Custom Transition Callback, set the value of the Transition Callback Name with the name of your custom function that will be executed prior to transitioning.
+
+![Pro Web Custom Transition Callback](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/213verificationCallbackValidationName.png)
+
+Since all logic is in the custom function you need to take in consideration the following points to create your custom function:
+- Your custom function should receive a parameter; this is where we are going to send you a JSON with the data response from Pro Web Address (Verification Engine).
+e.g.
+
+```javascript
+function myCustomFunction(myParameter) {
+	....
+}
+```
+
+The response data from the variable that you're going to receive should look like this example (take note that the way that the data is shown depends on your layout configuration in the Business Manager).
+
+```JSON
+{
++4 code: "3208"
+City name: "Boston"
+Formatted Address 1: null
+Formatted Address 2: "53 State St Lbby 2"
+Formatted Address 3: "Boston MA 02109-3208"
+PO Box: null
+PO Box (Number): null
+PO Box (Text): null
+Primary number: "53"
+Secondary number: "Lbby 2"
+Secondary number (Number): "2"
+Secondary number (Type): "Lbby"
+State code: "MA"
+State name: "Massachusetts"
+Street: "State St"
+Street (Descriptor): "St"
+Street (Name): "State"
+Street (Post-directional): null
+Street (Pre-directional): null
+ZIP Code: "02109"
+}
+```
+
+- Your custom function should return a boolean (true or false), depending on your function logic; if your function returns true the page will continue with its normal workflow, if your custom function returns false the page won't make a transition to the next one.
+
+```javascript
+	if (customLogic)
+		return true;
+	else
+		return false;
+```
 
 ####  2.1.4\. Global Intuitive
 Global Intuitive will correct your address in real time while your typing down your address in the address field box.
@@ -95,10 +150,10 @@ To configure Global Intuitive, you need to access the Business Manager and go to
 ![Global Intuitive Options](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/214globalOptions.png)
 
 * The preferred address search engine option will let you choose between the address search engine options (choose verification engine to only use this selected engine).
-* The Data Set Code option will let you set a code to use datasets in case the country ISO code requires it.
+* The Data Set Code option will let you set a code to use Data Sets in case the country ISO code requires it.
 * The Activates or deactivates Data Set usage option will let you choose to activate or deactivate Data Set usage.
-* The DataSet Code will let you set the dataset that will be use for an especific country.
-* The activates or deactivates Dataset usage will let you use the dataset function; it should be false for countries that don't need datasets. 
+* The Data Set Code will let you set the Data Set that will be use for an especific country.
+* The activates or deactivates Data Set usage will let you use the Data Set function; it should be false for countries that don't need Data Sets. 
 
 The store touchpoints for Global Intuitive are:
 * Add/Edit Address form.
@@ -291,9 +346,9 @@ Once the EDQ SitePreferences are uploaded in the business manager; choose your s
 8. Staging (Enum of String): Select one option between:
    1. Production
    1. Development
-9. DataSet Code (String): Code to use datasets in case the country ISO code requires it.
-10. Activates or deactivates DataSet usage (Boolean): Activates or deactivates Data Set usage (only use for Non USA).
-11. Customer CallbackName (String): Name for the custom customer function to be triggered.
+9. Data Set Code (String): Code to use Data Sets in case the country ISO code requires it.
+10. Activates or deactivates Data Set usage (Boolean): Activates or deactivates Data Set usage (only use for Non USA).
+11. Pro Web Custom Transition Callback (String): Name for the custom customer function to be triggered.
 12. Pro Web Callback validation (Boolean): Activates or deactivates page transition from the callback.
 
 ![EDQ Config](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/510EDQConfig.png)

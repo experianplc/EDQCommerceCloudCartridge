@@ -10,6 +10,8 @@
 	edqValidateEmail = <isprint value="${dw.system.Site.current.preferences.custom.EDQValidateEmail}"/>;
 	edqDataSetCode = '<isprint value="${dw.system.Site.current.preferences.custom.EDQDataSetCode}"/>';
 	edqDataSetUsage = <isprint value="${dw.system.Site.current.preferences.custom.EDQDataSetUsage}"/>;
+	edqProWebCallbackValidation = <isprint value="${dw.system.Site.current.preferences.custom.EDQProWebCallbackValidation}"/>;
+	edqCustomCallbackName = '<isprint value="${dw.system.Site.current.preferences.custom.EDQCustomCallbackName}"/>';
 </script>
 <isif condition="${URLUtils.continueURL().toString().search('Address') != -1 || URLUtils.continueURL().toString().search('COShipping') != -1 || URLUtils.continueURL().toString().search('COBilling') != -1}">
 	<isif condition="${dw.system.Site.current.preferences.custom.EDQPreferedAddressSearchEngine.value == 'VerificationEngine'}">
