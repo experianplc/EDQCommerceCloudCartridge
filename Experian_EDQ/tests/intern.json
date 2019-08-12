@@ -1,0 +1,30 @@
+{
+  "functionalSuites": "functional SFRA/**/*.js",
+  "filterErrorStack": true,
+
+  "capabilities": {
+    "acceptInsecureCerts": true
+  },
+
+  "environments": [
+    {
+      "browserName": "chrome",
+      "chromeOptions": {
+        "args": [
+          "window-size=1920,1080",
+          "disable-gpu"
+        ]
+
+      }
+    }
+  ],
+
+  "tunnelOptions": {
+    "drivers": [
+      {
+        "name": "chrome",
+        "version": "2.37"
+      }
+    ]
+  }
+}
