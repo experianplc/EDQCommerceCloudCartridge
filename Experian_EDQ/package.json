@@ -1,0 +1,30 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "description": "edq cartridge test",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/experianplc/EDQCommerceCloudCartridge.git"
+  },
+  "author": "Jose Castillo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/experianplc/EDQCommerceCloudCartridge/issues"
+  },
+  "homepage": "https://github.com/experianplc/EDQCommerceCloudCartridge#readme",
+  "dependencies": {
+    "intern": "^4.2.0",
+    "jsdom": "^15.1.1"
+  },
+  "devDependencies": {
+    "chromedriver": "^74.0.0",
+    "eslint": "^6.1.0",
+    "selenium-standalone": "^6.16.0",
+    "selenium-webdriver": "^4.0.0-alpha.1",
+    "typescript": "^3.4.5"
+  }
+}

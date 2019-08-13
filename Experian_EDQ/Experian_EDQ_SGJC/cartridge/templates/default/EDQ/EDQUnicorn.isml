@@ -1,5 +1,5 @@
 <iscontent type="text/html" charset="UTF-8" compact="true"/>
-<script src="${URLUtils.staticURL('/js/jquery.min.js')}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script src="${URLUtils.staticURL('/js/EDQUtils.js')}"></script>
 <script type="text/javascript">
 	vDefaultCountry = '<isprint value="${dw.system.Site.current.preferences.custom.countryCode}"/>';

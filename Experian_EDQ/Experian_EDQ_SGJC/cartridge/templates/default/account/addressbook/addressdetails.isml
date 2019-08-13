@@ -55,6 +55,6 @@
 	var countries = ViewHelpers.getCountriesAndRegions(addressForm);
 	var json = JSON.stringify(countries);
 </isscript>
-<script>window.Countries = <isprint value="${json}" />;</script>
+<!-- script>try { window.Countries = <isprint value="${json}" />; } catch {} </script -->
 
 </isdecorate>
