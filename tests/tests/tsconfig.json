@@ -1,0 +1,18 @@
+{
+  "compileOptions": {
+    "target": "es5",
+    "removeComments": true,
+    "lib": ["es2015", "es6"],
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "module": "commonjs",
+    "outDir": "./lib",
+    "types": ["intern"],
+    "typeRoots": ["../node_modules/@types"]
+  },
+  "include": [
+      "unit/**/*.ts",
+      "reporters/**/*.ts",
+      "../src/types"
+  ]
+}
