@@ -1,7 +1,7 @@
 /*global EDQ*/
 /*eslint no-undef: "error"*/
 /*eslint no-unused-vars: ["error", { "vars": "local" }]*/
-/* exported edqSetEmailValidationConfiguration edqSetPhoneValidationConfiguration setCheckoutFormEvents edqValidateAddressCallBack */
+/* exported edqSetEmailValidationConfiguration edqSetPhoneValidationConfiguration setCheckoutFormEvents edqValidateAddressCallBack pageCheckoutStage edqCheckoutPageWorkflows */
 var vDefaultCountry, 
 	edqAddressLine1Id,
 	edqAddressLine2Id,
@@ -18,19 +18,16 @@ var vDefaultCountry,
 	edqValidatePhone,
 	edqAuthorizationToken,
 	edqProWebAddressLayout,
-	originalButtonDisplayNextPlaceOrderText,
-	originalButtonDisplayPlaceOrderText,
-	originalButtonDisplayNextPaymentText,
 	pageCheckoutStage,
 	edqDataSetUsage,
 	edqDataSetCode,
 	edqProWebCallbackValidation,
-	edqCustomCallbackName;
+	edqCustomCallbackName,
+	edqGlobalIntuitiveUnicornJsPath;
 var inputSelector = document.querySelectorAll("input[id]");
 var buttonSelector = document.querySelectorAll("button[name]");
 window.EdqConfig = window.EdqConfig || {};
-/** Demandware uses ISO-2 codes for countries. This dictionary is intended to capture ISO-2 codes into ISO-3 codes for Pegasus/Unicorn libraries
- **/
+/** Demandware uses ISO-2 codes for countries. This dictionary is intended to capture ISO-2 codes into ISO-3 codes for Pegasus/Unicorn libraries. **/
 var countryDict = [];
 countryDict.push({ key: "AF", value: "AFG" },
 	{ key: "AX", value: "ALA" },
@@ -284,34 +281,32 @@ function countryAlpha3(incomingCountryIso2) {
 	countryDict.forEach((val) => iso2ToIso3CountryDict = (incomingCountryIso2.match(val.key)) ? val.value : iso2ToIso3CountryDict);
 	return iso2ToIso3CountryDict || vDefaultCountry;
 }
-/***
- * Set values for EDQ variables
- ***/
+/*** Set values for EDQ variables ***/
 function setEdqInputSelectors(stageContentLocation = "") {
 	/** In SFRA the checkout web page contains both billing and shipping address input fields in a single page controlled by JavaScripts to hide/show elements.
 	* The stageContentLocation variable is intended to specify the stage(billing/shipping) of the checkout web page to set the proper input address fields 
 	* that we require to set them for billing or shipping address fields, since is they're set in the same web page we need to change its value to use them in the next step.*/
 	if (stageContentLocation === "shipping") {
-		edqAddressLine1Id = "shippingAddressOne";
-		edqAddressLine2Id = "shippingAddressTwo";
-		edqCityLineId = "shippingAddressCity";
-		edqPostalLineId ="shippingZipCode";
-		edqStateLineId = "shippingState";
-		edqCountryLineId = "shippingCountry";
+		edqAddressLine1Id = document.querySelector("[name=dwfrm_shipping_shippingAddress_addressFields_address1]");
+		edqAddressLine2Id = document.querySelector("[name=dwfrm_shipping_shippingAddress_addressFields_address2]");
+		edqCityLineId = document.querySelector("[name=dwfrm_shipping_shippingAddress_addressFields_city]");
+		edqPostalLineId = document.querySelector("[name=dwfrm_shipping_shippingAddress_addressFields_postalCode]");
+		edqStateLineId = document.querySelector("[name=dwfrm_shipping_shippingAddress_addressFields_states_stateCode]");
+		edqCountryLineId = document.querySelector("[name=dwfrm_shipping_shippingAddress_addressFields_country]");
 	} else if (stageContentLocation === "billing") {
-		edqAddressLine1Id = "billingAddressOne";
-		edqAddressLine2Id = "billingAddressTwo";
-		edqCityLineId = "billingAddressCity";
-		edqPostalLineId ="billingZipCode";
-		edqStateLineId = "billingState";
-		edqCountryLineId = "billingCountry";
+		edqAddressLine1Id = document.querySelector("#billingAddressOne");
+		edqAddressLine2Id = document.querySelector("#billingAddressTwo");
+		edqCityLineId = document.querySelector("#billingAddressCity");
+		edqPostalLineId = document.querySelector("#billingZipCode");
+		edqStateLineId = document.querySelector("#billingState");
+		edqCountryLineId = document.querySelector("#billingCountry");
 	} else {
-		edqAddressLine1Id = "address1";
-		edqAddressLine2Id = "address2";
-		edqCityLineId = "city";
-		edqPostalLineId ="zipCode";
-		edqStateLineId = "state";
-		edqCountryLineId = "country";
+		edqAddressLine1Id = document.querySelector("#address1");
+		edqAddressLine2Id = document.querySelector("#address2");
+		edqCityLineId = document.querySelector("#city");
+		edqPostalLineId = document.querySelector("#zipCode");
+		edqStateLineId = document.querySelector("#state");
+		edqCountryLineId = document.querySelector("#country");
 	}
 	for (var i = 0; i < inputSelector.length; i++) {
 		if (inputSelector[i].id.toLowerCase().match(/phone/)) { edqPhoneLineSelectors.push(inputSelector[i]); }
@@ -413,41 +408,49 @@ function edqSetPhoneValidationConfiguration() {
 */
 function edqSetGlobalIntuitiveConfiguration() {
 	/**
-	* BUG-126164
-	* */
-	$("script[src=\"https://edqprofservus.blob.core.windows.net/assets/production/global-intuitive-unicorn.js\"]").remove();	
-	$("<script>").attr("src", "https://edqprofservus.blob.core.windows.net/assets/production/global-intuitive-unicorn.js").appendTo("footer");
-	var globalIntuitiveIsoCountry;
-	if(document.getElementById(edqCountryLineId) == null) 
-		globalIntuitiveIsoCountry = vDefaultCountry;
-	else
-		globalIntuitiveIsoCountry = document.getElementById(edqCountryLineId).value;
+	* Autofill not working on billing address at all
+	* By doing this in the checkout stage for SFRA we can remove the global-intuitive-unicorn.js in order to force to reload all the content with 
+	* the new parameters that we're including, since the webpage doesn't do a refresh items we're not changing values 
+	* For more information see Bug #126164 */
+	$("script[src=\"" + edqGlobalIntuitiveUnicornJsPath + "\"]").remove();	
+	$("<script>").attr("src", edqGlobalIntuitiveUnicornJsPath).appendTo("footer");
+	if(edqAddressLine1Id) {
+		edqAddressLine1Id.addEventListener("focus", function() {
+			removeMultipleEDQSuggestion();
+			edqSetGlobalIntuitiveConfiguration();
+			EDQ.address.globalIntuitive.activateValidation(edqAddressLine1Id);
+		});
+	}
+	var globalIntuitiveIsoCountry = vDefaultCountry;
+	if (edqCountryLineId != null) {
+		globalIntuitiveIsoCountry = edqCountryLineId.value;
+	}
 	window.EdqConfig.GLOBAL_INTUITIVE_AUTH_TOKEN=edqAuthorizationToken;
 	window.EdqConfig.GLOBAL_INTUITIVE_ISO3_COUNTRY=countryAlpha3(globalIntuitiveIsoCountry);
-	window.EdqConfig.GLOBAL_INTUITIVE_ELEMENT= document.getElementById(edqAddressLine1Id);
+	window.EdqConfig.GLOBAL_INTUITIVE_ELEMENT= edqAddressLine1Id;
 	/**
 	* Feature 118583
 	* Configuration option to include Data Sets for Global Intuitive*/
 	if (edqDataSetUsage) window.EdqConfig.GLOBAL_INTUITIVE_DATASET=edqDataSetCode;
 	window.EdqConfig.GLOBAL_INTUITIVE_MAPPING= [
 		{
-			field: document.getElementById(edqAddressLine1Id),
+			field: edqAddressLine1Id,
 			elements: ["address.addressLine1"]
 		},
 		{
-			field: document.getElementById(edqAddressLine2Id),
+			field: edqAddressLine2Id,
 			elements: ["address.addressLine2"]
 		},
 		{
-			field: document.getElementById(edqCityLineId),
+			field: edqCityLineId,
 			elements: ["address.locality"]
 		},
 		{
-			field: document.getElementById(edqStateLineId),
+			field: edqStateLineId,
 			elements: ["address.province"]
 		},
 		{
-			field: document.getElementById(edqPostalLineId),
+			field: edqPostalLineId,
 			elements: ["address.postalCode"]
 		},
 	];
@@ -456,70 +459,43 @@ function edqSetGlobalIntuitiveConfiguration() {
 * The setCheckoutFormEvents is intended to set all input address fields variables depending on the stage we are(billing/shipping); 
 * the selectors choose by this function just appear once the stage is completed; once we click on the selector the other will 
 * be going to the stage that we're selecting and the will continue the regular workflow.*/
+function addEventOnElement(selector, event, fn) {
+	const element = document.querySelector(selector);
+	if (!element) { return; }
+	element.addEventListener(event, fn);
+}
 function setCheckoutFormEvents() {
-	if (document.getElementById(edqCountryLineId) != null) 
-		if (document.getElementById(edqCountryLineId).value === "") {
-			document.getElementById(edqCountryLineId).value = "US";
-		}
+	if (edqCountryLineId != null)
+		if (edqCountryLineId.value === "") { edqCountryLineId.value = "US"; }
 	/**
-	* BUG-125898
-	* */
-	if (document.querySelector("[name=dwfrm_address_country]")) {
-		document.querySelector("[name=dwfrm_address_country]").addEventListener("change", function() {
-			setEventsForListeners();
-		});
-	}
-	if (document.querySelector("[name=dwfrm_shipping_shippingAddress_addressFields_country]")) {
-		document.querySelector("[name=dwfrm_shipping_shippingAddress_addressFields_country]").addEventListener("change", function() {
-			setEventsForListeners("shipping");
-		});
-	}
-	if (document.querySelector("[name=dwfrm_billing_addressFields_country]")) {
-		document.querySelector("[name=dwfrm_billing_addressFields_country]").addEventListener("change", function() {
-			setEventsForListeners("billing");
-		});
-	}
-	if (document.querySelector("#editShipping")) {
-		document.querySelector("#editShipping").addEventListener("click", function() {
-			setEventsForListeners("shipping");
-		});
-	}
-	if (document.querySelector("[name=edqShippingAddAddress]")) {
-		document.querySelector("[name=edqShippingAddAddress]").addEventListener("click", function() {
-			setEventsForListeners("shipping");
-		});
-	}
-	if (document.querySelector("[name=edqShippingEditAddress]")) {
-		document.querySelector("[name=edqShippingEditAddress]").addEventListener("click", function() {
-			setEventsForListeners("shipping");
-		});
-	}
-	if (document.querySelector(".address-selector-block")) {
-		document.querySelector(".address-selector-block").addEventListener("click", function() {
-			setEventsForListeners("billing");
-		});
-	}
-	if (document.querySelector("[name=edqBillingAddAddress]")) {
-		document.querySelector("[name=edqBillingAddAddress]").addEventListener("click", function() {
-			setEventsForListeners("billing");
-		});
-	}
-	if (document.querySelector("[name=edqBillingEditAddress]")) {
-		document.querySelector("[name=edqBillingEditAddress]").addEventListener("click", function() {
-			setEventsForListeners("billing");
-		});
-	}
+	* Autofill after selecting a suggested address is broken.
+	* By doing this we can refresh the configuration for Global Intuitive in Checkout stage; we can toogle between 
+	* shipping and billing address elements; since the webpage doesn't reload, all elements are controlled by js and css; 
+	* the listeners are set to refresh the configuration for Global Intuitive.
+	* For more information see Bug #125898 */
+	const setEventsForRegistration = function() { setEventsForListeners(); };
+	const setEventsForBilling = function() { setEventsForListeners("billing"); };
+	const setEventsForShipping = function() { setEventsForListeners("shipping"); };
+	addEventOnElement("[name=edqBillingAddAddress]", "change", setEventsForRegistration);
+	addEventOnElement("[name=dwfrm_shipping_shippingAddress_addressFields_country]", "change", setEventsForShipping);
+	addEventOnElement("[name=dwfrm_billing_addressFields_country]", "change", setEventsForBilling);
+	addEventOnElement("#editShipping", "click", setEventsForShipping);
+	addEventOnElement("[name=edqShippingAddAddress]", "click", setEventsForShipping);
+	addEventOnElement("[name=edqShippingEditAddress]", "click", setEventsForShipping);
+	addEventOnElement(".address-selector-block", "click", setEventsForBilling);
+	addEventOnElement("[name=edqBillingAddAddress]", "click", setEventsForBilling);
+	addEventOnElement("[name=edqBillingEditAddress]", "click", setEventsForBilling);
 }
 function setEventsForListeners(checkoutStage) {
 	setEdqInputSelectors(checkoutStage);
 	removeMultipleEDQSuggestion();
 	edqSetGlobalIntuitiveConfiguration();
-	EDQ.address.globalIntuitive.activateValidation(document.getElementById(edqAddressLine1Id));
+	EDQ.address.globalIntuitive.activateValidation(edqAddressLine1Id);
 }
 /**
-* BUG-108100
-* Remove all edq-verification-suggestion-box that are created so we have only one box active.
-* */
+* Global Intuitive creating multiple elements of suggestion box
+* By doing this we remove all edq-verification-suggestion-box that are created; except the one we're using.
+* For more information see Bug #108100 */
 function removeMultipleEDQSuggestion() {
 	var edqSuggestionBoxLength = document.querySelectorAll("#edq-verification-suggestion-box").length;
 	for (var i=0; i < edqSuggestionBoxLength; i++) {
@@ -529,77 +505,65 @@ function removeMultipleEDQSuggestion() {
 }
 /**
  * Pro Web - Address (Verification Engine)
- * Sets the configuration to use Pro Web - Address (Verification Engine)
- */
+ * Sets the configuration to use Pro Web - Address (Verification Engine) */
 function edqValidateAddressCallBack() {
 	var edqProWebMetaDataJSON;
 	var edqProWebResponse = document.querySelector("#form-submit");
 	if (edqProWebResponse.getAttribute("edq-metadata")) {
 		edqProWebMetaDataJSON = JSON.parse(edqProWebResponse.getAttribute("edq-metadata"));
-		document.getElementById(edqStateLineId).value = edqProWebMetaDataJSON["State code"];
+		document.getElementById(edqStateLineId.id).value = edqProWebMetaDataJSON["State code"];
 		document.querySelector("#form-submit").removeAttribute("edq-metadata");
 	}
 	if (edqProWebCallbackValidation) {
 		if (edqProWebExecuteTransitionCallBack(edqProWebMetaDataJSON)) {
-			edqCheckoutPageWorkflows();
+			document.querySelector("#form-submit").style.display = "none";
+			edqCurrentSubmitButtonSelector.style.display = "block";
+			edqCurrentSubmitButtonSelector.removeAttribute("style");
+			edqCurrentSubmitButtonSelector.click();
 		}
-	} else { edqCheckoutPageWorkflows(); }
+	} else {
+		document.querySelector("#form-submit").style.display = "none";
+		edqCurrentSubmitButtonSelector.style.display = "block";
+		edqCurrentSubmitButtonSelector.removeAttribute("style");
+		edqCurrentSubmitButtonSelector.click();
+	}
+}
+function setButtonConfigurationCallback() {
+	edqCurrentSubmitButtonSelector.style.display = "none";
+	document.querySelector("#form-submit").style.display = "block";
+	document.querySelector("#form-submit").innerText = edqCurrentSubmitButtonSelector.innerText;
+}
+function setEventsForListenersProWeb(checkoutStage, checkoutStageButton) {
+	pageCheckoutStage = checkoutStage;
+	edqCurrentSubmitButtonSelector = document.querySelector(checkoutStageButton);
+	setButtonConfigurationCallback();
+	edqSetProWebConfiguration();
 }
 function edqCheckoutPageWorkflows() {
-	edqCurrentSubmitButtonSelector.style.display = "inline-block";
-	document.querySelector("#form-submit").style.display = "none";
-	if ((pageCheckoutStage) && (pageCheckoutStage.match(/shipping/))) {
-		pageCheckoutStage = "payment";
-		var edqCheckoutButton = edqCurrentSubmitButtonSelector;
-		edqCurrentSubmitButtonSelector.style.display = "none";
-		setButtonConfigurationCallback("billing", "button[value=submit-payment]", originalButtonDisplayNextPlaceOrderText);
-		edqSetProWebConfiguration();
-		edqCheckoutButton.click();
-	} else if ((pageCheckoutStage) && (pageCheckoutStage.match(/payment/))) {
-		pageCheckoutStage = "";
-		var edqPaymentButton = edqCurrentSubmitButtonSelector;
-		edqCurrentSubmitButtonSelector.style.display = "none";
-		setButtonConfigurationCallback("", "button[value=place-order]", originalButtonDisplayPlaceOrderText);
-		edqPaymentButton.click();
-	} else { edqCurrentSubmitButtonSelector.click(); }
-}
-function setButtonConfigurationCallback(selectorCurrentLocation, currentSubmitButton, currentSubmitButtonDisplayText) {
-	var edqProWebSubmitButton = document.querySelector("#form-submit"); 
-	setEdqInputSelectors(selectorCurrentLocation);
-	//setEdqSelectSelectors(selectorCurrentLocation);
-	edqCurrentSubmitButtonSelector = document.querySelector(currentSubmitButton);
-	edqProWebSubmitButton.innerText = currentSubmitButtonDisplayText;
-	edqProWebSubmitButton.style.display = "inline-block";
-	edqCurrentSubmitButtonSelector.style.display = "none";
+	/** TASK:101727 Potential misconfiguration of checkout process.
+    * By doing this we can refresh the configuration for Pro Web in Checkout stage; we can toogle between 
+	* shipping and billing address elements; since the webpage doesn't reload, all elements are controlled by js and css; 
+	* the listeners are set to refresh the configuration for Pro Web. */
+	const setEventsForBillingStage = function() { setEventsForListenersProWeb("payment", "[value=submit-payment]"); };
+	const setEventsForShippingStage = function() { setEventsForListenersProWeb("shipping", "[value=submit-shipping]"); };
+	addEventOnElement("#editShipping", "mousedown", setEventsForShippingStage);
+	addEventOnElement(".shipping-address-block", "click", setEventsForShippingStage);
+	addEventOnElement("#editPayment", "mousedown", setEventsForBillingStage);
+	addEventOnElement("[name=edqBillingAddAddress]", "click", setEventsForBillingStage);
+	addEventOnElement("[name=edqBillingEditAddress]", "click", setEventsForBillingStage);
+	addEventOnElement(".billing-address", "click", setEventsForBillingStage);
+	
 }
 function edqSetProWebConfiguration() {
-	/** TASK:101727 Potential misconfiguration of checkout process. 
-     * This element uses mousedown because this event listener is triggered before the form submit event. *
-     */
-	if (document.getElementById("editShipping")) {
-		document.getElementById("editShipping").addEventListener("mousedown", function() {
-			pageCheckoutStage = "shipping";
-			setButtonConfigurationCallback("shipping", "button[value=submit-payment]", originalButtonDisplayNextPaymentText);
-			edqSetProWebConfiguration();
-		});
-	}
-	if (document.getElementById("editPayment")) {
-		document.getElementById("editPayment").addEventListener("mousedown", function() {
-			pageCheckoutStage = "payment";
-			setButtonConfigurationCallback("billing", "button[value=place-order]", originalButtonDisplayNextPlaceOrderText);
-			edqSetProWebConfiguration();
-		});
-	}
 	/** This is intended to hide the form button in initial load of the page; just to show verification engine button in the form. **/
 	if (edqCurrentSubmitButtonSelector) {
 		edqCurrentSubmitButtonSelector.style.display = "none";
 	}
 	document.getElementById("form-submit").addEventListener("mouseover", edqEmailPhoneValidationCallback);
-	var proWebIsoCountry;
-	if(document.getElementById(edqCountryLineId) == null) 
-		proWebIsoCountry = vDefaultCountry;
-	else
-		proWebIsoCountry = document.getElementById(edqCountryLineId).value;
+	var proWebIsoCountry = vDefaultCountry;
+	if (edqCountryLineId != null) {
+		proWebIsoCountry = edqCountryLineId.value;
+	}
 	window.EdqConfig.PRO_WEB_TIMEOUT= 3500;
 	window.EdqConfig.PRO_WEB_AUTH_TOKEN=edqAuthorizationToken;
 	window.EdqConfig.PRO_WEB_SUBMIT_TRIGGERS= [
@@ -611,30 +575,29 @@ function edqSetProWebConfiguration() {
 	window.EdqConfig.PRO_WEB_LAYOUT=edqProWebAddressLayout;
 	window.EdqConfig.PRO_WEB_COUNTRY=countryAlpha3(proWebIsoCountry);
 	window.EdqConfig.PRO_WEB_CALLBACK="edqValidateAddressCallBack()";
-	//window.EdqConfig.PRO_WEB_CALLBACK2=function() { console.log("You should see this after verification and before page transitions "); };
 	window.EdqConfig.PRO_WEB_MAPPING=[
 		{
-			field: document.getElementById(edqAddressLine1Id),
+			field: edqAddressLine1Id,
 			elements: ["Formatted Address 2"],
 			modalFieldSelector:"#interaction-address--original-address-line-one",
 		},
 		{
-			field: document.getElementById(edqAddressLine2Id),
+			field: edqAddressLine2Id,
 			elements: ["AddressLine2"],
 			modalFieldSelector:"#interaction-address--original-address-line-two",
 		},
 		{
-			field: document.getElementById(edqCityLineId),
+			field: edqCityLineId,
 			elements: ["City name"],
 			modalFieldSelector:"#interaction-address--original-locality",
 		},
 		{
-			field: document.getElementById(edqStateLineId),
+			field: edqStateLineId,
 			elements: ["State code"],
 			modalFieldSelector:"#interaction-address--original-province",
 		},
 		{
-			field: document.getElementById(edqPostalLineId),
+			field: edqPostalLineId,
 			separator: "-",
 			elements: ["ZIP Code", "+4 code"],
 			modalFieldSelector:"#interaction-address--original-postal-code",

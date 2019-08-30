@@ -7,12 +7,18 @@
     <isloop items="${dw.object.SystemObjectMgr.describe('SitePreferences').getCustomAttributeDefinition('EDQDevUrls').values}" var="dev">
         <isif condition="${dev.value == 'GlobalIntuitiveJS'}">
         	<script src="${dev.displayValue}"></script>
+        	<script type="text/javascript">
+        		edqGlobalIntuitiveUnicornJsPath = '${dev.displayValue}';
+			</script>
         </isif>
     </isloop>
 <iselseif condition="${dw.system.Site.current.preferences.custom.EDQStaging == 'Production'}">
     <isloop items="${dw.object.SystemObjectMgr.describe('SitePreferences').getCustomAttributeDefinition('EDQProdUrls').values}" var="prod">
         <isif condition="${prod.value == 'GlobalIntuitiveJS'}">
         	<script src="${prod.displayValue}"></script>
+        	<script type="text/javascript">
+        		edqGlobalIntuitiveUnicornJsPath = '${prod.displayValue}';
+			</script>
         </isif>
     </isloop>
 </iselseif>
