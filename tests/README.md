@@ -1,6 +1,13 @@
 #Introduction 
 Experian Data Quality's cartridge for Demandware.
 
-This repo consists of two versions of the cartridge. They have the same functionality, but are implemented differently:
-    1. int_QAS: Implemented with pipelines
-    2. int_QASc: Implemented with controllers
+For testing files; intern is the one used by Experian.
+
+To start your testings you need to install some dependencies in the "tests" folder:
+* npm install intern
+* npm install npx
+
+For testing:
+* Open a command prompt in "tests" folder
+* Go to the next "tests" folder. (cd tests)
+* Write the command "npx intern"

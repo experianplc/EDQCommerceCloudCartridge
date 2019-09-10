@@ -150,13 +150,10 @@ To configure Global Intuitive, you need to access the Business Manager and go to
 ![Global Intuitive Options](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/214globalOptions.png)
 
 * The preferred address search engine option will let you choose between the address search engine options (choose verification engine to only use this selected engine).
-<<<<<<< HEAD
-=======
 * The Data Set Code option will let you set a code to use Data Sets in case the country ISO code requires it.
 * The Activates or deactivates Data Set usage option will let you choose to activate or deactivate Data Set usage.
 * The Data Set Code will let you set the Data Set that will be use for an especific country.
 * The activates or deactivates Data Set usage will let you use the Data Set function; it should be false for countries that don't need Data Sets. 
->>>>>>> DemandwareTestsIntern
 
 The store touchpoints for Global Intuitive are:
 * Add/Edit Address form.
@@ -379,3 +376,5 @@ Checkout Form | ✔ | ✔ | ✔ | ✔
 ##  6\. Known Issues
 * Timeout connection issues can be experience due to a slow internet connection. If you don’t get an answer in the default time; you can try making the request again.
 
+##  7\. Failover and recovery
+* If the unicorn/pegasus libraries connection fails the store will continue with it's normal workflow; this issue may be caused due a non valid token or slow internet connection.

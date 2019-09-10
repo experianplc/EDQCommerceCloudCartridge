@@ -11,7 +11,7 @@
     <div class="card-body">
         <form autocomplete="on" method="POST" action="${URLUtils.url('CheckoutServices-SubmitPayment')}"
             data-address-mode="${!pdict.order.billing.billingAddress.address ? 'new' : 'edit'}"
-            <isprint value=${pdict.forms.billingForm.attributes} encoding="off" /> novalidate>
+            <isprint value=${pdict.forms.billingForm.attributes} encoding="htmlsinglequote" /> novalidate>
 
             <!-------------------------------------------------------------------------->
             <!-- Billing Address Selector                                             -->

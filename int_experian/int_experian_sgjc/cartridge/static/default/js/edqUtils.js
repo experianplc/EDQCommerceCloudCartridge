@@ -316,7 +316,6 @@ for (i = 0; i < buttonSelector.length; i++) {
          * that's why we're setting just this case here; this case just happens in SiteGenesis billing form. **/
 		buttonSelector[i].addEventListener("mouseover", edqVerificationCallback);
 		/*TASK:101728 Change Validate Button*/
-		buttonSelector[i].style.display = "none";
 		edqCurrentSubmitButtonSelectorIndex = i;
 	}
 }

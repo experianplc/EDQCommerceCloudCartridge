@@ -1,7 +1,7 @@
 /*global EDQ*/
 /*eslint no-undef: "error"*/
 /*eslint no-unused-vars: ["error", { "vars": "local" }]*/
-/* exported edqSetEmailValidationConfiguration edqSetPhoneValidationConfiguration setCheckoutFormEvents edqValidateAddressCallBack pageCheckoutStage edqCheckoutPageWorkflows */
+/* exported edqSetEmailValidationConfiguration edqSetPhoneValidationConfiguration setCheckoutFormEvents edqValidateAddressCallBack edqCheckoutPageWorkflows */
 var vDefaultCountry, 
 	edqAddressLine1Id,
 	edqAddressLine2Id,
@@ -18,7 +18,6 @@ var vDefaultCountry,
 	edqValidatePhone,
 	edqAuthorizationToken,
 	edqProWebAddressLayout,
-	pageCheckoutStage,
 	edqDataSetUsage,
 	edqDataSetCode,
 	edqProWebCallbackValidation,
@@ -534,8 +533,8 @@ function setButtonConfigurationCallback() {
 	document.querySelector("#form-submit").innerText = edqCurrentSubmitButtonSelector.innerText;
 }
 function setEventsForListenersProWeb(checkoutStage, checkoutStageButton) {
-	pageCheckoutStage = checkoutStage;
 	edqCurrentSubmitButtonSelector = document.querySelector(checkoutStageButton);
+	setEdqInputSelectors(checkoutStage);
 	setButtonConfigurationCallback();
 	edqSetProWebConfiguration();
 }
@@ -544,7 +543,7 @@ function edqCheckoutPageWorkflows() {
     * By doing this we can refresh the configuration for Pro Web in Checkout stage; we can toogle between 
 	* shipping and billing address elements; since the webpage doesn't reload, all elements are controlled by js and css; 
 	* the listeners are set to refresh the configuration for Pro Web. */
-	const setEventsForBillingStage = function() { setEventsForListenersProWeb("payment", "[value=submit-payment]"); };
+	const setEventsForBillingStage = function() { setEventsForListenersProWeb("billing", "[value=submit-payment]"); };
 	const setEventsForShippingStage = function() { setEventsForListenersProWeb("shipping", "[value=submit-shipping]"); };
 	addEventOnElement("#editShipping", "mousedown", setEventsForShippingStage);
 	addEventOnElement(".shipping-address-block", "click", setEventsForShippingStage);

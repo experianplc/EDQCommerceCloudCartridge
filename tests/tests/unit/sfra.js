@@ -14,7 +14,8 @@ registerSuite("EDQUtils Unit Tests", {
         "countryAlpha3 works": function () {
             // TODO: The file organization needs to be substantially improved, and then this can be
             // refactored
-            var path = "/../../Experian_EDQ_SFRA/cartridges/Experian_EDQ_SFRA/cartridge/static/default/js/EDQUtils.js";
+            //var path = "/../../Experian_EDQ_SFRA/cartridges/Experian_EDQ_SFRA/cartridge/static/default/js/edqUtils.js";
+			var path = "/../../int_experian/int_experian_sfra/cartridge/static/default/js/edqUtils.js";
             var globalCode = fs.readFileSync(__dirname + path);
             var dom = new jsdom_1.JSDOM('<!DOCTYPE html>');
             var context = {
