@@ -1,7 +1,7 @@
 /*global EDQ*/
 /*eslint no-undef: "error"*/
 /*eslint no-unused-vars: ["error", { "vars": "local" }]*/
-/* exported edqSetEmailValidationConfiguration edqSetPhoneValidationConfiguration setCheckoutFormEvents edqValidateAddressCallBack pageCheckoutStage edqCheckoutPageWorkflows */
+/* exported edqSetEmailValidationConfiguration edqSetPhoneValidationConfiguration setCheckoutFormEvents edqValidateAddressCallBack edqCheckoutPageWorkflows */
 var vDefaultCountry, 
 	edqAddressLine1Id,
 	edqAddressLine2Id,
@@ -18,7 +18,6 @@ var vDefaultCountry,
 	edqValidatePhone,
 	edqAuthorizationToken,
 	edqProWebAddressLayout,
-	pageCheckoutStage,
 	edqDataSetUsage,
 	edqDataSetCode,
 	edqProWebCallbackValidation,
@@ -476,15 +475,14 @@ function setCheckoutFormEvents() {
 	const setEventsForRegistration = function() { setEventsForListeners(); };
 	const setEventsForBilling = function() { setEventsForListeners("billing"); };
 	const setEventsForShipping = function() { setEventsForListeners("shipping"); };
-	addEventOnElement("[name=edqBillingAddAddress]", "change", setEventsForRegistration);
+	addEventOnElement("#country", "change", setEventsForRegistration);
 	addEventOnElement("[name=dwfrm_shipping_shippingAddress_addressFields_country]", "change", setEventsForShipping);
 	addEventOnElement("[name=dwfrm_billing_addressFields_country]", "change", setEventsForBilling);
 	addEventOnElement("#editShipping", "click", setEventsForShipping);
 	addEventOnElement("[name=edqShippingAddAddress]", "click", setEventsForShipping);
 	addEventOnElement("[name=edqShippingEditAddress]", "click", setEventsForShipping);
 	addEventOnElement(".address-selector-block", "click", setEventsForBilling);
-	addEventOnElement("[name=edqBillingAddAddress]", "click", setEventsForBilling);
-	addEventOnElement("[name=edqBillingEditAddress]", "click", setEventsForBilling);
+	addEventOnElement("#dwfrm_billing", "focus", setEventsForBilling);
 }
 function setEventsForListeners(checkoutStage) {
 	setEdqInputSelectors(checkoutStage);
@@ -531,34 +529,35 @@ function edqValidateAddressCallBack() {
 function setButtonConfigurationCallback() {
 	edqCurrentSubmitButtonSelector.style.display = "none";
 	document.querySelector("#form-submit").style.display = "block";
-	document.querySelector("#form-submit").innerText = edqCurrentSubmitButtonSelector.innerText;
+	document.querySelector("#form-submit").innerText = edqCurrentSubmitButtonSelector.innerText.replace(/\n/g, "");
 }
 function setEventsForListenersProWeb(checkoutStage, checkoutStageButton) {
-	pageCheckoutStage = checkoutStage;
 	edqCurrentSubmitButtonSelector = document.querySelector(checkoutStageButton);
+	setEdqInputSelectors(checkoutStage);
 	setButtonConfigurationCallback();
 	edqSetProWebConfiguration();
 }
 function edqCheckoutPageWorkflows() {
-	/** TASK:101727 Potential misconfiguration of checkout process.
-    * By doing this we can refresh the configuration for Pro Web in Checkout stage; we can toogle between 
-	* shipping and billing address elements; since the webpage doesn't reload, all elements are controlled by js and css; 
-	* the listeners are set to refresh the configuration for Pro Web. */
-	const setEventsForBillingStage = function() { setEventsForListenersProWeb("payment", "[value=submit-payment]"); };
-	const setEventsForShippingStage = function() { setEventsForListenersProWeb("shipping", "[value=submit-shipping]"); };
-	addEventOnElement("#editShipping", "mousedown", setEventsForShippingStage);
-	addEventOnElement(".shipping-address-block", "click", setEventsForShippingStage);
-	addEventOnElement("#editPayment", "mousedown", setEventsForBillingStage);
-	addEventOnElement("[name=edqBillingAddAddress]", "click", setEventsForBillingStage);
-	addEventOnElement("[name=edqBillingEditAddress]", "click", setEventsForBillingStage);
-	addEventOnElement(".billing-address", "click", setEventsForBillingStage);
-	
-}
-function edqSetProWebConfiguration() {
 	/** This is intended to hide the form button in initial load of the page; just to show verification engine button in the form. **/
 	if (edqCurrentSubmitButtonSelector) {
 		edqCurrentSubmitButtonSelector.style.display = "none";
 	}
+	/** TASK:101727 Potential misconfiguration of checkout process.
+    * By doing this we can refresh the configuration for Pro Web in Checkout stage; we can toogle between 
+	* shipping and billing address elements; since the webpage doesn't reload, all elements are controlled by js and css; 
+	* the listeners are set to refresh the configuration for Pro Web. */
+	const setEventsForRegistrationStage = function() { setEventsForListenersProWeb("", "[name=save]"); };
+	const setEventsForBillingStage = function() { setEventsForListenersProWeb("billing", "[value=submit-payment]"); };
+	const setEventsForShippingStage = function() { setEventsForListenersProWeb("shipping", "[value=submit-shipping]"); };
+	addEventOnElement("#country", "change", setEventsForRegistrationStage);
+	addEventOnElement("#editShipping", "mousedown", setEventsForShippingStage);
+	addEventOnElement(".shipping-address-block", "click", setEventsForShippingStage);
+	addEventOnElement("#editPayment", "mousedown", setEventsForBillingStage);
+	addEventOnElement(".billing-address", "click", setEventsForBillingStage);
+	addEventOnElement("#dwfrm_billing", "focus", setEventsForBillingStage);
+	
+}
+function edqSetProWebConfiguration() {
 	document.getElementById("form-submit").addEventListener("mouseover", edqEmailPhoneValidationCallback);
 	var proWebIsoCountry = vDefaultCountry;
 	if (edqCountryLineId != null) {

@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/experianplc/EDQCommerceCloudCartridge#readme",
   "dependencies": {
-    "intern": "^4.2.0"
+    "intern": "^4.4.3"
   },
   "devDependencies": {
     "chromedriver": "^74.0.0",
