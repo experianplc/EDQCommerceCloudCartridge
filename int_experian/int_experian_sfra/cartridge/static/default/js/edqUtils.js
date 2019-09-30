@@ -575,33 +575,32 @@ function edqSetProWebConfiguration() {
 	window.EdqConfig.PRO_WEB_COUNTRY=countryAlpha3(proWebIsoCountry);
 	window.EdqConfig.PRO_WEB_CALLBACK="edqValidateAddressCallBack()";
 	window.EdqConfig.PRO_WEB_MAPPING=[
-		{
-			field: edqAddressLine1Id,
-			elements: ["Formatted Address 2"],
-			modalFieldSelector:"#interaction-address--original-address-line-one",
-		},
-		{
-			field: edqAddressLine2Id,
-			elements: ["AddressLine2"],
-			modalFieldSelector:"#interaction-address--original-address-line-two",
-		},
-		{
-			field: edqCityLineId,
-			elements: ["City name"],
-			modalFieldSelector:"#interaction-address--original-locality",
-		},
-		{
-			field: edqStateLineId,
-			elements: ["State code"],
-			modalFieldSelector:"#interaction-address--original-province",
-		},
-		{
-			field: edqPostalLineId,
-			separator: "-",
-			elements: ["ZIP Code", "+4 code"],
-			modalFieldSelector:"#interaction-address--original-postal-code",
-		},
-	];
+        {
+            field: edqAddressLine1Id,
+            elements: ["Formatted Address 1"],
+            modalFieldSelector:"#interaction-address--original-address-line-one",
+        },
+        {
+            field: edqAddressLine2Id,
+            elements: ["Formatted Address 2"],
+            modalFieldSelector:"#interaction-address--original-address-line-two",
+        },
+        {
+            field: edqCityLineId,
+            elements: ["City name"],
+            modalFieldSelector:"#interaction-address--original-locality",
+        },
+        {
+            field: edqStateLineId,
+            elements: ["State code"],
+            modalFieldSelector:"#interaction-address--original-province",
+        },
+        {
+            field: edqPostalLineId,
+            elements: ["ZIP Code"],
+            modalFieldSelector:"#interaction-address--original-postal-code",
+        },
+    ];
 }
 function edqProWebExecuteTransitionCallBack(edqProWebMetaDataJSON) { 
 	var edqCustomFunctionName = edqCustomCallbackName;
