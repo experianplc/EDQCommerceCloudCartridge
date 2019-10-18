@@ -411,8 +411,12 @@ function edqSetGlobalIntuitiveConfiguration() {
 	* By doing this in the checkout stage for SFRA we can remove the global-intuitive-unicorn.js in order to force to reload all the content with 
 	* the new parameters that we're including, since the webpage doesn't do a refresh items we're not changing values 
 	* For more information see Bug #126164 */
-	$("script[src=\"" + edqGlobalIntuitiveUnicornJsPath + "\"]").remove();	
-	$("<script>").attr("src", edqGlobalIntuitiveUnicornJsPath).appendTo("footer");
+	$("script[src=\"" + edqGlobalIntuitiveUnicornJsPath + "\"]").remove();
+	$("<script>").attr({
+		src:edqGlobalIntuitiveUnicornJsPath,
+		integrity:"sha512-ooVQYWcrVoGAZXC+qPMJaFsEkLB82EsT42J+p0U5INWm+NHrN+XvnWsALGv440Zg3a/QsDJ2L9XR0592fkSBmA==",
+		crossorigin:"anonymous"
+	}).appendTo("footer");
 	if(edqAddressLine1Id) {
 		edqAddressLine1Id.addEventListener("focus", function() {
 			removeMultipleEDQSuggestion();
@@ -575,32 +579,33 @@ function edqSetProWebConfiguration() {
 	window.EdqConfig.PRO_WEB_COUNTRY=countryAlpha3(proWebIsoCountry);
 	window.EdqConfig.PRO_WEB_CALLBACK="edqValidateAddressCallBack()";
 	window.EdqConfig.PRO_WEB_MAPPING=[
-        {
-            field: edqAddressLine1Id,
-            elements: ["Formatted Address 1"],
-            modalFieldSelector:"#interaction-address--original-address-line-one",
-        },
-        {
-            field: edqAddressLine2Id,
-            elements: ["Formatted Address 2"],
-            modalFieldSelector:"#interaction-address--original-address-line-two",
-        },
-        {
-            field: edqCityLineId,
-            elements: ["City name"],
-            modalFieldSelector:"#interaction-address--original-locality",
-        },
-        {
-            field: edqStateLineId,
-            elements: ["State code"],
-            modalFieldSelector:"#interaction-address--original-province",
-        },
-        {
-            field: edqPostalLineId,
-            elements: ["ZIP Code"],
-            modalFieldSelector:"#interaction-address--original-postal-code",
-        },
-    ];
+		{
+			field: edqAddressLine1Id,
+			elements: ["Formatted Address 2"],
+			modalFieldSelector:"#interaction-address--original-address-line-one",
+		},
+		{
+			field: edqAddressLine2Id,
+			elements: ["AddressLine2"],
+			modalFieldSelector:"#interaction-address--original-address-line-two",
+		},
+		{
+			field: edqCityLineId,
+			elements: ["City name"],
+			modalFieldSelector:"#interaction-address--original-locality",
+		},
+		{
+			field: edqStateLineId,
+			elements: ["State code"],
+			modalFieldSelector:"#interaction-address--original-province",
+		},
+		{
+			field: edqPostalLineId,
+			separator: "-",
+			elements: ["ZIP Code", "+4 code"],
+			modalFieldSelector:"#interaction-address--original-postal-code",
+		},
+	];
 }
 function edqProWebExecuteTransitionCallBack(edqProWebMetaDataJSON) { 
 	var edqCustomFunctionName = edqCustomCallbackName;
