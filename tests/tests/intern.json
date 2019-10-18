@@ -1,6 +1,5 @@
 {
   "functionalSuites": "functional SFRA/**/*.js",
-  "suites": "unit/*.js",
   "filterErrorStack": true,
 
   "capabilities": {
@@ -15,9 +14,7 @@
           "window-size=1920,1080",
           "disable-gpu"
         ]
-      },
-      {     
-        "browserName": "node"     
+
       }
     }
   ],

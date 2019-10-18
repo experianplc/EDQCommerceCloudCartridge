@@ -16,7 +16,7 @@
     "eslint": "^6.1.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",
-    "intern": "^4.5.0",
+    "intern": "^4.4.3",
     "istanbul": "^0.4.4",
     "mocha": "^2.5.3",
     "node-sass": "^4.9.0",
@@ -35,8 +35,5 @@
   ],
   "paths": {
     "base": "../app_storefront_base/"
-  },
-  "dependencies": {
-    "npx": "^10.2.0"
   }
 }

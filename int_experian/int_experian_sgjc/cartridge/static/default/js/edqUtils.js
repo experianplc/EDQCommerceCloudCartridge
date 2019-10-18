@@ -383,9 +383,8 @@ function edqSetGlobalIntuitiveConfiguration() {
 	else
 		window.EdqConfig.GLOBAL_INTUITIVE_ISO3_COUNTRY=countryAlpha3(vDefaultCountry);
 	/**
-     * Feature 118583
-     * Configuration option to include Data Sets for Global Intuitive
-     */
+	* Feature 118583
+	* Configuration option to include Data Sets for Global Intuitive*/
 	if (edqDataSetUsage)
 		window.EdqConfig.GLOBAL_INTUITIVE_DATASET=edqDataSetCode;
 	window.EdqConfig.GLOBAL_INTUITIVE_ELEMENT= edqAddressLine1Selector;
@@ -413,9 +412,9 @@ function edqSetGlobalIntuitiveConfiguration() {
 	];
 }
 /**
- * Pro Web - Address (Verification Engine)
- * Sets the configuration to use Pro Web - Address (Verification Engine)
- */
+* Pro Web - Address (Verification Engine)
+* Sets the configuration to use Pro Web - Address (Verification Engine)
+*/
 function edqValidateAddressCallBack() {
 	var edqProWebResponse = document.querySelector("#form-submit");
 	if (!edqProWebResponse.hasAttribute("edq-metadata")) { return; }
@@ -426,9 +425,7 @@ function edqValidateAddressCallBack() {
 		if (edqProWebExecuteTransitionCallBack(edqProWebMetaDataJSON)) {
 			edqCheckoutPageWorkflows();
 		}
-	} else {
-		edqCheckoutPageWorkflows();
-	}
+	} else { edqCheckoutPageWorkflows(); }
 }
 function edqCheckoutPageWorkflows() {
 	if (edqCurrentSubmitButtonSelectorIndex) {
@@ -487,7 +484,7 @@ function edqSetProWebConfiguration() {
 		},
 	];
 }
-function edqProWebExecuteTransitionCallBack(edqProWebMetaDataJSON) {
+function edqProWebExecuteTransitionCallBack(edqProWebMetaDataJSON) { 
 	var edqCustomFunctionName = edqCustomCallbackName;
 	var edqJsonParameter = [edqProWebMetaDataJSON];
 	var edqCustomTransitionCallback = window[edqCustomFunctionName];

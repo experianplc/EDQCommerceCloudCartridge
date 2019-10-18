@@ -605,7 +605,7 @@ function edqSetProWebConfiguration() {
 			elements: ["ZIP Code", "+4 code"],
 			modalFieldSelector:"#interaction-address--original-postal-code",
 		},
-	];
+    ];
 }
 function edqProWebExecuteTransitionCallBack(edqProWebMetaDataJSON) { 
 	var edqCustomFunctionName = edqCustomCallbackName;
