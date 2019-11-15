@@ -592,6 +592,7 @@ function edqSetProWebConfiguration() {
 		{
 			field: edqCityLineId,
 			elements: ["City name"],
+			transformation: function(el) { return "@" + (el.value || el.innerText) },
 			modalFieldSelector:"#interaction-address--original-locality",
 		},
 		{
