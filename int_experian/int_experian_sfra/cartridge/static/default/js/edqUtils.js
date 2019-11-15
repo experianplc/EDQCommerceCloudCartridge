@@ -22,8 +22,7 @@ var vDefaultCountry,
 	edqDataSetCode,
 	edqProWebCallbackValidation,
 	edqCustomCallbackName,
-	edqGlobalIntuitiveUnicornJsPath,
-	edqGlobalIntuitiveStagging;
+	edqGlobalIntuitiveUnicornJsPath;
 var inputSelector = document.querySelectorAll("input[id]");
 var buttonSelector = document.querySelectorAll("button[name]");
 window.EdqConfig = window.EdqConfig || {};
@@ -413,14 +412,11 @@ function edqSetGlobalIntuitiveConfiguration() {
 	* the new parameters that we're including, since the webpage doesn't do a refresh items we're not changing values 
 	* For more information see Bug #126164 */
 	$("script[src=\"" + edqGlobalIntuitiveUnicornJsPath + "\"]").remove();
-	if (edqGlobalIntuitiveStagging)
-		$("<script>").attr({
-			src:edqGlobalIntuitiveUnicornJsPath,
-			integrity:"sha512-ooVQYWcrVoGAZXC+qPMJaFsEkLB82EsT42J+p0U5INWm+NHrN+XvnWsALGv440Zg3a/QsDJ2L9XR0592fkSBmA==",
-			crossorigin:"anonymous"
-		}).appendTo("footer");
-	else
-		$("<script>").attr("src", edqGlobalIntuitiveUnicornJsPath).appendTo("footer");
+	$("<script>").attr({
+		src:edqGlobalIntuitiveUnicornJsPath,
+		integrity:"sha512-ooVQYWcrVoGAZXC+qPMJaFsEkLB82EsT42J+p0U5INWm+NHrN+XvnWsALGv440Zg3a/QsDJ2L9XR0592fkSBmA==",
+		crossorigin:"anonymous"
+	}).appendTo("footer");
 	if(edqAddressLine1Id) {
 		edqAddressLine1Id.addEventListener("focus", function() {
 			removeMultipleEDQSuggestion();

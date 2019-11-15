@@ -20,7 +20,7 @@ TASK:101728 Change Validate Button
 <isif condition="${dw.system.Site.current.preferences.custom.EDQStaging == 'Development'}">
     <isloop items="${dw.object.SystemObjectMgr.describe('SitePreferences').getCustomAttributeDefinition('EDQDevUrls').values}" var="dev">
         <isif condition="${dev.value == 'VerificationEngineJS'}">
-            <script src="${dev.displayValue}"></script>
+			<script src="${dev.displayValue}" integrity="sha512-QcnUPyslJoXDweq6B+8Fmy1qHD0ezOaTQE4//1IhKQaa+tmBf2QjpN9TuYb3y1jj8r5LCDLpFBwMwMDpzf/F6A==" crossorigin="anonymous"></script>
         </isif>
     </isloop>
 <iselseif condition="${dw.system.Site.current.preferences.custom.EDQStaging == 'Production'}">
