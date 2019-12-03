@@ -587,6 +587,7 @@ function edqSetProWebConfiguration() {
 		{
 			field: edqAddressLine2Id,
 			elements: ["AddressLine2"],
+			transformation: function(el) { return "@" + (el.value || el.innerText) },
 			modalFieldSelector:"#interaction-address--original-address-line-two",
 		},
 		{
