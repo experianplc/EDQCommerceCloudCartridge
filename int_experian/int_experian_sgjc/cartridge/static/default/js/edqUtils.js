@@ -484,6 +484,11 @@ function edqSetProWebConfiguration() {
 			elements: ["ZIP Code", "+4 code"],
 			modalFieldSelector: "#interaction-address--original-postal-code",
 		},
+		{
+			field: edqCountryLineSelector,
+			elements: ['Two character ISO country code'],
+			modalFieldSelector: "#interaction-address--original-country-code",
+		},
 	];
 }
 function edqProWebExecuteTransitionCallBack(edqProWebMetaDataJSON) { 
