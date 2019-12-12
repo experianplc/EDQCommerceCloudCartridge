@@ -610,7 +610,7 @@ function edqSetProWebConfiguration() {
 		{
 			field: edqCountryLineId,
 			elements: ['Two character ISO country code'],
-			modalFieldSelector: "#interaction-address--original-country-code",
+			modalFieldSelector: "#",
 		},
     ];
 }
