@@ -280,6 +280,11 @@ function countryAlpha3(incomingCountryIso2) {
 	countryDict.forEach((val) => iso2ToIso3CountryDict = (incomingCountryIso2.match(val.key)) ? val.value : iso2ToIso3CountryDict);
 	return iso2ToIso3CountryDict || vDefaultCountry;
 }
+function countryAlpha2(incomingCountryIso3) {
+	var iso3ToIso2CountryDict;
+	countryDict.forEach((val) => iso3ToIso2CountryDict = (incomingCountryIso3.match(val.value)) ? val.key : iso3ToIso2CountryDict);
+	return iso3ToIso2CountryDict;
+}
 /*** Set values for EDQ variables ***/
 function setEdqInputSelectors(stageContentLocation = "") {
 	/** In SFRA the checkout web page contains both billing and shipping address input fields in a single page controlled by JavaScripts to hide/show elements.
@@ -458,6 +463,17 @@ function edqSetGlobalIntuitiveConfiguration() {
 		},
 	];
 }
+function setCountryField() {
+	setTimeout(function() {
+		if (edqCountryLineId != null) {
+			if (edqCountryLineId.value === "") {
+				if (edqAddressLine1Id.hasAttribute("edq-metadata")) {
+					edqCountryLineId.value = countryAlpha2(window.EdqConfig.GLOBAL_INTUITIVE_ISO3_COUNTRY);
+				}
+			}
+		}
+	}, 3000);
+}
 /** In SFRA the checkout web page contains both billing and shipping in a single page controlled by JavaScript to hide/show elements. 
 * The setCheckoutFormEvents is intended to set all input address fields variables depending on the stage we are(billing/shipping); 
 * the selectors choose by this function just appear once the stage is completed; once we click on the selector the other will 
@@ -492,6 +508,11 @@ function setEventsForListeners(checkoutStage) {
 	setEdqInputSelectors(checkoutStage);
 	removeMultipleEDQSuggestion();
 	edqSetGlobalIntuitiveConfiguration();
+	addEventOnElement("[name=" + edqAddressLine1Id.name + "]", "keypress", setCountryField);
+	addEventOnElement("[name=" + edqAddressLine2Id.name + "]", "keypress", setCountryField);
+	addEventOnElement("[name=" + edqCityLineId.name + "]", "keypress", setCountryField);
+	addEventOnElement("[name=" + edqPostalLineId.name + "]", "keypress", setCountryField);
+	addEventOnElement("[name=" + edqStateLineId.name + "]", "change", setCountryField);
 	EDQ.address.globalIntuitive.activateValidation(edqAddressLine1Id);
 }
 /**
