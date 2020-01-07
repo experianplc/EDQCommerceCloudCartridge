@@ -472,7 +472,7 @@ function setCountryField() {
 				}
 			}
 		}
-	}, 3000);
+	}, 5000);
 }
 /** In SFRA the checkout web page contains both billing and shipping in a single page controlled by JavaScript to hide/show elements. 
 * The setCheckoutFormEvents is intended to set all input address fields variables depending on the stage we are(billing/shipping); 
@@ -509,10 +509,8 @@ function setEventsForListeners(checkoutStage) {
 	removeMultipleEDQSuggestion();
 	edqSetGlobalIntuitiveConfiguration();
 	addEventOnElement("[name=" + edqAddressLine1Id.name + "]", "keypress", setCountryField);
-	addEventOnElement("[name=" + edqAddressLine2Id.name + "]", "keypress", setCountryField);
-	addEventOnElement("[name=" + edqCityLineId.name + "]", "keypress", setCountryField);
-	addEventOnElement("[name=" + edqPostalLineId.name + "]", "keypress", setCountryField);
-	addEventOnElement("[name=" + edqStateLineId.name + "]", "change", setCountryField);
+	addEventOnElement("[name=" + edqAddressLine1Id.name + "]", "mouseleave", setCountryField);
+	addEventOnElement("[name=" + edqAddressLine1Id.name + "]", "mouseenter", setCountryField);
 	EDQ.address.globalIntuitive.activateValidation(edqAddressLine1Id);
 }
 /**
