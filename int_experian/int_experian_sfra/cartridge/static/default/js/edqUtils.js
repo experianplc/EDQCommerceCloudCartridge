@@ -281,9 +281,9 @@ function countryAlpha3(incomingCountryIso2) {
 	return iso2ToIso3CountryDict || vDefaultCountry;
 }
 function countryAlpha2(incomingCountryIso3) {
-	var iso3ToIso2CountryDict;
-	countryDict.forEach((val) => iso3ToIso2CountryDict = (incomingCountryIso3.match(val.value)) ? val.key : iso3ToIso2CountryDict);
-	return iso3ToIso2CountryDict;
+	return countryDict.filter(function(countryKeyAndValue) {
+		return countryKeyAndValue.value === incomingCountryIso3;
+	})[0] || null;
 }
 /*** Set values for EDQ variables ***/
 function setEdqInputSelectors(stageContentLocation = "") {
@@ -465,12 +465,8 @@ function edqSetGlobalIntuitiveConfiguration() {
 }
 function setCountryField() {
 	setTimeout(function() {
-		if (edqCountryLineId != null) {
-			if (edqCountryLineId.value === "") {
-				if (edqAddressLine1Id.hasAttribute("edq-metadata")) {
-					edqCountryLineId.value = countryAlpha2(window.EdqConfig.GLOBAL_INTUITIVE_ISO3_COUNTRY);
-				}
-			}
+		if (edqCountryLineId !== null && edqCountryLineId.value === "" && edqAddressLine1Id.hasAttribute("edq-metadata")) {
+			edqCountryLineId.value = countryAlpha2(window.EdqConfig.GLOBAL_INTUITIVE_ISO3_COUNTRY)["key"];
 		}
 	}, 5000);
 }
