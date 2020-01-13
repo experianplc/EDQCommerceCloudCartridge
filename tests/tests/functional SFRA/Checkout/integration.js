@@ -1,6 +1,6 @@
-const SfraLogoutUrl = "https://qas01.tech-prtnr-na01.dw.demandware.net/on/demandware.store/Sites-Dev01Test-Site/default/Login-Logout";
-const SFRAProductUrl = "https://qas01.tech-prtnr-na01.dw.demandware.net/s/Dev01Test/nintendo-big-brain-academy-nintendods.html";
-const SFRACheckoutStage = "https://qas01.tech-prtnr-na01.dw.demandware.net/on/demandware.store/Sites-Dev01Test-Site/default/Checkout-Begin";
+const SfraLogoutUrl = "https://qas01.tech-prtnr-na01.dw.demandware.net/on/demandware.store/Sites-RefArch-Site/default/Login-Logout";
+const SFRAProductUrl = "https://qas01.tech-prtnr-na01.dw.demandware.net/s/RefArch/electronics/gaming/games/ubi-soft-quick-yoga-training-nintendods.html?lang=default";
+const SFRACheckoutStage = "https://qas01.tech-prtnr-na01.dw.demandware.net/on/demandware.store/Sites-RefArch-Site/default/Checkout-Begin";
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
@@ -137,6 +137,32 @@ registerSuite('Edq Cartridge Functional Test 2', {
 					.getProperty('value')
 				.then(function(postalCode) {
 				assert.equal("02109-3208", postalCode, 'Postal code value populated. Integration functioning')
+				})
+				.end()
+		},
+		"SFRA Fill country field - Global Intuitive": function() {
+			return this.remote
+				.sleep(4000)
+				.get(SFRACheckoutStage)
+				.sleep(4000)
+				.findByName('dwfrm_shipping_shippingAddress_addressFields_country')
+					.click()
+					.pressKeys('\uE013')
+					.end()
+				.sleep(2000)
+				.findByName('dwfrm_shipping_shippingAddress_addressFields_address1')
+					.clearValue()
+					.type("53 state st lbby")
+					.end()
+				.sleep(3000)
+				.findByCssSelector(".edq-global-intuitive-address-suggestion")
+					.click()
+					.end()
+				.sleep(10000)
+				.findByName('dwfrm_shipping_shippingAddress_addressFields_country')
+					.getProperty('value')
+				.then(function(countryValue) {
+				assert.equal("US", countryValue, 'Country value populated. Integration functioning')
 				})
 				.end()
 		},
