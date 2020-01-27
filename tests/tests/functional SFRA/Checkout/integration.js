@@ -166,5 +166,35 @@ registerSuite('Edq Cartridge Functional Test 2', {
 				})
 				.end()
 		},
+		"SFRA Check dropdown up/down keys - Global Intuitive": function() {
+			return this.remote
+				.sleep(3000)
+				.get(SFRACheckoutStage)
+				.sleep(3000)
+				.findByName('dwfrm_shipping_shippingAddress_addressFields_country')
+					.click()
+					.pressKeys('\uE015')
+					.end()
+				.sleep(2000)
+				.findByName('dwfrm_shipping_shippingAddress_addressFields_address1')
+					.clearValue()
+					.type("53 ST")
+					.end()
+				.sleep(3000)
+				.findByCssSelector(".edq-global-intuitive-address-suggestion")
+					.pressKeys('\uE015')
+					.pressKeys('\uE015')
+					.pressKeys('\uE015')
+					.sleep(500)
+					.pressKeys('\uE007')
+					.end()
+				.sleep(5000)
+				.findByName('dwfrm_shipping_shippingAddress_addressFields_postalCode')
+					.getProperty('value')
+				.then(function(countryValue) {
+				assert.equal("R5H 1C5", countryValue, 'Zip code value matching second option. Integration functioning')
+				})
+				.end()
+		},
 	}
 });
