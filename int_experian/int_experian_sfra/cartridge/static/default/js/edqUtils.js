@@ -22,7 +22,8 @@ var vDefaultCountry,
 	edqDataSetCode,
 	edqProWebCallbackValidation,
 	edqCustomCallbackName,
-	edqGlobalIntuitiveUnicornJsPath;
+	edqGlobalIntuitiveUnicornJsPath,
+	reloadGIjs = true;
 var inputSelector = document.querySelectorAll("input[id]");
 var buttonSelector = document.querySelectorAll("button[name]");
 window.EdqConfig = window.EdqConfig || {};
@@ -411,24 +412,6 @@ function edqSetPhoneValidationConfiguration() {
 * Sets the configuration to use Global Intuitive
 */
 function edqSetGlobalIntuitiveConfiguration() {
-	/**
-	* Autofill not working on billing address at all
-	* By doing this in the checkout stage for SFRA we can remove the global-intuitive-unicorn.js in order to force to reload all the content with 
-	* the new parameters that we're including, since the webpage doesn't do a refresh items we're not changing values 
-	* For more information see Bug #126164 */
-	$("script[src=\"" + edqGlobalIntuitiveUnicornJsPath + "\"]").remove();
-	$("<script>").attr({
-		src:edqGlobalIntuitiveUnicornJsPath,
-		integrity:"sha512-ooVQYWcrVoGAZXC+qPMJaFsEkLB82EsT42J+p0U5INWm+NHrN+XvnWsALGv440Zg3a/QsDJ2L9XR0592fkSBmA==",
-		crossorigin:"anonymous"
-	}).appendTo("footer");
-	if(edqAddressLine1Id) {
-		edqAddressLine1Id.addEventListener("focus", function() {
-			removeMultipleEDQSuggestion();
-			edqSetGlobalIntuitiveConfiguration();
-			EDQ.address.globalIntuitive.activateValidation(edqAddressLine1Id);
-		});
-	}
 	var globalIntuitiveIsoCountry = vDefaultCountry;
 	if (edqCountryLineId != null) {
 		globalIntuitiveIsoCountry = edqCountryLineId.value;
@@ -489,7 +472,22 @@ function setCheckoutFormEvents() {
 	* the listeners are set to refresh the configuration for Global Intuitive.
 	* For more information see Bug #125898 */
 	const setEventsForRegistration = function() { setEventsForListeners(); };
-	const setEventsForBilling = function() { setEventsForListeners("billing"); };
+	const setEventsForBilling = function() { 
+		setEventsForListeners("billing");
+		if (reloadGIjs) {
+			/** Autofill not working on billing address at all
+			* By doing this in the checkout stage for SFRA we can remove the global-intuitive-unicorn.js in order to force to reload all the content with 
+			* the new parameters that we're including, since the webpage doesn't do a refresh items we're not changing values 
+			* For more information see Bug #126164 */
+			$("script[src=\"" + edqGlobalIntuitiveUnicornJsPath + "\"]").remove();
+			$("<script>").attr({
+				src:edqGlobalIntuitiveUnicornJsPath,
+				integrity:"sha512-ooVQYWcrVoGAZXC+qPMJaFsEkLB82EsT42J+p0U5INWm+NHrN+XvnWsALGv440Zg3a/QsDJ2L9XR0592fkSBmA==",
+				crossorigin:"anonymous"
+			}).appendTo("body");
+			reloadGIjs = false;
+		}
+	};
 	const setEventsForShipping = function() { setEventsForListeners("shipping"); };
 	addEventOnElement("#country", "change", setEventsForRegistration);
 	addEventOnElement("[name=dwfrm_shipping_shippingAddress_addressFields_country]", "change", setEventsForShipping);
@@ -502,12 +500,10 @@ function setCheckoutFormEvents() {
 }
 function setEventsForListeners(checkoutStage) {
 	setEdqInputSelectors(checkoutStage);
-	removeMultipleEDQSuggestion();
 	edqSetGlobalIntuitiveConfiguration();
 	addEventOnElement("[name=" + edqAddressLine1Id.name + "]", "keypress", setCountryField);
 	addEventOnElement("[name=" + edqAddressLine1Id.name + "]", "mouseleave", setCountryField);
 	addEventOnElement("[name=" + edqAddressLine1Id.name + "]", "mouseenter", setCountryField);
-	EDQ.address.globalIntuitive.activateValidation(edqAddressLine1Id);
 }
 /**
 * Global Intuitive creating multiple elements of suggestion box
