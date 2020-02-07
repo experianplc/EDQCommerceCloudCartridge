@@ -453,6 +453,16 @@ function setCountryField() {
 		}
 	}, 5000);
 }
+/** Browser autofill triggers Global Intuitive Suggestion box and proceed to the billing stage the suggestion address box doesn't dissapear.
+* For more information see Bug #142988
+**/
+function removeGlobalIntuitiveSuggestionBox() {
+	if ((document.querySelector(".edq-global-intuitive-address-suggestions")) 
+			&& (document.querySelector(".edq-global-intuitive-address-suggestions").style.display == "block")) {
+		var edqGlobalIntuitiveSuggestionBox = document.querySelector(".edq-global-intuitive-address-suggestions");
+		edqGlobalIntuitiveSuggestionBox.style.display = "none";
+	}
+}
 /** In SFRA the checkout web page contains both billing and shipping in a single page controlled by JavaScript to hide/show elements. 
 * The setCheckoutFormEvents is intended to set all input address fields variables depending on the stage we are(billing/shipping); 
 * the selectors choose by this function just appear once the stage is completed; once we click on the selector the other will 
@@ -497,6 +507,7 @@ function setCheckoutFormEvents() {
 	addEventOnElement("[name=edqShippingEditAddress]", "click", setEventsForShipping);
 	addEventOnElement(".address-selector-block", "click", setEventsForBilling);
 	addEventOnElement("#dwfrm_billing", "focus", setEventsForBilling);
+	addEventOnElement("[value=submit-shipping]", "click", removeGlobalIntuitiveSuggestionBox);
 }
 function setEventsForListeners(checkoutStage) {
 	setEdqInputSelectors(checkoutStage);
