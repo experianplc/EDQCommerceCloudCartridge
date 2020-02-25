@@ -278,11 +278,8 @@ countryDict.push({ key: "AF", value: "AFG" },
 	{ key: "ZW", value: "ZWE" });
 function countryAlpha3(incomingCountryIso2) { 
 	var iso2ToIso3CountryDict;
-    for (var i = 0; i < countryDict.length; i++) {
-        if (incomingCountryIso2.toUpperCase() == countryDict[i].key)
-        	iso2ToIso3CountryDict = countryDict[i].value;
-    }
-    return (iso2ToIso3CountryDict) ? iso2ToIso3CountryDict : vDefaultCountry;
+	countryDict.forEach(function(val) { iso2ToIso3CountryDict = (incomingCountryIso2.match(val.key)) ? val.value : iso2ToIso3CountryDict });
+	return iso2ToIso3CountryDict || vDefaultCountry;
 }
 function countryAlpha2(incomingCountryIso3) {
 	return countryDict.filter(function(countryKeyAndValue) {
@@ -344,11 +341,7 @@ if (window.location.href.toLowerCase().match(/checkout/)) {
 	setEdqInputSelectors("");
 }
 if (edqEmailLineSelector) { edqEmailLineSelector.addEventListener("mouseover", function() {enableButtonDisable(edqCurrentSubmitButtonSelector, false);}); }
-if (edqPhoneLineSelectors) {
-	for (var i = 0; i < edqPhoneLineSelectors.length; i++) {
-		edqPhoneLineSelectors[i].addEventListener("mouseover", function() {enableButtonDisable(edqCurrentSubmitButtonSelector, false);});
-	}
-}
+if (edqPhoneLineSelectors) { edqPhoneLineSelectors.forEach(function(phoneSelector) { phoneSelector.addEventListener("mouseover", function() {enableButtonDisable(edqCurrentSubmitButtonSelector, false);}); }); }
 function edqEmailPhoneValidationCallback() {
 	if ((edqEmailEnable) && (edqEmailLineSelector)) { edqEmailValidationCallback(); }
 	if ((edqPhoneEnable) && (edqPhoneLineSelectors)) { edqPhoneValidationCallback(); }
@@ -366,16 +359,16 @@ function edqPhoneValidationCallback() {
 	/** TASK:101729 Allow users to continue with invalid phone; 
 	* based on the Business Manager configuration we can set if we want to prevent the user to go through with an invalid phone. */
 	if (edqValidatePhone) {
-		for (var i = 0; i < edqPhoneLineSelectors.length; i++) {
-			if (edqPhoneLineSelectors[i].hasAttribute("edq-metadata")) {
-				var edqPhoneResponse = JSON.parse(edqPhoneLineSelectors[i].getAttribute("edq-metadata"));
+		edqPhoneLineSelectors.forEach(function(phoneSelector) {
+			if (phoneSelector.hasAttribute("edq-metadata")) {
+				var edqPhoneResponse = JSON.parse(phoneSelector.getAttribute("edq-metadata"));
 				if (edqPhoneResponse["Certainty"] == "Verified") {
 					enableButtonDisable(edqCurrentSubmitButtonSelector, false);
 				} else {
 					enableButtonDisable(edqCurrentSubmitButtonSelector, true);
 				}
 			}
-	    }
+		});
 	}
 }
 function edqEmailValidationCallback() {
