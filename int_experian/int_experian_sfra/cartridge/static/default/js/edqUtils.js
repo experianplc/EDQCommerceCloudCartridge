@@ -278,7 +278,7 @@ countryDict.push({ key: "AF", value: "AFG" },
 	{ key: "ZW", value: "ZWE" });
 function countryAlpha3(incomingCountryIso2) { 
 	var iso2ToIso3CountryDict;
-	countryDict.forEach((val) => iso2ToIso3CountryDict = (incomingCountryIso2.match(val.key)) ? val.value : iso2ToIso3CountryDict);
+	countryDict.forEach(function(val) { iso2ToIso3CountryDict = (incomingCountryIso2.match(val.key)) ? val.value : iso2ToIso3CountryDict });
 	return iso2ToIso3CountryDict || vDefaultCountry;
 }
 function countryAlpha2(incomingCountryIso3) {
@@ -287,7 +287,7 @@ function countryAlpha2(incomingCountryIso3) {
 	})[0] || null;
 }
 /*** Set values for EDQ variables ***/
-function setEdqInputSelectors(stageContentLocation = "") {
+function setEdqInputSelectors(stageContentLocation) {
 	/** In SFRA the checkout web page contains both billing and shipping address input fields in a single page controlled by JavaScripts to hide/show elements.
 	* The stageContentLocation variable is intended to specify the stage(billing/shipping) of the checkout web page to set the proper input address fields 
 	* that we require to set them for billing or shipping address fields, since is they're set in the same web page we need to change its value to use them in the next step.*/
@@ -338,10 +338,11 @@ for (var i = 0; i < buttonSelector.length; i++) {
 if (window.location.href.toLowerCase().match(/checkout/)) {
 	setEdqInputSelectors("shipping");
 } else {
-	setEdqInputSelectors();
+	setEdqInputSelectors("");
 }
 if (edqEmailLineSelector) { edqEmailLineSelector.addEventListener("mouseover", function() {enableButtonDisable(edqCurrentSubmitButtonSelector, false);}); }
-if (edqPhoneLineSelectors) { edqPhoneLineSelectors.forEach(phoneSelector => { phoneSelector.addEventListener("mouseover", function() {enableButtonDisable(edqCurrentSubmitButtonSelector, false);}); }); }
+if (edqPhoneLineSelectors) { edqPhoneLineSelectors.forEach(function (phoneSelector) { phoneSelector.addEventListener("mouseover", function() {enableButtonDisable(edqCurrentSubmitButtonSelector, false);}); });
+}
 function edqEmailPhoneValidationCallback() {
 	if ((edqEmailEnable) && (edqEmailLineSelector)) { edqEmailValidationCallback(); }
 	if ((edqPhoneEnable) && (edqPhoneLineSelectors)) { edqPhoneValidationCallback(); }
@@ -359,7 +360,7 @@ function edqPhoneValidationCallback() {
 	/** TASK:101729 Allow users to continue with invalid phone; 
 	* based on the Business Manager configuration we can set if we want to prevent the user to go through with an invalid phone. */
 	if (edqValidatePhone) {
-		edqPhoneLineSelectors.forEach(phoneSelector => {
+		edqPhoneLineSelectors.forEach(function(phoneSelector) {
 			if (phoneSelector.hasAttribute("edq-metadata")) {
 				var edqPhoneResponse = JSON.parse(phoneSelector.getAttribute("edq-metadata"));
 				if (edqPhoneResponse["Certainty"] == "Verified") {

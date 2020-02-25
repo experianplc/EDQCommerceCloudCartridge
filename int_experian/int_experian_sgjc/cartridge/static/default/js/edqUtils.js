@@ -276,7 +276,7 @@ countryDict.push({ key: "AF", value: "AFG" },
 	{ key: "ZW", value: "ZWE" });
 function countryAlpha3(incomingCountryIso2) { 
 	var iso2ToIso3CountryDict;
-	countryDict.forEach((val) => iso2ToIso3CountryDict = (incomingCountryIso2.match(val.key)) ? val.value : iso2ToIso3CountryDict);
+	countryDict.forEach(function(val) { iso2ToIso3CountryDict = (incomingCountryIso2.match(val.key)) ? val.value : iso2ToIso3CountryDict });
 	return iso2ToIso3CountryDict || vDefaultCountry;
 }
 /***
