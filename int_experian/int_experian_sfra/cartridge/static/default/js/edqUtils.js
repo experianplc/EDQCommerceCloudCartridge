@@ -492,7 +492,7 @@ function setCheckoutFormEvents() {
 			$("script[src=\"" + edqGlobalIntuitiveUnicornJsPath + "\"]").remove();
 			$("<script>").attr({
 				src:edqGlobalIntuitiveUnicornJsPath,
-				integrity:"sha512-EclZkBZvchGyhJiTWwD/A2S1gTDzfVterK6Mh/0f176vNrq8KhVZQet7Pf6uRKip+wheIo8K0qndueI5EcPRqQ==",
+				integrity:"sha512-foiD3H9+U0MUfV3DOQ3nfb0X/mbdpMzCpXdzXQPEI+A8lFFKp6sIlHyvYN8++2cZEUH7j6lRcJgLEyD+as28Rw==",
 				crossorigin:"anonymous"
 			}).appendTo("body");
 			reloadGIjs = false;
