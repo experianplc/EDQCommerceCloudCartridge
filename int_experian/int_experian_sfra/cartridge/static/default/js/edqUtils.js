@@ -492,7 +492,7 @@ function setCheckoutFormEvents() {
 			$("script[src=\"" + edqGlobalIntuitiveUnicornJsPath + "\"]").remove();
 			$("<script>").attr({
 				src:edqGlobalIntuitiveUnicornJsPath,
-				integrity:"sha512-ooVQYWcrVoGAZXC+qPMJaFsEkLB82EsT42J+p0U5INWm+NHrN+XvnWsALGv440Zg3a/QsDJ2L9XR0592fkSBmA==",
+				integrity:"sha512-EclZkBZvchGyhJiTWwD/A2S1gTDzfVterK6Mh/0f176vNrq8KhVZQet7Pf6uRKip+wheIo8K0qndueI5EcPRqQ==",
 				crossorigin:"anonymous"
 			}).appendTo("body");
 			reloadGIjs = false;
@@ -599,7 +599,7 @@ function edqSetProWebConfiguration() {
 	];
 	window.EdqConfig.PRO_WEB_LAYOUT=edqProWebAddressLayout;
 	window.EdqConfig.PRO_WEB_COUNTRY=countryAlpha3(proWebIsoCountry);
-	window.EdqConfig.PRO_WEB_CALLBACK="edqValidateAddressCallBack()";
+	window.EdqConfig.PRO_WEB_CALLBACK="edqValidateAddressCallBack";
 	window.EdqConfig.PRO_WEB_MAPPING=[
 		{
 			field: edqAddressLine1Id,
