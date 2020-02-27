@@ -481,8 +481,7 @@ function edqSetProWebConfiguration() {
 		},
 		{
 			field: edqPostalLineSelector,
-			separator: "-",
-			elements: ["ZIP Code", "+4 code"],
+			elements: ["ZIP Code"],
 			modalFieldSelector: "#interaction-address--original-postal-code",
 		},
 		{
