@@ -291,6 +291,7 @@ function setEdqInputSelectors(stageContentLocation) {
 	/** In SFRA the checkout web page contains both billing and shipping address input fields in a single page controlled by JavaScripts to hide/show elements.
 	* The stageContentLocation variable is intended to specify the stage(billing/shipping) of the checkout web page to set the proper input address fields 
 	* that we require to set them for billing or shipping address fields, since is they're set in the same web page we need to change its value to use them in the next step.*/
+	stageContentLocation = stageContentLocation || "";
 	if (stageContentLocation === "shipping") {
 		edqAddressLine1Id = document.querySelector("[name=dwfrm_shipping_shippingAddress_addressFields_address1]");
 		edqAddressLine2Id = document.querySelector("[name=dwfrm_shipping_shippingAddress_addressFields_address2]");
@@ -338,7 +339,7 @@ for (var i = 0; i < buttonSelector.length; i++) {
 if (window.location.href.toLowerCase().match(/checkout/)) {
 	setEdqInputSelectors("shipping");
 } else {
-	setEdqInputSelectors("");
+	setEdqInputSelectors();
 }
 if (edqEmailLineSelector) { edqEmailLineSelector.addEventListener("mouseover", function() {enableButtonDisable(edqCurrentSubmitButtonSelector, false);}); }
 if (edqPhoneLineSelectors) { edqPhoneLineSelectors.forEach(function(phoneSelector) { phoneSelector.addEventListener("mouseover", function() {enableButtonDisable(edqCurrentSubmitButtonSelector, false);}); }); }
