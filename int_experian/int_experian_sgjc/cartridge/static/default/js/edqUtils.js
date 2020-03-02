@@ -276,7 +276,7 @@ countryDict.push({ key: "AF", value: "AFG" },
 	{ key: "ZW", value: "ZWE" });
 function countryAlpha3(incomingCountryIso2) { 
 	var iso2ToIso3CountryDict;
-	countryDict.forEach((val) => iso2ToIso3CountryDict = (incomingCountryIso2.match(val.key)) ? val.value : iso2ToIso3CountryDict);
+	countryDict.forEach(function(val) { iso2ToIso3CountryDict = (incomingCountryIso2.match(val.key)) ? val.value : iso2ToIso3CountryDict });
 	return iso2ToIso3CountryDict || vDefaultCountry;
 }
 /***
@@ -417,10 +417,11 @@ function edqSetGlobalIntuitiveConfiguration() {
 */
 function edqValidateAddressCallBack() {
 	var edqProWebResponse = document.querySelector("#form-submit");
-	if (!edqProWebResponse.hasAttribute("edq-metadata")) { return; }
-	var edqProWebMetaDataJSON = JSON.parse(edqProWebResponse.getAttribute("edq-metadata"));
-	document.querySelector("#form-submit").style.display = "none";
-	edqStateLineSelector.value = edqProWebMetaDataJSON["State code"];
+	if (edqProWebResponse.hasAttribute("edq-metadata")) {
+		var edqProWebMetaDataJSON = JSON.parse(edqProWebResponse.getAttribute("edq-metadata"));
+		document.querySelector("#form-submit").style.display = "none";
+		edqStateLineSelector.value = edqProWebMetaDataJSON["State code"];
+	}
 	if (edqProWebCallbackValidation) {
 		if (edqProWebExecuteTransitionCallBack(edqProWebMetaDataJSON)) {
 			edqCheckoutPageWorkflows();
@@ -454,7 +455,7 @@ function edqSetProWebConfiguration() {
 		window.EdqConfig.PRO_WEB_COUNTRY= countryAlpha3(edqCountryLineSelector.value);
 	else
 		window.EdqConfig.PRO_WEB_COUNTRY= countryAlpha3(vDefaultCountry);
-	window.EdqConfig.PRO_WEB_CALLBACK= "edqValidateAddressCallBack()";
+	window.EdqConfig.PRO_WEB_CALLBACK= "edqValidateAddressCallBack";
 	window.EdqConfig.PRO_WEB_MAPPING= [
 		{
 			field: edqAddressLine1Selector,

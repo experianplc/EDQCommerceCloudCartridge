@@ -278,7 +278,7 @@ countryDict.push({ key: "AF", value: "AFG" },
 	{ key: "ZW", value: "ZWE" });
 function countryAlpha3(incomingCountryIso2) { 
 	var iso2ToIso3CountryDict;
-	countryDict.forEach((val) => iso2ToIso3CountryDict = (incomingCountryIso2.match(val.key)) ? val.value : iso2ToIso3CountryDict);
+	countryDict.forEach(function(val) { iso2ToIso3CountryDict = (incomingCountryIso2.match(val.key)) ? val.value : iso2ToIso3CountryDict });
 	return iso2ToIso3CountryDict || vDefaultCountry;
 }
 function countryAlpha2(incomingCountryIso3) {
@@ -287,10 +287,11 @@ function countryAlpha2(incomingCountryIso3) {
 	})[0] || null;
 }
 /*** Set values for EDQ variables ***/
-function setEdqInputSelectors(stageContentLocation = "") {
+function setEdqInputSelectors(stageContentLocation) {
 	/** In SFRA the checkout web page contains both billing and shipping address input fields in a single page controlled by JavaScripts to hide/show elements.
 	* The stageContentLocation variable is intended to specify the stage(billing/shipping) of the checkout web page to set the proper input address fields 
 	* that we require to set them for billing or shipping address fields, since is they're set in the same web page we need to change its value to use them in the next step.*/
+	stageContentLocation = stageContentLocation || "";
 	if (stageContentLocation === "shipping") {
 		edqAddressLine1Id = document.querySelector("[name=dwfrm_shipping_shippingAddress_addressFields_address1]");
 		edqAddressLine2Id = document.querySelector("[name=dwfrm_shipping_shippingAddress_addressFields_address2]");
@@ -341,7 +342,7 @@ if (window.location.href.toLowerCase().match(/checkout/)) {
 	setEdqInputSelectors();
 }
 if (edqEmailLineSelector) { edqEmailLineSelector.addEventListener("mouseover", function() {enableButtonDisable(edqCurrentSubmitButtonSelector, false);}); }
-if (edqPhoneLineSelectors) { edqPhoneLineSelectors.forEach(phoneSelector => { phoneSelector.addEventListener("mouseover", function() {enableButtonDisable(edqCurrentSubmitButtonSelector, false);}); }); }
+if (edqPhoneLineSelectors) { edqPhoneLineSelectors.forEach(function(phoneSelector) { phoneSelector.addEventListener("mouseover", function() {enableButtonDisable(edqCurrentSubmitButtonSelector, false);}); }); }
 function edqEmailPhoneValidationCallback() {
 	if ((edqEmailEnable) && (edqEmailLineSelector)) { edqEmailValidationCallback(); }
 	if ((edqPhoneEnable) && (edqPhoneLineSelectors)) { edqPhoneValidationCallback(); }
@@ -359,7 +360,7 @@ function edqPhoneValidationCallback() {
 	/** TASK:101729 Allow users to continue with invalid phone; 
 	* based on the Business Manager configuration we can set if we want to prevent the user to go through with an invalid phone. */
 	if (edqValidatePhone) {
-		edqPhoneLineSelectors.forEach(phoneSelector => {
+		edqPhoneLineSelectors.forEach(function(phoneSelector) {
 			if (phoneSelector.hasAttribute("edq-metadata")) {
 				var edqPhoneResponse = JSON.parse(phoneSelector.getAttribute("edq-metadata"));
 				if (edqPhoneResponse["Certainty"] == "Verified") {
@@ -492,7 +493,7 @@ function setCheckoutFormEvents() {
 			$("script[src=\"" + edqGlobalIntuitiveUnicornJsPath + "\"]").remove();
 			$("<script>").attr({
 				src:edqGlobalIntuitiveUnicornJsPath,
-				integrity:"sha512-ooVQYWcrVoGAZXC+qPMJaFsEkLB82EsT42J+p0U5INWm+NHrN+XvnWsALGv440Zg3a/QsDJ2L9XR0592fkSBmA==",
+				integrity:"sha512-foiD3H9+U0MUfV3DOQ3nfb0X/mbdpMzCpXdzXQPEI+A8lFFKp6sIlHyvYN8++2cZEUH7j6lRcJgLEyD+as28Rw==",
 				crossorigin:"anonymous"
 			}).appendTo("body");
 			reloadGIjs = false;
@@ -599,7 +600,7 @@ function edqSetProWebConfiguration() {
 	];
 	window.EdqConfig.PRO_WEB_LAYOUT=edqProWebAddressLayout;
 	window.EdqConfig.PRO_WEB_COUNTRY=countryAlpha3(proWebIsoCountry);
-	window.EdqConfig.PRO_WEB_CALLBACK="edqValidateAddressCallBack()";
+	window.EdqConfig.PRO_WEB_CALLBACK="edqValidateAddressCallBack";
 	window.EdqConfig.PRO_WEB_MAPPING=[
 		{
 			field: edqAddressLine1Id,
