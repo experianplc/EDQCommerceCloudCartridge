@@ -124,7 +124,7 @@ registerSuite('Edq Cartridge Functional Test 3', {
 				.sleep(2000)
 				.findByName('dwfrm_profile_customer_email')
 				.clearValue()
-				.type("thisisnotanemailx@gmail.com")
+				.type("thisisnotanemailthisisnotanemail@gmail.com")
 				.end()
 				.findByName('dwfrm_profile_customer_emailconfirm')
 				.click()
@@ -133,7 +133,7 @@ registerSuite('Edq Cartridge Functional Test 3', {
 				.findByName('dwfrm_profile_customer_email')
 					.getAttribute("edq-metadata")
 				.then(function(edqmetadata) {
-					assert.equal('{"Email":"thisisnotanemailx@gmail.com","Certainty":"undeliverable","Message":"OK","VerboseOutput":"mailboxDoesNotExist"}', edqmetadata, "Getting a response from Email Validation meta-data");
+					assert.equal('{"Email":"thisisnotanemailthisisnotanemail@gmail.com","Certainty":"undeliverable","Message":"OK","VerboseOutput":"mailboxDoesNotExist"}', edqmetadata, "Getting a response from Email Validation meta-data");
 				})
 				.end()
 				.sleep(2000)
