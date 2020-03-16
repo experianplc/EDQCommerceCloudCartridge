@@ -322,10 +322,16 @@ for (i = 0; i < buttonSelector.length; i++) {
 if (edqPhoneLineSelectors) { edqPhoneLineSelectors.addEventListener("mouseover", function() {enableButtonDisable(edqCurrentSubmitButtonSelector, false);}); }
 if (edqEmailLineSelector) { edqEmailLineSelector.addEventListener("mouseover", function() {enableButtonDisable(edqCurrentSubmitButtonSelector, false);}); }
 if (edqCurrentSubmitButtonSelector) { edqCurrentSubmitButtonSelector.addEventListener("mouseover", edqVerificationCallback); }
-if (document.querySelector("#form-submit")) { document.querySelector("#form-submit").addEventListener("mouseover", edqVerificationCallback); }
 function edqVerificationCallback() {
-	if ((edqEmailEnable) && (edqEmailLineSelector)) { edqPhoneEmailValidationCallback(edqValidateEmail, edqEmailLineSelector); }
-	if ((edqPhoneEnable) && (edqPhoneLineSelectors)) { edqPhoneEmailValidationCallback(edqValidatePhone, edqPhoneLineSelectors); }
+	/** Email Validation not restricting access.
+	* For more information see Bug #146527 **/
+	if (((edqEmailEnable) && (edqEmailLineSelector)) && ((edqPhoneEnable) && (edqPhoneLineSelectors))) { 
+		edqPhoneEmailValidationCallback(edqValidateEmail, edqEmailLineSelector);
+		if (edqCurrentSubmitButtonSelector.disabled != true)
+			edqPhoneEmailValidationCallback(edqValidatePhone, edqPhoneLineSelectors);
+	}
+	else if ((edqEmailEnable) && (edqEmailLineSelector)) { edqPhoneEmailValidationCallback(edqValidateEmail, edqEmailLineSelector); }
+	else if ((edqPhoneEnable) && (edqPhoneLineSelectors)) { edqPhoneEmailValidationCallback(edqValidatePhone, edqPhoneLineSelectors); }
 }
 /**
  * In the Business Manager there's an option that sets if the email and/or email will allow the user to prevent the 
@@ -442,6 +448,9 @@ function edqSetProWebConfiguration() {
 	if (edqCurrentSubmitButtonSelector) {
 		edqCurrentSubmitButtonSelector.style.display = "none";
 	}
+	/** Email Validation not restricting access.
+	* For more information see Bug #146527 **/
+	if (document.querySelector("#form-submit")) { document.querySelector("#form-submit").addEventListener("mouseover", edqVerificationCallback); }
 	window.EdqConfig.PRO_WEB_TIMEOUT= 3500;
 	window.EdqConfig.PRO_WEB_AUTH_TOKEN=edqAuthorizationToken;
 	window.EdqConfig.PRO_WEB_SUBMIT_TRIGGERS= [
