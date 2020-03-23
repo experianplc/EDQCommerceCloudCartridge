@@ -1,7 +1,7 @@
 const SgjcLogoutUrl = "https://qas01-tech-prtnr-na01-dw.demandware.net/on/demandware.store/Sites-Demo_SG-Site/default/Login-Logout";
 const SgjcLoginUrl = "https://qas01.tech-prtnr-na01.dw.demandware.net/on/demandware.store/Sites-Demo_SG-Site/default/Login-Show?original=%2fon%2fdemandware%2estore%2fSites-Demo_SG-Site%2fdefault%2fAccount-Show";
-//const SgjsAddressListUrl = "https://qas01.tech-prtnr-na01.dw.demandware.net/on/demandware.store/Sites-Demo_SG-Site/default/Address-List";
-const SgjsAddressListUrl = "https://qas01.tech-prtnr-na01.dw.demandware.net/on/demandware.store/Sites-Demo_SG-Site/default/Address-Add";
+const SgjsAddressAddUrl = "https://qas01.tech-prtnr-na01.dw.demandware.net/on/demandware.store/Sites-Demo_SG-Site/default/Address-Add";
+const SgjsAddressListUrl = "https://qas01.tech-prtnr-na01.dw.demandware.net/on/demandware.store/Sites-Demo_SG-Site/default/Address-List";
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
@@ -78,7 +78,7 @@ registerSuite('Edq Cartridge Functional Test', {
 	tests: {
 		"SGJC Add Address Stage - Pro Web Address (Verification Engine / Correct Address": function() {
 			return this.remote
-				.get(SgjsAddressListUrl)
+				.get(SgjsAddressAddUrl)
 				/*.sleep(2000)
 				.findByCssSelector("a[href='/on/demandware.store/Sites-Demo_SG-Site/default/Address-Add']")
 					.click()
@@ -99,7 +99,7 @@ registerSuite('Edq Cartridge Functional Test', {
 		},
 		"SGJC Add Address Stage - Pro Web Address (Verification Engine / User Interation box": function() {
 			return this.remote
-				.get(SgjsAddressListUrl)
+				.get(SgjsAddressAddUrl)
 				/*.sleep(2000)
 				.findByCssSelector("a[href='/on/demandware.store/Sites-Demo_SG-Site/default/Address-Add']")
 					.click()
@@ -127,7 +127,7 @@ registerSuite('Edq Cartridge Functional Test', {
 		},
 		"SGJC Checkout Stage - Global Intuitive": function() {
 			return this.remote
-				.get(SgjsAddressListUrl)
+				.get(SgjsAddressAddUrl)
 				/*.sleep(1000)
 				.findByCssSelector("a[href='/on/demandware.store/Sites-Demo_SG-Site/default/Address-Add']")
 					.click()
@@ -146,6 +146,27 @@ registerSuite('Edq Cartridge Functional Test', {
 				.then(function(postalCode) {
 				assert.equal(true, Boolean(postalCode), 'Postal code value populated. Integration functioning')
 				})
+		},
+		"SGJC Add Address Stage - Pro Web Address (Address modal box closes before user interaction box)": function() {
+			return this.remote
+				.sleep(2000)
+				.get(SgjsAddressListUrl)
+				.sleep(2000)
+				.findByCssSelector(".address-create")
+					.click()
+					.end()
+				.sleep(3000)
+				.then(fillInPartialAddress())
+				.findByCssSelector("#form-submit")
+					.click()
+					.end()
+				.sleep(2000)
+				.findByCssSelector(".ui-dialog")
+					.isDisplayed()
+				.then(function(value) {
+					assert.equal(true, value, "Modal is visible when user interaction box is visible.");
+				})
+				.end()
 		},
 	}
 });
