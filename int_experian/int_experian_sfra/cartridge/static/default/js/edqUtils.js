@@ -333,6 +333,8 @@ for (var i = 0; i < buttonSelector.length; i++) {
 		buttonSelector[i].addEventListener("mouseover", edqEmailPhoneValidationCallback);
 	}
 }
+/** Added this function to set the listener tothe button on the selected stage (billing/shipping)
+* For more information see Bug #147798 */
 function setEdqButtonSelector(stageContentLocation) {
 	stageContentLocation = stageContentLocation || "";
 	if (stageContentLocation === "shipping") {
@@ -354,13 +356,16 @@ if (window.location.href.toLowerCase().match(/checkout/)) {
 if (edqEmailLineSelector) { edqEmailLineSelector.addEventListener("mouseover", function() {enableButtonDisable(edqCurrentSubmitButtonSelector, false);}); }
 if (edqPhoneLineSelectors) { edqPhoneLineSelectors.forEach(function(phoneSelector) { phoneSelector.addEventListener("mouseover", function() {enableButtonDisable(edqCurrentSubmitButtonSelector, false);}); }); }
 function edqEmailPhoneValidationCallback() {
+	/** Email Validation not restricting access when Phone Validation is activated in the Billing stage for SFRA
+	* Added the checkoutStage to review the button that we're going to disable to prevent on going to the next page on 
+	* the checkout page when the option is available in the Business Manager configuration.
+	* For more information see Bug #147798 */
 	var urlParams = new URLSearchParams(window.location.search);
-	var product = urlParams.get('stage');
-	if (product == "shipping")
+	var checkoutStage = urlParams.get('stage');
+	if (checkoutStage == "shipping")
 		setEdqButtonSelector("shipping");
-	else if (product == "payment")
+	else if (checkoutStage == "payment")
 		setEdqButtonSelector("billing");
-	
 	if (((edqEmailEnable) && (edqEmailLineSelector)) && ((edqPhoneEnable) && (edqPhoneLineSelectors))) { 
 		edqEmailValidationCallback();
 		if (edqCurrentSubmitButtonSelector.disabled != true)
