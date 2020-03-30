@@ -333,6 +333,16 @@ for (var i = 0; i < buttonSelector.length; i++) {
 		buttonSelector[i].addEventListener("mouseover", edqEmailPhoneValidationCallback);
 	}
 }
+function setEdqButtonSelector(stageContentLocation) {
+	stageContentLocation = stageContentLocation || "";
+	if (stageContentLocation === "shipping") {
+		edqCurrentSubmitButtonSelector = document.querySelector("[value=submit-shipping]");
+		edqCurrentSubmitButtonSelector.addEventListener("mouseover", edqEmailPhoneValidationCallback);
+	} else if (stageContentLocation === "billing") {
+		edqCurrentSubmitButtonSelector = document.querySelector("[value=submit-payment]");
+		edqCurrentSubmitButtonSelector.addEventListener("mouseover", edqEmailPhoneValidationCallback);
+	}
+}
 /**
 * This window.location is intended to specify the input address fields that we require when we get to the checkout web page for initial load.
 */
@@ -344,8 +354,20 @@ if (window.location.href.toLowerCase().match(/checkout/)) {
 if (edqEmailLineSelector) { edqEmailLineSelector.addEventListener("mouseover", function() {enableButtonDisable(edqCurrentSubmitButtonSelector, false);}); }
 if (edqPhoneLineSelectors) { edqPhoneLineSelectors.forEach(function(phoneSelector) { phoneSelector.addEventListener("mouseover", function() {enableButtonDisable(edqCurrentSubmitButtonSelector, false);}); }); }
 function edqEmailPhoneValidationCallback() {
-	if ((edqEmailEnable) && (edqEmailLineSelector)) { edqEmailValidationCallback(); }
-	if ((edqPhoneEnable) && (edqPhoneLineSelectors)) { edqPhoneValidationCallback(); }
+	var urlParams = new URLSearchParams(window.location.search);
+	var product = urlParams.get('stage');
+	if (product == "shipping")
+		setEdqButtonSelector("shipping");
+	else if (product == "payment")
+		setEdqButtonSelector("billing");
+	
+	if (((edqEmailEnable) && (edqEmailLineSelector)) && ((edqPhoneEnable) && (edqPhoneLineSelectors))) { 
+		edqEmailValidationCallback();
+		if (edqCurrentSubmitButtonSelector.disabled != true)
+			edqPhoneValidationCallback();
+	}
+	else if ((edqEmailEnable) && (edqEmailLineSelector)) { edqEmailValidationCallback(); }
+	else if ((edqPhoneEnable) && (edqPhoneLineSelectors)) { edqPhoneValidationCallback(); }
 }
 /**
 * In the Business Manager there's an option that sets if the email and/or email will allow the user to prevent the 

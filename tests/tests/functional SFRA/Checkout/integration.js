@@ -196,5 +196,42 @@ registerSuite('Edq Cartridge Functional Test 2', {
 				})
 				.end()
 		},
+		"SFRA Checkout Stage - Pro Web Address (Email Validation not restricting access)": function() {
+			return this.remote
+				.sleep(1000)
+				.get(SFRACheckoutStage)
+				.sleep(1000)
+				.then(fillInFluidAddressField())
+				.sleep(500)
+				.findByName('dwfrm_shipping_shippingAddress_addressFields_firstName')
+					.clearValue()
+					.type("Jose")
+					.end()
+				.sleep(500)
+				.findByName('dwfrm_shipping_shippingAddress_addressFields_lastName')
+					.clearValue()
+					.type("Castillo")
+					.end()
+				.sleep(500)
+				.findByName('dwfrm_shipping_shippingAddress_addressFields_phone')
+					.clearValue()
+					.type("3524445566")
+					.end()
+				.sleep(500)
+				.findByCssSelector("#form-submit")
+					.click()
+				.sleep(2000)
+				.findByName('dwfrm_billing_contactInfoFields_email')
+					.clearValue()
+					.type("noreply@gmail.com")
+					.sleep(500)
+				.findByCssSelector("#form-submit")
+					.click()
+					.getAttribute("disabled")
+					.then(function(value) {
+						assert.equal(false, value, "Button is disabled restricting validation.");
+					})
+				.end()
+		},
 	}
 });
