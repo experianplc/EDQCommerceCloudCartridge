@@ -246,12 +246,6 @@ To check the imported site preferences go to **Administration > Site Development
 ![SGJC EDQ Unicorn 4](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/321EDQUnicorn4.png)
 
 ####  3.2.2\. Storefront Reference Architecture
-**EDQHeaders integration**
-1.	Go to int_experian_sfra cartridge and open the template located in **templates > default > common > htmlHead.isml.**
-2. The `<isinclude template="EDQ/EDQHeaders" />` line has been added at the end of **“htmlHead.isml”** file.
-
-![SFRA EDQ Headers](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/322EDQHeaders.png)
-
 **EDQUnicorn integration**
 1.	Go to int_experian_sfra cartridge and open the template located in **templates > default > account > components > registerForm.isml**
 2.	The **“registerForm.isml”** line has been added at the end of file `<isinclude template="EDQ/EDQUnicorn" />`
@@ -330,7 +324,7 @@ For any support contact email are
 
 ##  5\. User Guide
 ### 5.1\. Business Manager
-Once the EDQ SitePreferences are uploaded in the business manager; choose your site and go to **Merchant Tools > Site Preferences > Custom Site Preferences Group** and choose EDQ Config option.
+Once the EDQ SitePreferences are uploaded in the business manager; choose your site and go to **Merchant Tools > Site Preferences > Custom Site Preferences Group** and choose Experian option.
 1.	EDQ Token (String): credentials provided to use the service. 
 * Set to the value supplied to you by your Experian Partner
 2.	Email Enable (Boolean): set to enable/disable email validation. 
@@ -342,14 +336,15 @@ Once the EDQ SitePreferences are uploaded in the business manager; choose your s
    1. Global Intuitive
    1. Verification Engine
    1. None
-7.	Address layout (String): Address layout format for the data.
-8. Staging (Enum of String): Select one option between:
-   1. Production
-   1. Development
-9. Data Set Code (String): Code to use Data Sets in case the country ISO code requires it.
-10. Activates or deactivates Data Set usage (Boolean): Activates or deactivates Data Set usage (only use for Non USA).
-11. Pro Web Custom Transition Callback (String): Name for the custom customer function to be triggered.
-12. Pro Web Callback validation (Boolean): Activates or deactivates page transition from the callback.
+7. Address layout (String): Address layout format for the data. Examples:
+   1. EDQ NA Integration 5 Line No Retention - North America Integration Layout Without Any Retention Elements
+   1. EDQ NA Integration 5 Line Default - North America Integration Layout With Sub Premise And Care Of Retention
+   1. EDQ NA Integration 5 Line Modified - North America Integration Layout With Sub Premise And Care Of Retention But With All Secondary Information Split Out For Concatenation
+   1. EDQ NA Integration 5 Line Full Retention - North America Integration Layout With Sub Premise, Care Of, Pre Street, and Post Street Retention
+8. Data Set Code (String): Code to use Data Sets in case the country ISO code requires it.
+9. Activates or deactivates Data Set usage (Boolean): Activates or deactivates Data Set usage (only use for Non USA).
+10. Pro Web Custom Transition Callback (String): Name for the custom customer function to be triggered.
+11. Pro Web Callback validation (Boolean): Activates or deactivates page transition from the callback. 
 
 ![EDQ Config](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/510EDQConfig.png)
 

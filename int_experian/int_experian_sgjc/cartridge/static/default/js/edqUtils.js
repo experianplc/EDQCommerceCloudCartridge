@@ -8,8 +8,8 @@ var vDefaultCountry,
 	edqCountryLineSelector, 
 	edqEmailLineSelector, 
 	edqPhoneLineSelectors, 
-	edqCurrentSubmitButtonSelector,
-	edqCurrentSubmitButtonSelectorIndex,
+	edqCurrentSubmitButton,
+	edqCurrentSubmitButtonIndex,
 	edqEmailEnable, 
 	edqPhoneEnable,
 	edqValidateEmail, 
@@ -19,7 +19,8 @@ var vDefaultCountry,
 	edqDataSetUsage,
 	edqDataSetCode,
 	edqProWebCallbackValidation,
-	edqCustomCallbackName;
+	edqCustomCallbackName,
+	pageRestrictValidation = true;
 var inputSelector = document.querySelectorAll("input[id]");
 var selectSelector = document.querySelectorAll("select[id]");
 var buttonSelector = document.querySelectorAll("button[name]");
@@ -274,6 +275,12 @@ countryDict.push({ key: "AF", value: "AFG" },
 	{ key: "YE", value: "YEM" },
 	{ key: "ZM", value: "ZMB" },
 	{ key: "ZW", value: "ZWE" });
+/** 
+ * Searches for the Store Country code ISO-2 and returns the ISO-3 code.
+ * @param {string} incomingCountryIso2
+ *
+ * @returns {string}
+ */
 function countryAlpha3(incomingCountryIso2) { 
 	var iso2ToIso3CountryDict;
 	countryDict.forEach(function(val) { iso2ToIso3CountryDict = (incomingCountryIso2.match(val.key)) ? val.value : iso2ToIso3CountryDict });
@@ -298,40 +305,38 @@ for (i = 0; i < selectSelector.length; i++) {
 }
 for (i = 0; i < buttonSelector.length; i++) {
 	if (buttonSelector[i].name.match(/dwfrm_profile_address_create/)) {
-		edqCurrentSubmitButtonSelector = buttonSelector[i];
+		edqCurrentSubmitButton = buttonSelector[i];
 	}
 	if (buttonSelector[i].name.match(/dwfrm_profile_address_edit/)) {
-		edqCurrentSubmitButtonSelector = buttonSelector[i];
+		edqCurrentSubmitButton = buttonSelector[i];
 	}
 	if (buttonSelector[i].name.match(/dwfrm_singleshipping_shippingAddress_save/)) {
-		edqCurrentSubmitButtonSelector = buttonSelector[i];
+		edqCurrentSubmitButton = buttonSelector[i];
 	}
 	if (buttonSelector[i].name.match(/dwfrm_profile_confirm/)) {
-		edqCurrentSubmitButtonSelector = buttonSelector[i];
+		edqCurrentSubmitButton = buttonSelector[i];
 	}
 	if (buttonSelector[i].name.match(/dwfrm_billing_save/)) {
-		edqCurrentSubmitButtonSelector = buttonSelector[i];
-		enableButtonDisable(edqCurrentSubmitButtonSelector, false);
+		edqCurrentSubmitButton = buttonSelector[i];
+		enableButtonDisable(edqCurrentSubmitButton, false);
 		/**Forcing the button to set the addlistener because the button is set as disabled since the page load 
          * that's why we're setting just this case here; this case just happens in SiteGenesis billing form. **/
-		buttonSelector[i].addEventListener("mouseover", edqVerificationCallback);
+		buttonSelector[i].addEventListener("focus", edqEmailPhoneValidationCallback);
 		/*TASK:101728 Change Validate Button*/
-		edqCurrentSubmitButtonSelectorIndex = i;
+		edqCurrentSubmitButtonIndex = i;
 	}
 }
-if (edqPhoneLineSelectors) { edqPhoneLineSelectors.addEventListener("mouseover", function() {enableButtonDisable(edqCurrentSubmitButtonSelector, false);}); }
-if (edqEmailLineSelector) { edqEmailLineSelector.addEventListener("mouseover", function() {enableButtonDisable(edqCurrentSubmitButtonSelector, false);}); }
-if (edqCurrentSubmitButtonSelector) { edqCurrentSubmitButtonSelector.addEventListener("mouseover", edqVerificationCallback); }
-function edqVerificationCallback() {
+if (edqPhoneLineSelectors) { edqPhoneLineSelectors.addEventListener("focus", function() {enableButtonDisable(edqCurrentSubmitButton, false); pageRestrictValidation = true;}); }
+if (edqEmailLineSelector) { edqEmailLineSelector.addEventListener("focus", function() {enableButtonDisable(edqCurrentSubmitButton, false); pageRestrictValidation = true;}); }
+if (edqCurrentSubmitButton) { edqCurrentSubmitButton.addEventListener("focus", edqEmailPhoneValidationCallback); }
+/** 
+ * Will manage the access restriction when Phone/Email validation is being used based on the BM configuration.
+ */
+function edqEmailPhoneValidationCallback() {
 	/** Email Validation not restricting access.
 	* For more information see Bug #146527 **/
-	if (((edqEmailEnable) && (edqEmailLineSelector)) && ((edqPhoneEnable) && (edqPhoneLineSelectors))) { 
-		edqPhoneEmailValidationCallback(edqValidateEmail, edqEmailLineSelector);
-		if (edqCurrentSubmitButtonSelector.disabled != true)
-			edqPhoneEmailValidationCallback(edqValidatePhone, edqPhoneLineSelectors);
-	}
-	else if ((edqEmailEnable) && (edqEmailLineSelector)) { edqPhoneEmailValidationCallback(edqValidateEmail, edqEmailLineSelector); }
-	else if ((edqPhoneEnable) && (edqPhoneLineSelectors)) { edqPhoneEmailValidationCallback(edqValidatePhone, edqPhoneLineSelectors); }
+	if ((edqEmailEnable) && (edqEmailLineSelector)) { edqPhoneEmailValidationCallback(edqValidateEmail, edqEmailLineSelector); }
+	if ((edqPhoneEnable) && (edqPhoneLineSelectors)) { edqPhoneEmailValidationCallback(edqValidatePhone, edqPhoneLineSelectors); }
 }
 /**
  * In the Business Manager there's an option that sets if the email and/or email will allow the user to prevent the 
@@ -342,16 +347,21 @@ function enableButtonDisable(buttonToDisable, buttonStatus) {
 	buttonToDisable.disabled = buttonStatus;
 	if (document.getElementById("form-submit")) { document.getElementById("form-submit").disabled = buttonStatus; }
 }
+/** 
+ * Will manage the access restriction when Phone/Email validation is being used based on the BM configuration.
+ */
 function edqPhoneEmailValidationCallback(blnValidationOption, edqSelectorResponse) {
 	/** TASK:101729 Allow users to continue with invalid phone and email; 
      * based on the Business Manager configuration we can set if we want to prevent the user to go through with an invalid phone. */
 	if (!edqSelectorResponse) { return; }
-	if ((blnValidationOption) && (edqSelectorResponse.hasAttribute("edq-metadata"))) {
+	if ((blnValidationOption) && (edqSelectorResponse.hasAttribute("edq-metadata")) && (pageRestrictValidation)) {
 		var edqMetaDataResponse = JSON.parse(edqSelectorResponse.getAttribute("edq-metadata"));
 		if ((edqMetaDataResponse["Certainty"].toLowerCase() == "verified") || (edqMetaDataResponse["Certainty"].toLowerCase() == "unknown")) {
-			enableButtonDisable(edqCurrentSubmitButtonSelector, false);
+			pageRestrictValidation = true;
+			enableButtonDisable(edqCurrentSubmitButton, false);
 		} else {
-			enableButtonDisable(edqCurrentSubmitButtonSelector, true);
+			pageRestrictValidation = false;
+			enableButtonDisable(edqCurrentSubmitButton, true);
 		}
 	}
 }
@@ -384,15 +394,18 @@ function edqSetPhoneValidationConfiguration() {
  */
 function edqSetGlobalIntuitiveConfiguration() {
 	window.EdqConfig.GLOBAL_INTUITIVE_AUTH_TOKEN=edqAuthorizationToken;
-	if(edqCountryLineSelector != null)
+	if(edqCountryLineSelector != null) {
 		window.EdqConfig.GLOBAL_INTUITIVE_ISO3_COUNTRY=countryAlpha3(edqCountryLineSelector.value);
-	else
+	}
+	else {
 		window.EdqConfig.GLOBAL_INTUITIVE_ISO3_COUNTRY=countryAlpha3(vDefaultCountry);
+	}
 	/**
 	* Feature 118583
 	* Configuration option to include Data Sets for Global Intuitive*/
-	if (edqDataSetUsage)
-		window.EdqConfig.GLOBAL_INTUITIVE_DATASET=edqDataSetCode;
+	if (edqDataSetUsage) {
+		window.EdqConfig.GLOBAL_INTUITIVE_DATASET=edqDataSetCode; 
+	}
 	window.EdqConfig.GLOBAL_INTUITIVE_ELEMENT= edqAddressLine1Selector;
 	window.EdqConfig.GLOBAL_INTUITIVE_MAPPING= [
 		{
@@ -418,15 +431,14 @@ function edqSetGlobalIntuitiveConfiguration() {
 	];
 }
 /**
-* Pro Web - Address (Verification Engine)
-* Sets the configuration to use Pro Web - Address (Verification Engine)
-*/
+ * Pro Web Address Verification callback
+ */
 function edqValidateAddressCallBack() {
 	var edqProWebResponse = document.querySelector("#form-submit");
 	if (edqProWebResponse.hasAttribute("edq-metadata")) {
 		var edqProWebMetaDataJSON = JSON.parse(edqProWebResponse.getAttribute("edq-metadata"));
 		document.querySelector("#form-submit").style.display = "none";
-		edqStateLineSelector.value = edqProWebMetaDataJSON["State code"];
+		edqStateLineSelector.value = edqProWebMetaDataJSON["address.province"];
 	}
 	if (edqProWebCallbackValidation) {
 		if (edqProWebExecuteTransitionCallBack(edqProWebMetaDataJSON)) {
@@ -434,23 +446,30 @@ function edqValidateAddressCallBack() {
 		}
 	} else { edqCheckoutPageWorkflows(); }
 }
+/**
+ * Manage the button settings for the Button "form-submit", depending on the touchpoint.
+ */
 function edqCheckoutPageWorkflows() {
-	if (edqCurrentSubmitButtonSelectorIndex) {
-		buttonSelector[edqCurrentSubmitButtonSelectorIndex].style.display = "inline-block";
-		buttonSelector[edqCurrentSubmitButtonSelectorIndex].click();
+	if (edqCurrentSubmitButtonIndex) {
+		buttonSelector[edqCurrentSubmitButtonIndex].style.display = "inline-block";
+		buttonSelector[edqCurrentSubmitButtonIndex].click();
 	} else {
-		edqCurrentSubmitButtonSelector.style.display = "inline-block";
-		edqCurrentSubmitButtonSelector.click();
+		edqCurrentSubmitButton.style.display = "inline-block";
+		edqCurrentSubmitButton.click();
 	}
 }
+/**
+* Pro Web - Address (Verification Engine)
+* Sets the configuration to use Pro Web - Address (Verification Engine)
+*/
 function edqSetProWebConfiguration() {
 	/** This is intended to hide the form button in initial load of the page; just to show verification engine button in the form. **/
-	if (edqCurrentSubmitButtonSelector) {
-		edqCurrentSubmitButtonSelector.style.display = "none";
+	if (edqCurrentSubmitButton) {
+		edqCurrentSubmitButton.style.display = "none";
 	}
 	/** Email Validation not restricting access.
 	* For more information see Bug #146527 **/
-	if (document.querySelector("#form-submit")) { document.querySelector("#form-submit").addEventListener("mouseover", edqVerificationCallback); }
+	if (document.querySelector("#form-submit")) { document.querySelector("#form-submit").addEventListener("focus", edqEmailPhoneValidationCallback); }
 	window.EdqConfig.PRO_WEB_TIMEOUT= 3500;
 	window.EdqConfig.PRO_WEB_AUTH_TOKEN=edqAuthorizationToken;
 	window.EdqConfig.PRO_WEB_SUBMIT_TRIGGERS= [
@@ -460,47 +479,49 @@ function edqSetProWebConfiguration() {
 		}
 	];
 	window.EdqConfig.PRO_WEB_LAYOUT= edqProWebAddressLayout;
-	if (edqCountryLineSelector != null)
+	if (edqCountryLineSelector != null) {
 		window.EdqConfig.PRO_WEB_COUNTRY= countryAlpha3(edqCountryLineSelector.value);
-	else
+	}
+	else {
 		window.EdqConfig.PRO_WEB_COUNTRY= countryAlpha3(vDefaultCountry);
+	}
 	window.EdqConfig.PRO_WEB_CALLBACK= "edqValidateAddressCallBack";
 	window.EdqConfig.PRO_WEB_MAPPING= [
 		{
 			field: edqAddressLine1Selector,
-			elements: ["Formatted Address 2"],
+			elements: ["address.addressLine1"],
 			modalFieldSelector: "#interaction-address--original-address-line-one",
 		},
 		{
 			field: edqAddressLine2Selector,
-			elements: ["AddressLine2"],
+			elements: ["address.addressLine2"],
 			transformation: function(el) { return "@" + (el.value || el.innerText) },
 			modalFieldSelector: "#interaction-address--original-address-line-two",
 		},
 		{
 			field: edqCityLineSelector,
-			elements: ["City name"],
+			elements: ["address.locality"],
 			transformation: function(el) { return "@" + (el.value || el.innerText) },
 			modalFieldSelector: "#interaction-address--original-locality",
 		},
 		{
 			field: edqStateLineSelector,
-			elements: ["State code"],
+			elements: ["address.province"],
 			modalFieldSelector: "#interaction-address--original-province",
 		},
 		{
 			field: edqPostalLineSelector,
-			separator: "-",
-			elements: ["ZIP Code", "+4 code"],
+			elements: ["address.postalCode"],
 			modalFieldSelector: "#interaction-address--original-postal-code",
-		},
-		{
-			field: edqCountryLineSelector,
-			elements: ['Two character ISO country code'],
-			modalFieldSelector: "#",
 		},
 	];
 }
+/**
+ * Will manage custom code from the client to verify the results from Pro Web Address Verification callback.
+ * @param {JSON} edqProWebMetaDataJSON
+ *
+ * @returns boolean
+ */
 function edqProWebExecuteTransitionCallBack(edqProWebMetaDataJSON) { 
 	var edqCustomFunctionName = edqCustomCallbackName;
 	var edqJsonParameter = [edqProWebMetaDataJSON];
