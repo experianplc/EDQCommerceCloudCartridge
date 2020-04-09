@@ -378,8 +378,18 @@ if (window.location.href.toLowerCase().match(/checkout/)) {
 } else {
 	setEdqInputSelectors();
 }
-if (edqEmailLineSelector) { edqEmailLineSelector.addEventListener("focus", function() {enableButtonDisable(edqCurrentSubmitButton, false); pageRestrictValidation = true;}); }
-if (edqPhoneLineSelectors) { edqPhoneLineSelectors.forEach(function(phoneSelector) { phoneSelector.addEventListener("focus", function() {enableButtonDisable(edqCurrentSubmitButton, false); pageRestrictValidation = true;}); }); }
+if (edqEmailLineSelector) {
+	edqEmailLineSelector.addEventListener("focus", function() {
+		enableButtonDisable(edqCurrentSubmitButton, false); pageRestrictValidation = true;
+	}); 
+}
+if (edqPhoneLineSelectors) {
+	edqPhoneLineSelectors.forEach(function(phoneSelector) {
+		phoneSelector.addEventListener("focus", function() {
+			enableButtonDisable(edqCurrentSubmitButton, false); pageRestrictValidation = true;
+		});
+	}); 
+}
 /** 
  * Will manage the access restriction when Phone/Email validation is being used based on the BM configuration.
  */
@@ -498,7 +508,7 @@ function edqSetGlobalIntuitiveConfiguration() {
 	 * For more information refer to feature #118583.
 	 */
 	if (edqDataSetUsage) { 
-		window.EdqConfig.GLOBAL_INTUITIVE_DATASET=edqDataSetCode; 
+		window.EdqConfig.GLOBAL_INTUITIVE_DATASET = edqDataSetCode; 
 	}
 	window.EdqConfig.GLOBAL_INTUITIVE_MAPPING= [
 		{
@@ -749,7 +759,7 @@ function edqSetProWebConfiguration() {
 }
 /**
  * Will manage custom code from the client to verify the results from Pro Web Address Verification callback.
- * @param {JSON} edqProWebMetaDataJSON
+ * @param {object} edqProWebMetaDataJSON
  *
  * @returns boolean
  */
