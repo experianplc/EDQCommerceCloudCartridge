@@ -11,7 +11,7 @@ var vDefaultCountry,
 	edqCountryLineId,
 	edqEmailLineSelector,
 	edqPhoneLineSelectors = [],
-	edqCurrentSubmitButtonSelector,
+	edqCurrentSubmitButton,
 	edqEmailEnable,
 	edqPhoneEnable,
 	edqValidateEmail,
@@ -23,11 +23,15 @@ var vDefaultCountry,
 	edqProWebCallbackValidation,
 	edqCustomCallbackName,
 	edqGlobalIntuitiveUnicornJsPath,
-	reloadGIjs = true;
+	reloadGIjs = true,
+	pageRestrictValidation = true;
 var inputSelector = document.querySelectorAll("input[id]");
 var buttonSelector = document.querySelectorAll("button[name]");
 window.EdqConfig = window.EdqConfig || {};
-/** Demandware uses ISO-2 codes for countries. This dictionary is intended to capture ISO-2 codes into ISO-3 codes for Pegasus/Unicorn libraries. **/
+/** 
+ * Demandware uses ISO-2 codes for countries. This dictionary is intended to capture ISO-2 codes into ISO-3
+ * codes for Pegasus/Unicorn libraries. 
+ */
 var countryDict = [];
 countryDict.push({ key: "AF", value: "AFG" },
 	{ key: "AX", value: "ALA" },
@@ -276,21 +280,38 @@ countryDict.push({ key: "AF", value: "AFG" },
 	{ key: "YE", value: "YEM" },
 	{ key: "ZM", value: "ZMB" },
 	{ key: "ZW", value: "ZWE" });
+/** 
+ * Searches for the Store Country code ISO-2 and returns the ISO-3 code.
+ * @param {string} incomingCountryIso2
+ *
+ * @returns {string}
+ */
 function countryAlpha3(incomingCountryIso2) { 
 	var iso2ToIso3CountryDict;
 	countryDict.forEach(function(val) { iso2ToIso3CountryDict = (incomingCountryIso2.match(val.key)) ? val.value : iso2ToIso3CountryDict });
 	return iso2ToIso3CountryDict || vDefaultCountry;
 }
+/** 
+ * Searches for the Store Country code ISO-3 and returns the ISO-2 code.
+ * @param {string} incomingCountryIso3
+ *
+ * @returns {string}
+ */
 function countryAlpha2(incomingCountryIso3) {
 	return countryDict.filter(function(countryKeyAndValue) {
 		return countryKeyAndValue.value === incomingCountryIso3;
 	})[0] || null;
 }
-/*** Set values for EDQ variables ***/
+/** 
+ * Set values for the input selectors depending on the touchpoint (Address/Billing/Shipping).
+ * @param {string} stageContentLocation
+ */
 function setEdqInputSelectors(stageContentLocation) {
-	/** In SFRA the checkout web page contains both billing and shipping address input fields in a single page controlled by JavaScripts to hide/show elements.
-	* The stageContentLocation variable is intended to specify the stage(billing/shipping) of the checkout web page to set the proper input address fields 
-	* that we require to set them for billing or shipping address fields, since is they're set in the same web page we need to change its value to use them in the next step.*/
+	/** 
+	 * In SFRA the checkout web page contains both billing and shipping address input fields in a single page controlled by JavaScripts to hide/show elements.
+	 * The stageContentLocation variable is intended to specify the stage(billing/shipping) of the checkout web page to set the proper input address fields 
+	 * that we require to set them for billing or shipping address fields, since is they're set in the same web page we need to change its value to use them in the next step.
+	 */
 	stageContentLocation = stageContentLocation || "";
 	if (stageContentLocation === "shipping") {
 		edqAddressLine1Id = document.querySelector("[name=dwfrm_shipping_shippingAddress_addressFields_address1]");
@@ -321,75 +342,137 @@ function setEdqInputSelectors(stageContentLocation) {
 }
 for (var i = 0; i < buttonSelector.length; i++) {
 	/** In SFRA the checkout web page contains both billing and shipping process so we have to set the button we need so 
-	* this part is intended to find out the submit button for the checkout web page; in this page there are 3 submit buttons 
-	* with the label name=submit; so for this page the only way to distinguish them is for the label value; this case is just for initial load.*/
+	 * this part is intended to find out the submit button for the checkout web page; in this page there are 3 submit buttons 
+	 * with the label name=submit; so for this page the only way to distinguish them is for the label value; this case is just for initial load.
+	 */
 	if (window.location.href.toLowerCase().match(/checkout/)) {
 		if (buttonSelector[i].hasAttribute("value")) {
-			edqCurrentSubmitButtonSelector = (buttonSelector[i].value.toLowerCase().match(/shipping/)) ? buttonSelector[i] : edqCurrentSubmitButtonSelector;
-			buttonSelector[i].addEventListener("mouseover", edqEmailPhoneValidationCallback);
+			edqCurrentSubmitButton = (buttonSelector[i].value.toLowerCase().match(/shipping/)) ? buttonSelector[i] : edqCurrentSubmitButton;
+			buttonSelector[i].addEventListener("focus", edqEmailPhoneValidationCallback);
 		}
 	} else {
-		edqCurrentSubmitButtonSelector = (buttonSelector[i].name.toLowerCase().match(/save/)) ? buttonSelector[i] : edqCurrentSubmitButtonSelector;
-		buttonSelector[i].addEventListener("mouseover", edqEmailPhoneValidationCallback);
+		edqCurrentSubmitButton = (buttonSelector[i].name.toLowerCase().match(/save/)) ? buttonSelector[i] : edqCurrentSubmitButton;
+		buttonSelector[i].addEventListener("focus", edqEmailPhoneValidationCallback);
+	}
+}
+/** 
+ * Added this function to set the listener tothe button on the selected stage (billing/shipping)
+ * For more information see Bug #147798 
+ * @param {string} stageContentLocation
+ */
+function setEdqButtonSelector(stageContentLocation) {
+	stageContentLocation = stageContentLocation || "";
+	if (stageContentLocation === "shipping") {
+		edqCurrentSubmitButton = document.querySelector("[value=submit-shipping]");
+		edqCurrentSubmitButton.addEventListener("focus", edqEmailPhoneValidationCallback);
+	} else if (stageContentLocation === "billing") {
+		edqCurrentSubmitButton = document.querySelector("[value=submit-payment]");
+		edqCurrentSubmitButton.addEventListener("focus", edqEmailPhoneValidationCallback);
 	}
 }
 /**
-* This window.location is intended to specify the input address fields that we require when we get to the checkout web page for initial load.
-*/
+ * This window.location is intended to specify the input address fields that we require when we get to the checkout web page for initial load.
+ */
 if (window.location.href.toLowerCase().match(/checkout/)) {
 	setEdqInputSelectors("shipping");
 } else {
 	setEdqInputSelectors();
 }
-if (edqEmailLineSelector) { edqEmailLineSelector.addEventListener("mouseover", function() {enableButtonDisable(edqCurrentSubmitButtonSelector, false);}); }
-if (edqPhoneLineSelectors) { edqPhoneLineSelectors.forEach(function(phoneSelector) { phoneSelector.addEventListener("mouseover", function() {enableButtonDisable(edqCurrentSubmitButtonSelector, false);}); }); }
+if (edqEmailLineSelector) {
+	edqEmailLineSelector.addEventListener("focus", function() {
+		enableButtonDisable(edqCurrentSubmitButton, false); pageRestrictValidation = true;
+	}); 
+}
+if (edqPhoneLineSelectors) {
+	edqPhoneLineSelectors.forEach(function(phoneSelector) {
+		phoneSelector.addEventListener("focus", function() {
+			enableButtonDisable(edqCurrentSubmitButton, false); pageRestrictValidation = true;
+		});
+	}); 
+}
+/** 
+ * Will manage the access restriction when Phone/Email validation is being used based on the BM configuration.
+ */
 function edqEmailPhoneValidationCallback() {
+	/** Email Validation not restricting access when Phone Validation is activated in the Billing stage for SFRA.
+	* Added the checkoutStage to review the button that we're going to disable to prevent on going to the next page on 
+	* the checkout page when the option is available in the Business Manager configuration.
+	* For more information see Bug #147798 */
+	var urlParams = new URLSearchParams(window.location.search);
+	var checkoutStage = urlParams.get('stage');
+	/** In SFRA Billing and Sgipping are on the same page controlled by CSS and JS; with this validation we'll be able
+	 *	to set the button from the current stage we're on.
+	 */
+	if (checkoutStage == "shipping") {
+		setEdqButtonSelector("shipping");
+	} else if (checkoutStage == "payment") {
+		setEdqButtonSelector("billing");
+	}
 	if ((edqEmailEnable) && (edqEmailLineSelector)) { edqEmailValidationCallback(); }
 	if ((edqPhoneEnable) && (edqPhoneLineSelectors)) { edqPhoneValidationCallback(); }
 }
 /**
-* In the Business Manager there's an option that sets if the email and/or email will allow the user to prevent the 
-* user going to the next page; so this function will set the button an event listener to catch the result if the 
-* configuration is set to true; button is disabled when the mouse is over the button and disabled when you focus 
-* on the email or phone fields. */
+ * In the Business Manager there's an option that sets if the email and/or email will allow the user to prevent the 
+ * user going to the next page; so this function will set the button an event listener to catch the result if the 
+ * configuration is set to true; button is disabled when the mouse is over the button and disabled when you focus 
+ * on the email or phone fields.
+ * @param {element}  buttonToDisable
+ * @param {boolean}  buttonStatus
+ */
 function enableButtonDisable(buttonToDisable, buttonStatus) {
 	buttonToDisable.disabled = buttonStatus;
 	if (document.getElementById("form-submit")) { document.getElementById("form-submit").disabled = buttonStatus; }
 }
+/** 
+ * Will manage the access restriction when Phone Validation is being used.
+ */
 function edqPhoneValidationCallback() {
-	/** TASK:101729 Allow users to continue with invalid phone; 
-	* based on the Business Manager configuration we can set if we want to prevent the user to go through with an invalid phone. */
-	if (edqValidatePhone) {
+	/** 
+	 * Allow users to continue with invalid phone; 
+	 * based on the Business Manager configuration we can set if we want to prevent the user to go through with an invalid phone.
+	 * For more information refer to task #101729.
+	 */
+	if ((edqValidatePhone) && (pageRestrictValidation)) {
 		edqPhoneLineSelectors.forEach(function(phoneSelector) {
 			if (phoneSelector.hasAttribute("edq-metadata")) {
 				var edqPhoneResponse = JSON.parse(phoneSelector.getAttribute("edq-metadata"));
 				if (edqPhoneResponse["Certainty"] == "Verified") {
-					enableButtonDisable(edqCurrentSubmitButtonSelector, false);
+					 pageRestrictValidation = true;
+					enableButtonDisable(edqCurrentSubmitButton, false);
 				} else {
-					enableButtonDisable(edqCurrentSubmitButtonSelector, true);
+					 pageRestrictValidation = false;
+					enableButtonDisable(edqCurrentSubmitButton, true);
 				}
 			}
 		});
 	}
 }
+/** 
+ * Will manage the access restriction when Email Validation is being used.
+ */
 function edqEmailValidationCallback() {
-	/** TASK:101729 Allow users to continue with invalid email; 
-	* based on the Business Manager configuration we can set if we want to prevent the user to go through with an invalid phone. */
-	if (edqValidateEmail) {
+	/** 
+	 * Allow users to continue with invalid email; 
+	 * based on the Business Manager configuration we can set if we want to prevent the user to go through with an invalid Email.
+	 * For more information refer to task #101729.
+	 */
+	if ((edqValidateEmail) && (pageRestrictValidation)) {
 		if (edqEmailLineSelector.hasAttribute("edq-metadata")) {
 			var edqEmailResponse = JSON.parse(edqEmailLineSelector.getAttribute("edq-metadata"));
 			if ((edqEmailResponse["Certainty"] == "verified") || (edqEmailResponse["Certainty"] == "unknown")) {
-				enableButtonDisable(edqCurrentSubmitButtonSelector, false);
+				 pageRestrictValidation = true;
+				enableButtonDisable(edqCurrentSubmitButton, false);
 			} else {
-				enableButtonDisable(edqCurrentSubmitButtonSelector, true);
+				 pageRestrictValidation = false;
+				enableButtonDisable(edqCurrentSubmitButton, true);
 			} 
 		}
 	}
 }
 /**
-* Email validation
-* Sets the configuration to use Email Validate
-*/
+ * Email validation
+ * Sets the configuration to use Email Validate
+ */
 /*eslint no-unused-vars: "error"*/
 function edqSetEmailValidationConfiguration() {
 	window.EdqConfig.EMAIL_VALIDATE_AUTH_TOKEN=edqAuthorizationToken;
@@ -399,9 +482,9 @@ function edqSetEmailValidationConfiguration() {
 	];
 }
 /**
-* Phone validation
-* Sets the configuration to use Global Phone Validate
-*/
+ * Phone validation
+ * Sets the configuration to use Global Phone Validate
+ */
 function edqSetPhoneValidationConfiguration() {
 	window.EdqConfig.GLOBAL_PHONE_VALIDATE_AUTH_TOKEN=edqAuthorizationToken;
 	window.EdqConfig.PHONE_TIMEOUT=3500;
@@ -409,9 +492,9 @@ function edqSetPhoneValidationConfiguration() {
 	window.EdqConfig.PHONE_ELEMENTS=edqPhoneLineSelectors;
 }
 /**
-* Global Intuitive
-* Sets the configuration to use Global Intuitive
-*/
+ * Global Intuitive
+ * Sets the configuration to use Global Intuitive
+ */
 function edqSetGlobalIntuitiveConfiguration() {
 	var globalIntuitiveIsoCountry = vDefaultCountry;
 	if (edqCountryLineId != null) {
@@ -421,9 +504,12 @@ function edqSetGlobalIntuitiveConfiguration() {
 	window.EdqConfig.GLOBAL_INTUITIVE_ISO3_COUNTRY=countryAlpha3(globalIntuitiveIsoCountry);
 	window.EdqConfig.GLOBAL_INTUITIVE_ELEMENT= edqAddressLine1Id;
 	/**
-	* Feature 118583
-	* Configuration option to include Data Sets for Global Intuitive*/
-	if (edqDataSetUsage) window.EdqConfig.GLOBAL_INTUITIVE_DATASET=edqDataSetCode;
+	 * Configuration option to include Data Sets for Global Intuitive.
+	 * For more information refer to feature #118583.
+	 */
+	if (edqDataSetUsage) { 
+		window.EdqConfig.GLOBAL_INTUITIVE_DATASET = edqDataSetCode; 
+	}
 	window.EdqConfig.GLOBAL_INTUITIVE_MAPPING= [
 		{
 			field: edqAddressLine1Id,
@@ -447,6 +533,9 @@ function edqSetGlobalIntuitiveConfiguration() {
 		},
 	];
 }
+/**
+ * Will check if the country has a value when Global Intuitive has being used and set the Country value if this null.
+ */
 function setCountryField() {
 	setTimeout(function() {
 		if (edqCountryLineId !== null && edqCountryLineId.value === "" && edqAddressLine1Id.hasAttribute("edq-metadata")) {
@@ -454,9 +543,10 @@ function setCountryField() {
 		}
 	}, 5000);
 }
-/** Browser autofill triggers Global Intuitive Suggestion box and proceed to the billing stage the suggestion address box doesn't dissapear.
-* For more information see Bug #142988
-**/
+/** 
+ * Browser autofill triggers Global Intuitive Suggestion box and proceed to the billing stage the suggestion address box doesn't dissapear.
+ * For more information see Bug #142988
+ */
 function removeGlobalIntuitiveSuggestionBox() {
 	if ((document.querySelector(".edq-global-intuitive-address-suggestions")) 
 			&& (document.querySelector(".edq-global-intuitive-address-suggestions").style.display == "block")) {
@@ -464,32 +554,42 @@ function removeGlobalIntuitiveSuggestionBox() {
 		edqGlobalIntuitiveSuggestionBox.style.display = "none";
 	}
 }
-/** In SFRA the checkout web page contains both billing and shipping in a single page controlled by JavaScript to hide/show elements. 
-* The setCheckoutFormEvents is intended to set all input address fields variables depending on the stage we are(billing/shipping); 
-* the selectors choose by this function just appear once the stage is completed; once we click on the selector the other will 
-* be going to the stage that we're selecting and the will continue the regular workflow.*/
+/**
+ * Add event listeners to the elements.
+ * @param {element} selector
+ * @param {event} event
+ * @param {function} fn
+ */
 function addEventOnElement(selector, event, fn) {
 	const element = document.querySelector(selector);
 	if (!element) { return; }
 	element.addEventListener(event, fn);
 }
+/** 
+ * In SFRA the checkout web page contains both billing and shipping in a single page controlled by JavaScript to hide/show elements. 
+ * The setCheckoutFormEvents is intended to set all input address fields variables depending on the stage we are(billing/shipping); 
+ * the selectors choose by this function just appear once the stage is completed; once we click on the selector the other will 
+ * be going to the stage that we're selecting and the will continue the regular workflow.
+ */
 function setCheckoutFormEvents() {
-	if (edqCountryLineId != null)
+	if (edqCountryLineId != null) {
 		if (edqCountryLineId.value === "") { edqCountryLineId.value = "US"; }
+	}
 	/**
-	* Autofill after selecting a suggested address is broken.
-	* By doing this we can refresh the configuration for Global Intuitive in Checkout stage; we can toogle between 
-	* shipping and billing address elements; since the webpage doesn't reload, all elements are controlled by js and css; 
-	* the listeners are set to refresh the configuration for Global Intuitive.
-	* For more information see Bug #125898 */
+	 * Autofill after selecting a suggested address is broken.
+	 * By doing this we can refresh the configuration for Global Intuitive in Checkout stage; we can toogle between 
+	 * shipping and billing address elements; since the webpage doesn't reload, all elements are controlled by js and css; 
+	 * the listeners are set to refresh the configuration for Global Intuitive.
+	 * For more information see Bug #125898.
+	 */
 	const setEventsForRegistration = function() { setEventsForListeners(); };
 	const setEventsForBilling = function() { 
 		setEventsForListeners("billing");
 		if (reloadGIjs) {
 			/** Autofill not working on billing address at all
-			* By doing this in the checkout stage for SFRA we can remove the global-intuitive-unicorn.js in order to force to reload all the content with 
-			* the new parameters that we're including, since the webpage doesn't do a refresh items we're not changing values 
-			* For more information see Bug #126164 */
+			 * By doing this in the checkout stage for SFRA we can remove the global-intuitive-unicorn.js in order to force to reload all the content with 
+			 * the new parameters that we're including, since the webpage doesn't do a refresh items we're not changing values 
+			 * For more information see Bug #126164 */
 			$("script[src=\"" + edqGlobalIntuitiveUnicornJsPath + "\"]").remove();
 			$("<script>").attr({
 				src:edqGlobalIntuitiveUnicornJsPath,
@@ -510,6 +610,11 @@ function setCheckoutFormEvents() {
 	addEventOnElement("#dwfrm_billing", "focus", setEventsForBilling);
 	addEventOnElement("[value=submit-shipping]", "click", removeGlobalIntuitiveSuggestionBox);
 }
+/**
+ * Set the events for the checkout stage; if shipping stage is selected this function will set the events
+ * for shipping and when the stage changes to billing the function will set the events for the billing stage.
+ * @param {String} checkoutStage
+ */
 function setEventsForListeners(checkoutStage) {
 	setEdqInputSelectors(checkoutStage);
 	edqSetGlobalIntuitiveConfiguration();
@@ -518,9 +623,10 @@ function setEventsForListeners(checkoutStage) {
 	addEventOnElement("[name=" + edqAddressLine1Id.name + "]", "mouseenter", setCountryField);
 }
 /**
-* Global Intuitive creating multiple elements of suggestion box
-* By doing this we remove all edq-verification-suggestion-box that are created; except the one we're using.
-* For more information see Bug #108100 */
+ * Global Intuitive creating multiple elements of suggestion box
+ * By doing this we remove all edq-verification-suggestion-box that are created; except the one we're using.
+ * For more information see Bug #108100 
+ */
 function removeMultipleEDQSuggestion() {
 	var edqSuggestionBoxLength = document.querySelectorAll("#edq-verification-suggestion-box").length;
 	for (var i=0; i < edqSuggestionBoxLength; i++) {
@@ -529,50 +635,66 @@ function removeMultipleEDQSuggestion() {
 	}
 }
 /**
- * Pro Web - Address (Verification Engine)
- * Sets the configuration to use Pro Web - Address (Verification Engine) */
+ * Pro Web Address Verification callback
+ */
 function edqValidateAddressCallBack() {
 	var edqProWebMetaDataJSON;
 	var edqProWebResponse = document.querySelector("#form-submit");
 	if (edqProWebResponse.getAttribute("edq-metadata")) {
 		edqProWebMetaDataJSON = JSON.parse(edqProWebResponse.getAttribute("edq-metadata"));
-		document.getElementById(edqStateLineId.id).value = edqProWebMetaDataJSON["State code"];
+		document.getElementById(edqStateLineId.id).value = edqProWebMetaDataJSON["address.province"];
 		document.querySelector("#form-submit").removeAttribute("edq-metadata");
 	}
 	if (edqProWebCallbackValidation) {
 		if (edqProWebExecuteTransitionCallBack(edqProWebMetaDataJSON)) {
 			document.querySelector("#form-submit").style.display = "none";
-			edqCurrentSubmitButtonSelector.style.display = "block";
-			edqCurrentSubmitButtonSelector.removeAttribute("style");
-			edqCurrentSubmitButtonSelector.click();
+			edqCurrentSubmitButton.style.display = "block";
+			edqCurrentSubmitButton.removeAttribute("style");
+			edqCurrentSubmitButton.click();
 		}
 	} else {
 		document.querySelector("#form-submit").style.display = "none";
-		edqCurrentSubmitButtonSelector.style.display = "block";
-		edqCurrentSubmitButtonSelector.removeAttribute("style");
-		edqCurrentSubmitButtonSelector.click();
+		edqCurrentSubmitButton.style.display = "block";
+		edqCurrentSubmitButton.removeAttribute("style");
+		edqCurrentSubmitButton.click();
 	}
 }
+/**
+ * Manage the button settings for the Button "form-submit", depending on the touchpoint.
+ */
 function setButtonConfigurationCallback() {
-	edqCurrentSubmitButtonSelector.style.display = "none";
+	edqCurrentSubmitButton.style.display = "none";
 	document.querySelector("#form-submit").style.display = "block";
-	document.querySelector("#form-submit").innerText = edqCurrentSubmitButtonSelector.innerText.replace(/\n/g, "");
+	document.querySelector("#form-submit").innerText = edqCurrentSubmitButton.innerText.replace(/\n/g, "");
 }
+/**
+ * Manage the configuration in the checkout stage(Billing/Shipping) when the stage changes.
+ * @param {String} checkoutStage
+ * @param {String} checkoutStageButton
+ */
 function setEventsForListenersProWeb(checkoutStage, checkoutStageButton) {
-	edqCurrentSubmitButtonSelector = document.querySelector(checkoutStageButton);
+	edqCurrentSubmitButton = document.querySelector(checkoutStageButton);
 	setEdqInputSelectors(checkoutStage);
 	setButtonConfigurationCallback();
 	edqSetProWebConfiguration();
 }
+/**
+ * Set the events depending the touchpoint (Shipping/Billing/Address) for Pro Web.
+ */
 function edqCheckoutPageWorkflows() {
-	/** This is intended to hide the form button in initial load of the page; just to show verification engine button in the form. **/
-	if (edqCurrentSubmitButtonSelector) {
-		edqCurrentSubmitButtonSelector.style.display = "none";
+	/** 
+	 * This is intended to hide the form button in initial load of the page; just to show verification engine button in the form.
+	 */
+	if (edqCurrentSubmitButton) {
+		edqCurrentSubmitButton.style.display = "none";
 	}
-	/** TASK:101727 Potential misconfiguration of checkout process.
-    * By doing this we can refresh the configuration for Pro Web in Checkout stage; we can toogle between 
-	* shipping and billing address elements; since the webpage doesn't reload, all elements are controlled by js and css; 
-	* the listeners are set to refresh the configuration for Pro Web. */
+	/** 
+	 * Potential misconfiguration of checkout process.
+     * By doing this we can refresh the configuration for Pro Web in Checkout stage; we can toogle between 
+	 * shipping and billing address elements; since the webpage doesn't reload, all elements are controlled by js and css; 
+	 * the listeners are set to refresh the configuration for Pro Web. 
+	 * For more information refer to task #101727.
+	 */
 	const setEventsForRegistrationStage = function() { setEventsForListenersProWeb("", "[name=save]"); };
 	const setEventsForBillingStage = function() { setEventsForListenersProWeb("billing", "[value=submit-payment]"); };
 	const setEventsForShippingStage = function() { setEventsForListenersProWeb("shipping", "[value=submit-shipping]"); };
@@ -584,8 +706,12 @@ function edqCheckoutPageWorkflows() {
 	addEventOnElement("#dwfrm_billing", "focus", setEventsForBillingStage);
 	
 }
+/**
+ * Pro Web - Address (Verification Engine)
+ * Sets the configuration to use Pro Web - Address (Verification Engine) 
+ */
 function edqSetProWebConfiguration() {
-	document.getElementById("form-submit").addEventListener("mouseover", edqEmailPhoneValidationCallback);
+	document.getElementById("form-submit").addEventListener("focus", edqEmailPhoneValidationCallback);
 	var proWebIsoCountry = vDefaultCountry;
 	if (edqCountryLineId != null) {
 		proWebIsoCountry = edqCountryLineId.value;
@@ -604,39 +730,39 @@ function edqSetProWebConfiguration() {
 	window.EdqConfig.PRO_WEB_MAPPING=[
 		{
 			field: edqAddressLine1Id,
-			elements: ["Formatted Address 2"],
+			elements: ["address.addressLine1"],
 			modalFieldSelector:"#interaction-address--original-address-line-one",
 		},
 		{
 			field: edqAddressLine2Id,
-			elements: ["AddressLine2"],
+			elements: ["address.addressLine2"],
 			transformation: function(el) { return "@" + (el.value || el.innerText) },
 			modalFieldSelector:"#interaction-address--original-address-line-two",
 		},
 		{
 			field: edqCityLineId,
-			elements: ["City name"],
+			elements: ["address.locality"],
 			transformation: function(el) { return "@" + (el.value || el.innerText) },
 			modalFieldSelector:"#interaction-address--original-locality",
 		},
 		{
 			field: edqStateLineId,
-			elements: ["State code"],
+			elements: ["address.province"],
 			modalFieldSelector:"#interaction-address--original-province",
 		},
 		{
 			field: edqPostalLineId,
-			separator: "-",
-			elements: ["ZIP Code", "+4 code"],
+			elements: ["address.postalCode"],
 			modalFieldSelector:"#interaction-address--original-postal-code",
-		},
-		{
-			field: edqCountryLineId,
-			elements: ['Two character ISO country code'],
-			modalFieldSelector: "#",
 		},
     ];
 }
+/**
+ * Will manage custom code from the client to verify the results from Pro Web Address Verification callback.
+ * @param {object} edqProWebMetaDataJSON
+ *
+ * @returns boolean
+ */
 function edqProWebExecuteTransitionCallBack(edqProWebMetaDataJSON) { 
 	var edqCustomFunctionName = edqCustomCallbackName;
 	var edqJsonParameter = [edqProWebMetaDataJSON];

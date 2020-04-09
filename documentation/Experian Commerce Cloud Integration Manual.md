@@ -246,12 +246,6 @@ To check the imported site preferences go to **Administration > Site Development
 ![SGJC EDQ Unicorn 4](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/321EDQUnicorn4.png)
 
 ####  3.2.2\. Storefront Reference Architecture
-**EDQHeaders integration**
-1.	Go to int_experian_sfra cartridge and open the template located in **templates > default > common > htmlHead.isml.**
-2. The `<isinclude template="EDQ/EDQHeaders" />` line has been added at the end of **“htmlHead.isml”** file.
-
-![SFRA EDQ Headers](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/322EDQHeaders.png)
-
 **EDQUnicorn integration**
 1.	Go to int_experian_sfra cartridge and open the template located in **templates > default > account > components > registerForm.isml**
 2.	The **“registerForm.isml”** line has been added at the end of file `<isinclude template="EDQ/EDQUnicorn" />`
@@ -330,26 +324,23 @@ For any support contact email are
 
 ##  5\. User Guide
 ### 5.1\. Business Manager
-Once the EDQ SitePreferences are uploaded in the business manager; choose your site and go to **Merchant Tools > Site Preferences > Custom Site Preferences Group** and choose EDQ Config option.
-1.	EDQ Token (String): credentials provided to use the service. 
+Once the EDQ SitePreferences are uploaded in the business manager; choose your site and go to **Merchant Tools > Site Preferences > Custom Site Preferences Group** and choose Experian option.
+*	EDQ Token (String): credentials provided to use the service. 
 * Set to the value supplied to you by your Experian Partner
-2.	Email Enable (Boolean): set to enable/disable email validation. 
-3.	Email Validation (Boolean): set enable/disable to force email validation to prevent the page going through.
-4.	Phone Enable (Boolean): set to enable/disable phone validation.
-5.	Phone Validation (Boolean): set enable/disable to force phone validation to prevent the page going through.
-6. Preferred address search engine (Enum of String): Select one option between:
-   1. Both
-   1. Global Intuitive
-   1. Verification Engine
-   1. None
-7.	Address layout (String): Address layout format for the data.
-8. Staging (Enum of String): Select one option between:
-   1. Production
-   1. Development
-9. Data Set Code (String): Code to use Data Sets in case the country ISO code requires it.
-10. Activates or deactivates Data Set usage (Boolean): Activates or deactivates Data Set usage (only use for Non USA).
-11. Pro Web Custom Transition Callback (String): Name for the custom customer function to be triggered.
-12. Pro Web Callback validation (Boolean): Activates or deactivates page transition from the callback.
+*	Email Enable (Boolean): set to enable/disable email validation. 
+*	Email Validation (Boolean): set enable/disable to force email validation to prevent the page going through.
+*	Phone Enable (Boolean): set to enable/disable phone validation.
+*	Phone Validation (Boolean): set enable/disable to force phone validation to prevent the page going through.
+* Preferred address search engine (Enum of String): Select one option between:
+   * Both
+   * Global Intuitive
+   * Verification Engine
+   * None
+* Address layout (String): Address layout format for the data.
+* Data Set Code (String): Code to use Data Sets in case the country ISO code requires it.
+* Activates or deactivates Data Set usage (Boolean): Activates or deactivates Data Set usage (only use for Non USA).
+* Pro Web Custom Transition Callback (String): Name for the custom customer function to be triggered.
+* Pro Web Callback validation (Boolean): Activates or deactivates page transition from the callback. 
 
 ![EDQ Config](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/510EDQConfig.png)
 
@@ -377,4 +368,4 @@ Checkout Form | ✔ | ✔ | ✔ | ✔
 * Timeout connection issues can be experience due to a slow internet connection. If you don’t get an answer in the default time; you can try making the request again.
 
 ##  7\. Failover and recovery
-* If the unicorn/pegasus libraries connection fails the store will continue with it's normal workflow; this issue may be caused due a non valid token or slow internet connection.
+* If the Experian data quality libraries connection fails the store will continue with it's normal workflow; this issue may be caused due a non valid token or slow internet connection.

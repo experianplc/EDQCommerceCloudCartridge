@@ -174,5 +174,46 @@ registerSuite('Edq Cartridge Functional Test 2', {
 					assert.equal('{"ResultCode":"0","AdditionalPhoneInfo":{"ValidatedPhoneNumber":"13545556644","IsRoaming":"false"},"Number":"13545556644","PhoneType":"Provided number is Invalid","Certainty":"Unverified"}', edqmetadata, "Getting a response from Phone Validation meta-data");
 				})
 		},
+		"SGJC Create Account - Email Validation Restricting Access": function() {
+			return this.remote
+				.get(SgjcCheckoutStage)
+				.sleep(2000)
+				.then(fillInFluidAddressField())
+				//.findByName('dwfrm_singleshipping_shippingAddress_addressFields_phone')
+				//.clearValue()
+				//.type("3545556644")
+				.end()
+				.sleep(2000)
+				.findByName("dwfrm_singleshipping_shippingAddress_addressFields_phone")
+					.clearValue()
+					.type("3525554433")
+					.end()
+					.sleep(500)
+				.findByName("dwfrm_singleshipping_shippingAddress_addressFields_firstName")
+					.clearValue()
+					.type("Jose")
+					.end()
+					.sleep(500)
+				.findByName("dwfrm_singleshipping_shippingAddress_addressFields_lastName")
+					.clearValue()
+					.type("3525554433")
+					.end()
+					.sleep(2000)
+				.findByCssSelector("#form-submit")
+					.click()
+				.sleep(10000)
+				.findByName('dwfrm_billing_billingAddress_email_emailAddress')
+					.clearValue()
+					.type("thisisnotanemailthisisnotanemail@gmail.com")
+					.end()
+					.sleep(500)
+				.findByCssSelector("#form-submit")
+					.click()
+					.getAttribute("disabled")
+					.then(function(value) {
+						assert.equal(false, value, "Button is disabled restricting validation.");
+					})
+				.end()
+		},
 	}
 });
