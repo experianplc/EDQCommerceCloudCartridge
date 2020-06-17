@@ -16,7 +16,6 @@
 	edqProWebCallbackValidation = ${dw.system.Site.current.preferences.custom.EDQProWebCallbackValidation};
 	edqCustomCallbackName = '${dw.system.Site.current.preferences.custom.EDQCustomCallbackName}';
 	pageCheckoutStage = '${pdict.currentStage}';
-	edqGlobalIntuitiveUseCurrentLocation = ${dw.system.Site.current.preferences.custom.EDQGlobalIntuitiveUseCurrentLocation};
 	
 	window.EdqDemandware.sfra.sfraUtilsConfiguration();
 	
