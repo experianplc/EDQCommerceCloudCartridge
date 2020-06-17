@@ -5,7 +5,7 @@
 <isif condition="${dw.system.Site.current.preferences.custom.EDQStaging == 'Development'}">
     <isloop items="${dw.object.SystemObjectMgr.describe('SitePreferences').getCustomAttributeDefinition('EDQDevUrls').values}" var="dev">
         <isif condition="${dev.value == 'GlobalIntuitiveJS'}">
-            <script src="${dev.displayValue}" integrity="sha384-NYLY4+OgdXuKWxwKmNMVavgMg0Jy9LvbM4+TwIQWMcJHqmlPiHl/P3UK3YtvEbaP" crossorigin="anonymous"></script>
+            <script src="${dev.displayValue}" integrity="sha512-ooVQYWcrVoGAZXC+qPMJaFsEkLB82EsT42J+p0U5INWm+NHrN+XvnWsALGv440Zg3a/QsDJ2L9XR0592fkSBmA==" crossorigin="anonymous"></script>
         </isif>
     </isloop>
 <iselseif condition="${dw.system.Site.current.preferences.custom.EDQStaging == 'Production'}">
