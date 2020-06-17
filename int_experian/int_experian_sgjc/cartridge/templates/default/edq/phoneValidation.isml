@@ -1,11 +1,11 @@
 <iscontent type="text/html" charset="UTF-8" compact="true"/>
 <script type="text/javascript">
-    edqSetPhoneValidationConfiguration();
+	window.EdqDemandware.sgjc.usePhoneValidation(edqAuthorizationToken);
 </script>
 <isif condition="${dw.system.Site.current.preferences.custom.EDQStaging == 'Development'}">
     <isloop items="${dw.object.SystemObjectMgr.describe('SitePreferences').getCustomAttributeDefinition('EDQDevUrls').values}" var="dev">
         <isif condition="${dev.value == 'PhoneValidationJS'}">
-            <script src="${dev.displayValue}" integrity="sha512-79rsK2Ef9UNn4LYfeN/bMTgC5LH8if3ZLxZe8y2wJcTP01p2OfVsyRhGqv5u0BqybRp1jAvCLjEFKzWnHT8DVQ==" crossorigin="anonymous"></script>
+            <script src="${dev.displayValue}" integrity="sha384-a2YgdRnQC85hRL2/O6pY6vyEiDkCUFrvRePNhz5NxAf2Lzb8X/Fxb68JGEOdI90m" crossorigin="anonymous"></script>
         </isif>
     </isloop>
 <iselseif condition="${dw.system.Site.current.preferences.custom.EDQStaging == 'Production'}">

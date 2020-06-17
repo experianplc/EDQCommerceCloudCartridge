@@ -3,6 +3,7 @@
 <isinclude template="edq/edqHeaders" />
 
 <script src="${URLUtils.staticURL('/js/edqUtils.js')}"></script>
+
 <script type="text/javascript">
 	vDefaultCountry = '${dw.system.Site.current.preferences.custom.countryCode}';
 	edqEmailEnable = ${dw.system.Site.current.preferences.custom.EDQEmailEnable};
@@ -15,7 +16,21 @@
 	edqProWebCallbackValidation = ${dw.system.Site.current.preferences.custom.EDQProWebCallbackValidation};
 	edqCustomCallbackName = '${dw.system.Site.current.preferences.custom.EDQCustomCallbackName}';
 	pageCheckoutStage = '${pdict.currentStage}';
-</script>
+	edqGlobalIntuitiveUseCurrentLocation = ${dw.system.Site.current.preferences.custom.EDQGlobalIntuitiveUseCurrentLocation};
+	
+	window.EdqDemandware.sfra.sfraUtilsConfiguration();
+	
+	window.EdqDemandware.sfra.setUtilsConfig({"defaultCountry":vDefaultCountry, 
+		"emailEnable":edqEmailEnable, 
+		"phoneEnable":edqPhoneEnable, 
+		"validatePhone":edqValidatePhone, 
+		"validateEmail":edqValidateEmail, 
+		"authorizationToken":edqAuthorizationToken, 
+		"dataSetCode":edqDataSetCode, 
+		"dataSetUsage":edqDataSetUsage, 
+		"proWebCallbackValidation":edqProWebCallbackValidation, 
+		"customCallbackName":edqCustomCallbackName});
+	</script>
 <isif condition="${URLUtils.continueURL().toString().search('Address') != -1 || URLUtils.continueURL().toString().search('Checkout') != -1}">
 	<isif condition="${dw.system.Site.current.preferences.custom.EDQPreferedAddressSearchEngine.value == 'VerificationEngine'}">
 		<isinclude template="edq/verificationEngine" />
