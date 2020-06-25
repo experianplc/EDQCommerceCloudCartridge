@@ -39,7 +39,6 @@ let edqProWebCallbackValidation: boolean;
 let edqCustomCallbackName: string;
 let edqGlobalIntuitiveUnicornJsPath: string;
 let reloadGIjs: boolean = true;
-//let pageRestrictValidation: boolean = true;
 let edqGlobalIntuitiveStagging: string;
 let inputSelector: NodeListOf<HTMLInputElement> = document.querySelectorAll("input[id]");
 let buttonSelector: NodeListOf<HTMLButtonElement> = document.querySelectorAll("button[name]");
@@ -98,7 +97,6 @@ for (let i: number = 0; i < buttonSelector.length; i++) {
 	 */
 	if (window.location.href.toLowerCase().match(/checkout/)) {
 		if (buttonSelector[i].hasAttribute("value")) {
-			//window.edqUtils.window.sfccConfig.edqCurrentSubmitButton = (buttonSelector[i].value.toLowerCase().match(/shipping/)) ? buttonSelector[i] : window.edqUtils.window.sfccConfig.edqCurrentSubmitButton;
 			window.sfccConfig.edqCurrentSubmitButton = (buttonSelector[i].value.toLowerCase().match(/shipping/)) ? buttonSelector[i] : window.sfccConfig.edqCurrentSubmitButton;
 			buttonSelector[i].addEventListener("focus", function () { edqEmailPhoneValidationCallback({
 				"edqEmailEnable":edqEmailEnable,
@@ -112,7 +110,6 @@ for (let i: number = 0; i < buttonSelector.length; i++) {
 			})});
 		}
 	} else {
-		//window.edqUtils.window.sfccConfig.edqCurrentSubmitButton = (buttonSelector[i].name.toLowerCase().match(/save/)) ? buttonSelector[i] : window.edqUtils.window.sfccConfig.edqCurrentSubmitButton;
 		window.sfccConfig.edqCurrentSubmitButton = (buttonSelector[i].name.toLowerCase().match(/save/)) ? buttonSelector[i] : window.sfccConfig.edqCurrentSubmitButton;
 		buttonSelector[i].addEventListener("focus", function () { edqEmailPhoneValidationCallback({
 				"edqEmailEnable":edqEmailEnable,
@@ -194,7 +191,6 @@ export function usePhoneValidation(edqAuthorizationToken) {
 		"edqStateLineElement":window.sfccConfig.edqStateLineElement,
 		"edqPostalLineElement":window.sfccConfig.edqPostalLineElement});
  }
-//removeMultipleEDQSuggestion({"edqSuggestionBox":document.querySelectorAll("#edq-verification-suggestion-box")});
 
 /**
  * Pro Web Address Verification callback
@@ -251,8 +247,6 @@ interface setUtilsConfigArgs {
 	dataSetUsage: boolean;
 	proWebCallbackValidation: boolean;
 	customCallbackName: string;
-	//checkoutStage: string;
-	//globalIntuitiveUseCurrentLocation: boolean;
 }
 export function setUtilsConfig({defaultCountry, emailEnable, phoneEnable, validatePhone, validateEmail, authorizationToken, dataSetCode, dataSetUsage, proWebCallbackValidation, customCallbackName}: setUtilsConfigArgs) {
 	vDefaultCountry = defaultCountry;
@@ -265,8 +259,6 @@ export function setUtilsConfig({defaultCountry, emailEnable, phoneEnable, valida
 	edqDataSetUsage = dataSetUsage;
 	edqProWebCallbackValidation = proWebCallbackValidation;
 	edqCustomCallbackName = customCallbackName;
-	//pageCheckoutStage = checkoutStage;
-	//edqGlobalIntuitiveUseCurrentLocation = globalIntuitiveUseCurrentLocation;
 }
 export function setUtilsGIConfig({globalIntuitiveStagging, edqUnicornJsPath}) {
 	edqGlobalIntuitiveStagging = globalIntuitiveStagging;

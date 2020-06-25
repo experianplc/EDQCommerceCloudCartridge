@@ -108,35 +108,3 @@ export function EdqEmailPhoneValidationHelper({edqEmailEnable, edqEmailLineEleme
 interface UtilsStageButtonSelectorArgs extends EmailPhoneValidationHelpers {
 	stageContentLocation: string;
 }
-/** 
- * Added this function to set the listener tothe button on the selected stage (billing/shipping)
- * For more information see Bug #147798 
- *
- * @param stageContentLocation - Contains the stage(shipping/billing) for the checkout page in SFRA
- */
-/*function setEdqButtonSelector({stageContentLocation, edqEmailEnable, edqEmailLineElement, edqPhoneEnable, edqPhoneLineElements, pageRestrictValidation, edqValidateEmail, edqValidatePhone, edqCurrentSubmitButton}: UtilsStageButtonSelectorArgs) {
-	stageContentLocation = stageContentLocation || "";
-	if (stageContentLocation === "shipping") {
-		document.querySelector("[value=submit-shipping]").addEventListener("focus", function () { edqEmailPhoneValidationCallback({
-				"edqEmailEnable":edqEmailEnable,
-				"edqEmailLineElement":edqEmailLineElement,
-				"edqPhoneEnable":edqPhoneEnable,
-				"edqPhoneLineElements":edqPhoneLineElements,
-				"pageRestrictValidation":pageRestrictValidation,
-				"edqValidateEmail":edqValidateEmail,
-				"edqValidatePhone":edqValidatePhone,
-				"edqCurrentSubmitButton":window.sfccConfig.edqCurrentSubmitButton
-			})});
-	} else if (stageContentLocation === "billing") {
-		document.querySelector("[value=submit-payment]").addEventListener("focus", function () { edqEmailPhoneValidationCallback({
-				"edqEmailEnable":edqEmailEnable,
-				"edqEmailLineElement":edqEmailLineElement,
-				"edqPhoneEnable":edqPhoneEnable,
-				"edqPhoneLineElements":edqPhoneLineElements,
-				"pageRestrictValidation":pageRestrictValidation,
-				"edqValidateEmail":edqValidateEmail,
-				"edqValidatePhone":edqValidatePhone,
-				"edqCurrentSubmitButton":window.sfccConfig.edqCurrentSubmitButton
-			})});
-	}
-}*/

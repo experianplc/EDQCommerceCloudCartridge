@@ -54,7 +54,6 @@ for (i = 0; i < inputSelector.length; i++) {
 	window.sfccConfig.edqAddressLine2Element = (inputSelector[i].id.match(/dwfrm_singleshipping_shippingAddress_addressFields_address2|dwfrm_billing_billingAddress_addressFields_address2|dwfrm_profile_address_address2/)) ? inputSelector[i] : window.sfccConfig.edqAddressLine2Element;
 	window.sfccConfig.edqCityLineElement = (inputSelector[i].id.match(/dwfrm_singleshipping_shippingAddress_addressFields_city|dwfrm_billing_billingAddress_addressFields_city|dwfrm_profile_address_city/)) ? inputSelector[i] : window.sfccConfig.edqCityLineElement;
 	window.sfccConfig.edqPostalLineElement = (inputSelector[i].id.match(/dwfrm_singleshipping_shippingAddress_addressFields_postal|dwfrm_billing_billingAddress_addressFields_postal|dwfrm_profile_address_postal/)) ? inputSelector[i] : window.sfccConfig.edqPostalLineElement;
-	//edqPhoneLineElements = (inputSelector[i].id.toLowerCase().match(/phone/)) ? inputSelector[i] : edqPhoneLineElements;
 	if (inputSelector[i].id.toLowerCase().match(/phone/)) { window.sfccConfig.edqPhoneLineElements.push(inputSelector[i]); }	
 	window.sfccConfig.edqEmailLineElement = ((inputSelector[i].id == "dwfrm_profile_customer_email") 
         || (inputSelector[i].id == "dwfrm_billing_billingAddress_email_emailAddress")) ? inputSelector[i] : window.sfccConfig.edqEmailLineElement;
@@ -204,8 +203,6 @@ interface setUtilsConfigArgs {
 	dataSetUsage: boolean;
 	proWebCallbackValidation: boolean;
 	customCallbackName: string;
-	//checkoutStage: string;
-	//globalIntuitiveUseCurrentLocation: boolean;
 }
 export function setUtilsConfig({defaultCountry, emailEnable, phoneEnable, validatePhone, validateEmail, authorizationToken, dataSetCode, dataSetUsage, proWebCallbackValidation, customCallbackName}: setUtilsConfigArgs) {
 	vDefaultCountry = defaultCountry;
@@ -218,6 +215,4 @@ export function setUtilsConfig({defaultCountry, emailEnable, phoneEnable, valida
 	edqDataSetUsage = dataSetUsage;
 	edqProWebCallbackValidation = proWebCallbackValidation;
 	edqCustomCallbackName = customCallbackName;
-	//pageCheckoutStage = checkoutStage;
-	//edqGlobalIntuitiveUseCurrentLocation = globalIntuitiveUseCurrentLocation;
 }

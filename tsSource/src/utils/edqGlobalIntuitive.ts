@@ -105,8 +105,6 @@ export function removeGlobalIntuitiveSuggestionBox({edqGlobalIntuitiveSuggestion
 	}
 }
 interface GlobalIntuitiveCheckoutEventsArgs extends GlobalIntuitiveConfigArgs {
-	//edqCountryElement: HTMLSelectElement;
-	//edqAddressLine1Element: HTMLInputElement;
 	reloadGIjs: boolean;
 	edqGlobalIntuitiveUnicornJsPath: String;
 	edqGlobalIntuitiveIntegrityKey: String;
@@ -197,7 +195,6 @@ export function setCheckoutFormEvents({reloadGIjs, edqGlobalIntuitiveUnicornJsPa
 }
 interface GlobalIntuitiveSetEventsArgs extends GlobalIntuitiveConfigArgs {
 	checkoutStage: string;
-	//edqAddressLine1Element: HTMLInputElement;
 }
 /**
  * Set the events for the checkout stage; if shipping stage is selected this function will set the events

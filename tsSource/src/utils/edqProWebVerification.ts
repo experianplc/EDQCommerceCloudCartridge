@@ -32,7 +32,6 @@ interface ProWebConfigArgs extends ProWebformButton {
  * @param edqPostalLineElement - Contains the selector of the postal code input
  */
 export function edqSetProWebConfiguration({formSubmitButton, vDefaultCountry, edqAuthorizationToken, edqCountryElement, edqProWebAddressLayout, edqAddressLine1Element, edqAddressLine2Element, edqCityLineElement, edqStateLineElement, edqPostalLineElement}: ProWebConfigArgs) {
-	//formSubmitButton.addEventListener("focus", edqEmailPhoneValidationCallback);
 	let proWebIsoCountry: string = vDefaultCountry;
 	if (edqCountryElement != null) {
 		proWebIsoCountry = edqCountryElement.value;
@@ -109,7 +108,6 @@ interface ProWebEventsForListenersArgs extends ProWebConfigArgs {
  * @param {string} edqCurrentSubmitButton
  */
 export function setEventsForListenersProWeb({checkoutStage, edqCurrentSubmitButton, formSubmitButton, vDefaultCountry, edqAuthorizationToken, edqCountryElement, edqProWebAddressLayout, edqAddressLine1Element, edqAddressLine2Element, edqCityLineElement, edqStateLineElement, edqPostalLineElement}: ProWebEventsForListenersArgs) {
-	//edqCurrentSubmitButton = checkoutStageButton;
 	setEdqInputSelectors({"stageContentLocation":checkoutStage});
 	buttonCssSeetings({"formSubmitButton":window.sfccConfig.edqCurrentSubmitButton, "edqCurrentSubmitButton":formSubmitButton});
 	edqSetProWebConfiguration({"formSubmitButton":formSubmitButton, 
