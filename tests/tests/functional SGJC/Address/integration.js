@@ -52,11 +52,11 @@ function fillInPartialAddress() {
 registerSuite('Edq Cartridge Functional Test', {
 	before: function() {
 		return this.remote
-			.setFindTimeout(10000)
+			.setFindTimeout(500)
 			.get(SgjcLogoutUrl)
 			.sleep(500)
 			.get(SgjcLoginUrl)
-			.sleep(3000)
+			.sleep(2000)
 			.findByCssSelector('.ui-button-text-only')
 			.click()
 			.end()
@@ -76,20 +76,21 @@ registerSuite('Edq Cartridge Functional Test', {
 				.end()
 	},
 	tests: {
-		"SGJC Add Address Stage - Pro Web Address (Verification Engine / Correct Address": function() {
+		"SGJC Add Address Stage - Pro Web Address (Verification Engine / Correct Address)": function() {
 			return this.remote
-				.get(SgjsAddressAddUrl)
-				/*.sleep(2000)
-				.findByCssSelector("a[href='/on/demandware.store/Sites-Demo_SG-Site/default/Address-Add']")
+				.sleep(2000)
+				.get(SgjsAddressListUrl)
+				.sleep(2000)
+				.findByCssSelector(".address-create")
 					.click()
-					.end()*/
+					.end()
 				.sleep(3000)
 				.then(fillInFluidAddressField())
-				.sleep(5000)
+				.sleep(4000)
 				.findByCssSelector("#form-submit")
 					.click()
 					.end()
-				.sleep(10000)
+				.sleep(6000)
 				.findByName("dwfrm_profile_address_postal")
 					.getProperty("value")
 				.then(function(postalCode) {
@@ -99,17 +100,19 @@ registerSuite('Edq Cartridge Functional Test', {
 		},
 		"SGJC Add Address Stage - Pro Web Address (Verification Engine / User Interation box": function() {
 			return this.remote
-				.get(SgjsAddressAddUrl)
-				/*.sleep(2000)
-				.findByCssSelector("a[href='/on/demandware.store/Sites-Demo_SG-Site/default/Address-Add']")
+				.sleep(2000)
+				.get(SgjsAddressListUrl)
+				.sleep(3000)
+				.findByCssSelector(".address-create")
 					.click()
-					.end()*/
+					.end()
 				.sleep(3000)
 				.then(fillInPartialAddress())
+				.sleep(1000)
 				.findByCssSelector("#form-submit")
 					.click()
 					.end()
-				.sleep(6000)
+				.sleep(5000)
 				.findByCssSelector("#interaction-address--select-field")
 					.type("53 state st lbby 1")
 					.end()
@@ -125,22 +128,19 @@ registerSuite('Edq Cartridge Functional Test', {
 				})
 				.end()
 		},
-		"SGJC Checkout Stage - Global Intuitive": function() {
+		"SGJC Add Address Stage - Global Intuitive": function() {
 			return this.remote
+				.sleep(2000)
 				.get(SgjsAddressAddUrl)
-				/*.sleep(1000)
-				.findByCssSelector("a[href='/on/demandware.store/Sites-Demo_SG-Site/default/Address-Add']")
-					.click()
-					.end()*/
 				.sleep(3000)
 				.findByName('dwfrm_profile_address_address1')
 					.type("53 state st lbby")
 					.end()
-				.sleep(3000)
+				.sleep(6000)
 				.findByCssSelector(".edq-global-intuitive-address-suggestion")
 					.click()
 					.end()
-				.sleep(2000)
+				.sleep(6000)
 				.findByName('dwfrm_profile_address_postal')
 					.getProperty('value')
 				.then(function(postalCode) {
