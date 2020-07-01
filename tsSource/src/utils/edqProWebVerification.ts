@@ -1,7 +1,7 @@
 import {countryAlpha3} from './edqCountry';
-import {addEventOnElement} from './edq-utils';
-import {edqEmailPhoneValidationCallback} from './edq-utils';
+import {addEventOnElement, edqEmailPhoneValidationCallback, enableButtonDisable} from './edq-utils';
 import {setEdqInputSelectors} from '../sfra';
+
 interface ProWebformButton {
 	formSubmitButton: HTMLButtonElement;
 }
@@ -179,6 +179,7 @@ export function edqCheckoutPageWorkflows({edqCurrentSubmitButton,
 			"edqPostalLineElement":edqPostalLineElement});
 	};
 	const setEventsForShippingStage = function() {
+		enableButtonDisable({"buttonToDisable":document.querySelector("[value=submit-shipping]"), "buttonStatus":false, "formSubmitButton":formSubmitButton});
 		setEventsForListenersProWeb({"checkoutStage":"shipping",
 			"edqCurrentSubmitButton":document.querySelector("[value=submit-shipping]"),
 			"formSubmitButton":formSubmitButton, 

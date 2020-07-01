@@ -58,7 +58,7 @@ function fillInPartialAddress() {
 registerSuite('Edq Cartridge Functional Test 2', {
 	beforeEach: function() {
 		return this.remote
-			.setFindTimeout(500)
+			//.setFindTimeout(500)
 			.get(SgjcLogoutUrl)
 			.get(SgjcProductUrl)
 			.sleep(2000)
@@ -81,7 +81,7 @@ registerSuite('Edq Cartridge Functional Test 2', {
 	tests: {
 		"SGJC Checkout Stage - Pro Web Address (Verification Engine / Correct Address": function() {
 			return this.remote
-				.sleep(2000)
+				//.sleep(2000)
 				.then(fillInFluidAddressField())
 				.sleep(4000)
 				.findByCssSelector("#form-submit")
@@ -97,7 +97,7 @@ registerSuite('Edq Cartridge Functional Test 2', {
 		},
 		"SGJC Checkout Stage - Pro Web Address (Verification Engine / User Interation box": function() {
 			return this.remote
-				.sleep(2000)
+				//.sleep(2000)
 				.then(fillInFluidAddressField())
 				.sleep(500)				
 				.findByName("dwfrm_singleshipping_shippingAddress_addressFields_address2")
@@ -125,7 +125,7 @@ registerSuite('Edq Cartridge Functional Test 2', {
 		},
 		"SGJC Checkout Stage - Global Intuitive": function() {
 			return this.remote
-				.sleep(4000)
+				//.sleep(4000)
 				.findByName('dwfrm_singleshipping_shippingAddress_addressFields_address1')
 					.clearValue()
 					.type("53 state st lbby")
@@ -144,7 +144,7 @@ registerSuite('Edq Cartridge Functional Test 2', {
 		},
 		"SGJC Create Account - Phone Validation Succed": function() {
 			return this.remote
-				.sleep(2000)
+				//.sleep(2000)
 				.findByName('dwfrm_singleshipping_shippingAddress_addressFields_phone')
 				.clearValue()
 				.type("3524443322")
@@ -161,7 +161,7 @@ registerSuite('Edq Cartridge Functional Test 2', {
 		},
 		"SGJC Create Account - Phone Validation Fail": function() {
 			return this.remote
-				.sleep(2000)
+				//.sleep(2000)
 				.findByName('dwfrm_singleshipping_shippingAddress_addressFields_phone')
 				.clearValue()
 				.type("3545556644")
@@ -178,7 +178,7 @@ registerSuite('Edq Cartridge Functional Test 2', {
 		},
 		"SGJC Create Account - Email Validation Restricting Access": function() {
 			return this.remote
-				.sleep(2000)
+				//.sleep(2000)
 				.then(fillInFluidAddressField())
 				.sleep(500)
 				.findByName("dwfrm_singleshipping_shippingAddress_addressFields_firstName")

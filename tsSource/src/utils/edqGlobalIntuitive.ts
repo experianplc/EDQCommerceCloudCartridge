@@ -1,7 +1,5 @@
-import {countryAlpha3} from './edqCountry';
-import {countryAlpha2} from './edqCountry';
-import {enableButtonDisable} from './edq-utils';
-import {addEventOnElement} from './edq-utils';
+import {countryAlpha3, countryAlpha2} from './edqCountry';
+import {enableButtonDisable, addEventOnElement} from './edq-utils';
 import {setEdqInputSelectors} from '../sfra';
 
 interface GlobalIntuitiveConfigArgs {

@@ -52,7 +52,7 @@ function fillInPartialAddress() {
 registerSuite('Edq Cartridge Functional Test', {
 	before: function() {
 		return this.remote
-			.setFindTimeout(500)
+			//.setFindTimeout(500)
 			.get(SgjcLogoutUrl)
 			.sleep(500)
 			.get(SgjcLoginUrl)
@@ -78,7 +78,7 @@ registerSuite('Edq Cartridge Functional Test', {
 	tests: {
 		"SGJC Add Address Stage - Pro Web Address (Verification Engine / Correct Address)": function() {
 			return this.remote
-				.sleep(2000)
+				//.sleep(2000)
 				.get(SgjsAddressListUrl)
 				.sleep(2000)
 				.findByCssSelector(".address-create")
@@ -100,7 +100,7 @@ registerSuite('Edq Cartridge Functional Test', {
 		},
 		"SGJC Add Address Stage - Pro Web Address (Verification Engine / User Interation box": function() {
 			return this.remote
-				.sleep(2000)
+				//.sleep(2000)
 				.get(SgjsAddressListUrl)
 				.sleep(3000)
 				.findByCssSelector(".address-create")
@@ -130,7 +130,7 @@ registerSuite('Edq Cartridge Functional Test', {
 		},
 		"SGJC Add Address Stage - Global Intuitive": function() {
 			return this.remote
-				.sleep(2000)
+				//.sleep(2000)
 				.get(SgjsAddressAddUrl)
 				.sleep(3000)
 				.findByName('dwfrm_profile_address_address1')
@@ -149,7 +149,7 @@ registerSuite('Edq Cartridge Functional Test', {
 		},
 		"SGJC Add Address Stage - Pro Web Address (Address modal box closes before user interaction box)": function() {
 			return this.remote
-				.sleep(2000)
+				//.sleep(2000)
 				.get(SgjsAddressListUrl)
 				.sleep(2000)
 				.findByCssSelector(".address-create")

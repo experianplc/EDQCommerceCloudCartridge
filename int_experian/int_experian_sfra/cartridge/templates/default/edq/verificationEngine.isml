@@ -14,7 +14,11 @@ TASK:101728 Change Validate Button
 </isif>
 <script type="text/javascript">
 	edqProWebAddressLayout = '${dw.system.Site.current.preferences.custom.EDQAddressLayout}';
-	window.EdqDemandware.sfra.useProwebVerification(edqAuthorizationToken, vDefaultCountry, edqProWebAddressLayout);
+	window.EdqDemandware.sfra.useProwebVerification(
+		edqAuthorizationToken,
+		vDefaultCountry,
+		edqProWebAddressLayout
+	);
 </script>
 <isif condition="${dw.system.Site.current.preferences.custom.EDQStaging == 'Development'}">
     <isloop items="${dw.object.SystemObjectMgr.describe('SitePreferences').getCustomAttributeDefinition('EDQDevUrls').values}" var="dev">

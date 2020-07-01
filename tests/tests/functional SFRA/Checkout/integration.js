@@ -71,9 +71,9 @@ function fillInPartialAddress() {
 registerSuite('Edq Cartridge Functional Test 2', {
 	beforeEach: function() {
 		return this.remote
-			.setFindTimeout(500)
+			//.setFindTimeout(500)
 			.get(SfraLogoutUrl)
-			.sleep(500)
+			//.sleep(500)
 			.get(SFRAProductUrl)
 			.findByCssSelector('.affirm')
 			.click()

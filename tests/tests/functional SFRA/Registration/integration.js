@@ -6,9 +6,9 @@ const { assert } = intern.getPlugin('chai');
 registerSuite('Edq Cartridge Functional Test 3', {
 	before: function() {
 		return this.remote
-			.setFindTimeout(500)
+			//.setFindTimeout(500)
 			.get(SfraLogoutUrl)
-			.sleep(500)
+			//.sleep(500)
 			.get(SfraLoginUrl)
 			.findByCssSelector('.affirm')
 			.click()
@@ -21,7 +21,7 @@ registerSuite('Edq Cartridge Functional Test 3', {
 	tests: {
 		"SFRA Create Account - Email Validation Succed": function() {
 			return this.remote
-				.sleep(5000)
+				.sleep(2000)
 				.findByCssSelector("a[href='#register']")
 					.click()
 					.end()
@@ -43,7 +43,7 @@ registerSuite('Edq Cartridge Functional Test 3', {
 		},
 		"SFRA Create Account - Email Validation Fail": function() {
 			return this.remote
-				.sleep(4000)
+				.sleep(2000)
 				.findByCssSelector("a[href='#register']")
 					.click()
 					.end()
@@ -65,7 +65,7 @@ registerSuite('Edq Cartridge Functional Test 3', {
 		},
 		"SFRA Create Account - Phone Validation Succed": function() {
 			return this.remote
-				.sleep(4000)
+				.sleep(2000)
 				.findByCssSelector("a[href='#register']")
 				.click()
 				.end()
@@ -87,7 +87,7 @@ registerSuite('Edq Cartridge Functional Test 3', {
 		},
 		"SFRA Create Account - Phone Validation Fail": function() {
 			return this.remote
-				.sleep(4000)
+				.sleep(2000)
 				.findByCssSelector("a[href='#register']")
 				.click()
 				.end()

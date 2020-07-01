@@ -2,7 +2,6 @@
 /*eslint no-undef: "error"*/
 /*eslint no-unused-vars: ["error", { "vars": "local" }]*/
 /* exported edqSetEmailValidationConfiguration edqSetPhoneValidationConfiguration setCheckoutFormEvents edqValidateAddressCallBack edqCheckoutPageWorkflows */
-export {};
 import {edqSetPhoneValidationConfiguration} from './utils/edqPhoneValidation';
 import {edqSetEmailValidationConfiguration} from './utils/edqEmailValidation';
 import {edqSetGlobalIntuitiveConfiguration} from './utils/edqGlobalIntuitive';
@@ -11,8 +10,7 @@ import {removeMultipleEDQSuggestion} from './utils/edqGlobalIntuitive';
 import {edqCheckoutPageWorkflows} from './utils/edqProWebVerification';
 import {edqSetProWebConfiguration} from './utils/edqProWebVerification';
 import {edqValidateAddressCallBack} from './utils/edqProWebVerification';
-import {edqEmailPhoneValidationCallback} from './utils/edq-utils';
-import {enableButtonDisable} from './utils/edq-utils';
+import {edqEmailPhoneValidationCallback, enableButtonDisable, addEventOnElement} from './utils/edq-utils';
 
 let SfccConfig = <SfccConfigObject>{};
 window.sfccConfig = window.sfccConfig || SfccConfig;
@@ -39,7 +37,7 @@ let edqProWebCallbackValidation: boolean;
 let edqCustomCallbackName: string;
 let edqGlobalIntuitiveUnicornJsPath: string;
 let reloadGIjs: boolean = true;
-let edqGlobalIntuitiveStagging: string;
+let edqGlobalIntuitiveStaging: string;
 let inputSelector: NodeListOf<HTMLInputElement> = document.querySelectorAll("input[id]");
 let buttonSelector: NodeListOf<HTMLButtonElement> = document.querySelectorAll("button[name]");
 let edqGlobalIntuitiveIntegrityKey: string = "sha512-foiD3H9+U0MUfV3DOQ3nfb0X/mbdpMzCpXdzXQPEI+A8lFFKp6sIlHyvYN8++2cZEUH7j6lRcJgLEyD+as28Rw==";
@@ -68,6 +66,7 @@ export function setEdqInputSelectors({stageContentLocation}) {
 		window.sfccConfig.edqPostalLineElement = document.querySelector("[name=dwfrm_shipping_shippingAddress_addressFields_postalCode]");
 		window.sfccConfig.edqStateLineElement = document.querySelector("[name=dwfrm_shipping_shippingAddress_addressFields_states_stateCode]");
 		window.sfccConfig.edqCountryElement = document.querySelector("[name=dwfrm_shipping_shippingAddress_addressFields_country]");
+		window.sfccConfig.edqCurrentSubmitButton = document.querySelector("[value=submit-shipping]");
 	} else if (stageContentLocation === "billing") {
 		window.sfccConfig.edqAddressLine1Element = document.querySelector("#billingAddressOne");
 		window.sfccConfig.edqAddressLine2Element = document.querySelector("#billingAddressTwo");
@@ -75,6 +74,7 @@ export function setEdqInputSelectors({stageContentLocation}) {
 		window.sfccConfig.edqPostalLineElement = document.querySelector("#billingZipCode");
 		window.sfccConfig.edqStateLineElement = document.querySelector("#billingState");
 		window.sfccConfig.edqCountryElement = document.querySelector("#billingCountry");
+		window.sfccConfig.edqCurrentSubmitButton = document.querySelector("[value=submit-payment]");
 	} else {
 		window.sfccConfig.edqAddressLine1Element = document.querySelector("#address1");
 		window.sfccConfig.edqAddressLine2Element = document.querySelector("#address2");
@@ -90,76 +90,88 @@ export function setEdqInputSelectors({stageContentLocation}) {
 }
 
 export function sfraUtilsConfiguration() {
-for (let i: number = 0; i < buttonSelector.length; i++) {
-	/** In SFRA the checkout web page contains both billing and shipping process so we have to set the button we need so 
-	 * this part is intended to find out the submit button for the checkout web page; in this page there are 3 submit buttons 
-	 * with the label name=submit; so for this page the only way to distinguish them is for the label value; this case is just for initial load.
+	let setEmailPhoneCallback = function () {
+		edqEmailPhoneValidationCallback({
+			"edqEmailEnable":edqEmailEnable,
+			"edqEmailLineElement":window.sfccConfig.edqEmailLineElement,
+			"edqPhoneEnable":edqPhoneEnable,
+			"edqPhoneLineElements":window.sfccConfig.edqPhoneLineElements,
+			"pageRestrictValidation":window.sfccConfig.pageRestrictValidation,
+			"edqValidateEmail":edqValidateEmail,
+			"edqValidatePhone":edqValidatePhone,
+			"edqCurrentSubmitButton":window.sfccConfig.edqCurrentSubmitButton
+		})
+	};
+	let setEnableButtonDisable = function() {
+		enableButtonDisable({
+			"buttonToDisable":window.sfccConfig.edqCurrentSubmitButton,
+			"buttonStatus":false,
+			"formSubmitButton":document.querySelector("#form-submit")
+		});
+		window.sfccConfig.pageRestrictValidation = true;
+	};
+	
+	for (let i: number = 0; i < buttonSelector.length; i++) {
+		/** In SFRA the checkout web page contains both billing and shipping process so we have to set the button we need so 
+		 * this part is intended to find out the submit button for the checkout web page; in this page there are 3 submit buttons 
+		 * with the label name=submit; so for this page the only way to distinguish them is for the label value; this case is just for initial load.
+		 */
+		if (window.location.href.toLowerCase().match(/checkout/)) {
+			if (buttonSelector[i].hasAttribute("value")) {
+				window.sfccConfig.edqCurrentSubmitButton = (buttonSelector[i].value.toLowerCase().match(/shipping/)) ? buttonSelector[i] : window.sfccConfig.edqCurrentSubmitButton;
+				if (window.sfccConfig.edqCurrentSubmitButton) {
+					addEventOnElement({"selector":"[value=" + window.sfccConfig.edqCurrentSubmitButton.value + "]", "event":"focus", "fn":setEmailPhoneCallback});
+				}
+				if (buttonSelector[i].value.toLowerCase() === "submit-payment") {
+					addEventOnElement({"selector":"[value=submit-payment]", "event":"focus", "fn":setEmailPhoneCallback});
+				}
+			}
+		} else {
+			window.sfccConfig.edqCurrentSubmitButton = (buttonSelector[i].name.toLowerCase().match(/save/)) ? buttonSelector[i] : window.sfccConfig.edqCurrentSubmitButton;
+			if (window.sfccConfig.edqCurrentSubmitButton) {
+				addEventOnElement({"selector":"[name=" + window.sfccConfig.edqCurrentSubmitButton.name + "]", "event":"focus", "fn":setEmailPhoneCallback});
+			}
+		}
+	}
+	
+	/**
+	 * This window.location is intended to specify the input address fields that we require when we get to the checkout web page for initial load.
 	 */
 	if (window.location.href.toLowerCase().match(/checkout/)) {
-		if (buttonSelector[i].hasAttribute("value")) {
-			window.sfccConfig.edqCurrentSubmitButton = (buttonSelector[i].value.toLowerCase().match(/shipping/)) ? buttonSelector[i] : window.sfccConfig.edqCurrentSubmitButton;
-			buttonSelector[i].addEventListener("focus", function () { edqEmailPhoneValidationCallback({
-				"edqEmailEnable":edqEmailEnable,
-				"edqEmailLineElement":window.sfccConfig.edqEmailLineElement,
-				"edqPhoneEnable":edqPhoneEnable,
-				"edqPhoneLineElements":window.sfccConfig.edqPhoneLineElements,
-				"pageRestrictValidation":window.sfccConfig.pageRestrictValidation,
-				"edqValidateEmail":edqValidateEmail,
-				"edqValidatePhone":edqValidatePhone,
-				"edqCurrentSubmitButton":window.sfccConfig.edqCurrentSubmitButton
-			})});
-		}
+		setEdqInputSelectors({"stageContentLocation":"shipping"});
 	} else {
-		window.sfccConfig.edqCurrentSubmitButton = (buttonSelector[i].name.toLowerCase().match(/save/)) ? buttonSelector[i] : window.sfccConfig.edqCurrentSubmitButton;
-		buttonSelector[i].addEventListener("focus", function () { edqEmailPhoneValidationCallback({
-				"edqEmailEnable":edqEmailEnable,
-				"edqEmailLineElement":window.sfccConfig.edqEmailLineElement,
-				"edqPhoneEnable":edqPhoneEnable,
-				"edqPhoneLineElements":window.sfccConfig.edqPhoneLineElements,
-				"pageRestrictValidation":window.sfccConfig.pageRestrictValidation,
-				"edqValidateEmail":edqValidateEmail,
-				"edqValidatePhone":edqValidatePhone,
-				"edqCurrentSubmitButton":window.sfccConfig.edqCurrentSubmitButton
-			})});
+		setEdqInputSelectors({"stageContentLocation":""});
 	}
-}
-/**
- * This window.location is intended to specify the input address fields that we require when we get to the checkout web page for initial load.
- */
-if (window.location.href.toLowerCase().match(/checkout/)) {
-	setEdqInputSelectors({"stageContentLocation":"shipping"});
-} else {
-	setEdqInputSelectors({"stageContentLocation":""});
-}
-if (window.sfccConfig.edqEmailLineElement) {
-	window.sfccConfig.edqEmailLineElement.addEventListener("focus", function() {
-		enableButtonDisable({"buttonToDisable":window.sfccConfig.edqCurrentSubmitButton, "buttonStatus":false, "formSubmitButton":document.querySelector("#form-submit")});
-		window.sfccConfig.pageRestrictValidation = true;
-	});
-}
-if (window.sfccConfig.edqPhoneLineElements) {
-	window.sfccConfig.edqPhoneLineElements.forEach(function(phoneSelector) {
-		phoneSelector.addEventListener("focus", function() {
-		enableButtonDisable({"buttonToDisable":window.sfccConfig.edqCurrentSubmitButton, "buttonStatus":false, "formSubmitButton":document.querySelector("#form-submit")});
-			window.sfccConfig.pageRestrictValidation = true;
-		});
-	}); 
-}
-
+	if (window.sfccConfig.edqEmailLineElement) {
+		addEventOnElement({"selector":"[name=" + window.sfccConfig.edqEmailLineElement.name + "]", "event":"focus", "fn":setEnableButtonDisable});
+	}
+	if (window.sfccConfig.edqPhoneLineElements) {
+		window.sfccConfig.edqPhoneLineElements.forEach(
+			function(phoneSelector) {
+				addEventOnElement({"selector":"[name=" + phoneSelector.name + "]", "event":"focus", "fn":setEnableButtonDisable});
+			}
+		); 
+	}
 }
 /**
  * Email validation
  * Sets the configuration to use Email Validate
  */
 export function useEmailValidation(edqAuthorizationToken) {
-	edqSetEmailValidationConfiguration({"edqAuthorizationToken":edqAuthorizationToken, "edqEmailLineElement":window.sfccConfig.edqEmailLineElement});
+	edqSetEmailValidationConfiguration({
+		"edqAuthorizationToken":edqAuthorizationToken,
+		"edqEmailLineElement":window.sfccConfig.edqEmailLineElement
+	});
 }
 /**
  * Phone validation
  * Sets the configuration to use Global Phone Validate
  */
 export function usePhoneValidation(edqAuthorizationToken) {
-	edqSetPhoneValidationConfiguration({"edqAuthorizationToken":edqAuthorizationToken, "edqPhoneLineElements":window.sfccConfig.edqPhoneLineElements});
+	edqSetPhoneValidationConfiguration({
+		"edqAuthorizationToken":edqAuthorizationToken,
+		"edqPhoneLineElements":window.sfccConfig.edqPhoneLineElements
+	});
 }
 
 /**
@@ -167,7 +179,8 @@ export function usePhoneValidation(edqAuthorizationToken) {
  * Sets the configuration to use Global Intuitive
  */
  export function useGlobalIntuitive(vDefaultCountry, edqAuthorizationToken, edqDataSetUsage, edqDataSetCode) {
-	edqSetGlobalIntuitiveConfiguration({"vDefaultCountry":vDefaultCountry,
+	edqSetGlobalIntuitiveConfiguration({
+		"vDefaultCountry":vDefaultCountry,
 		"edqAuthorizationToken":edqAuthorizationToken,
 		"edqDataSetUsage":edqDataSetUsage,
 		"edqDataSetCode":edqDataSetCode,
@@ -176,8 +189,10 @@ export function usePhoneValidation(edqAuthorizationToken) {
 		"edqAddressLine2Element":window.sfccConfig.edqAddressLine2Element,
 		"edqCityLineElement":window.sfccConfig.edqCityLineElement,
 		"edqStateLineElement":window.sfccConfig.edqStateLineElement,
-		"edqPostalLineElement":window.sfccConfig.edqPostalLineElement});
-	setCheckoutFormEvents({"reloadGIjs":reloadGIjs,
+		"edqPostalLineElement":window.sfccConfig.edqPostalLineElement
+	});
+	setCheckoutFormEvents({
+		"reloadGIjs":reloadGIjs,
 		"edqGlobalIntuitiveUnicornJsPath":window.sfccConfig.edqGlobalIntuitiveUnicornJsPath,
 		"edqGlobalIntuitiveIntegrityKey":edqGlobalIntuitiveIntegrityKey,
 		"vDefaultCountry":vDefaultCountry,
@@ -189,25 +204,30 @@ export function usePhoneValidation(edqAuthorizationToken) {
 		"edqAddressLine2Element":window.sfccConfig.edqAddressLine2Element,
 		"edqCityLineElement":window.sfccConfig.edqCityLineElement,
 		"edqStateLineElement":window.sfccConfig.edqStateLineElement,
-		"edqPostalLineElement":window.sfccConfig.edqPostalLineElement});
+		"edqPostalLineElement":window.sfccConfig.edqPostalLineElement
+	});
  }
 
 /**
  * Pro Web Address Verification callback
  */
 export function useProwebVerification(edqAuthorizationToken, vDefaultCountry, edqProWebAddressLayout) {
+	let setEmailPhoneCallback = function () {
+		edqEmailPhoneValidationCallback({
+			"edqEmailEnable":edqEmailEnable,
+			"edqEmailLineElement":window.sfccConfig.edqEmailLineElement,
+			"edqPhoneEnable":edqPhoneEnable,
+			"edqPhoneLineElements":window.sfccConfig.edqPhoneLineElements,
+			"pageRestrictValidation":window.sfccConfig.pageRestrictValidation,
+			"edqValidateEmail":edqValidateEmail,
+			"edqValidatePhone":edqValidatePhone,
+			"edqCurrentSubmitButton":window.sfccConfig.edqCurrentSubmitButton
+		})
+	};
 	window.sfccConfig.edqProWebCallback = "window.EdqDemandware.sfra.edqValidateAddressCallBack1";
-	document.querySelector("#form-submit").addEventListener("focus", function () { edqEmailPhoneValidationCallback({
-				"edqEmailEnable":edqEmailEnable,
-				"edqEmailLineElement":window.sfccConfig.edqEmailLineElement,
-				"edqPhoneEnable":edqPhoneEnable,
-				"edqPhoneLineElements":window.sfccConfig.edqPhoneLineElements,
-				"pageRestrictValidation":window.sfccConfig.pageRestrictValidation,
-				"edqValidateEmail":edqValidateEmail,
-				"edqValidatePhone":edqValidatePhone,
-				"edqCurrentSubmitButton":window.sfccConfig.edqCurrentSubmitButton
-	})});
-	edqSetProWebConfiguration({"formSubmitButton":document.querySelector("#form-submit"), 
+	addEventOnElement({"selector":"#form-submit", "event":"focus", "fn":setEmailPhoneCallback});
+	edqSetProWebConfiguration({
+		"formSubmitButton":document.querySelector("#form-submit"), 
 		"vDefaultCountry":vDefaultCountry, 
 		"edqAuthorizationToken":edqAuthorizationToken, 
 		"edqCountryElement":window.sfccConfig.edqCountryElement, 
@@ -216,8 +236,10 @@ export function useProwebVerification(edqAuthorizationToken, vDefaultCountry, ed
 		"edqAddressLine2Element":window.sfccConfig.edqAddressLine2Element, 
 		"edqCityLineElement":window.sfccConfig.edqCityLineElement, 
 		"edqStateLineElement":window.sfccConfig.edqStateLineElement, 
-		"edqPostalLineElement":window.sfccConfig.edqPostalLineElement});
-	edqCheckoutPageWorkflows({"edqCurrentSubmitButton":window.sfccConfig.edqCurrentSubmitButton,
+		"edqPostalLineElement":window.sfccConfig.edqPostalLineElement
+	});
+	edqCheckoutPageWorkflows({
+		"edqCurrentSubmitButton":window.sfccConfig.edqCurrentSubmitButton,
 		"formSubmitButton":document.querySelector("#form-submit"),
 		"vDefaultCountry":vDefaultCountry,
 		"edqAuthorizationToken":edqAuthorizationToken, 
@@ -227,15 +249,19 @@ export function useProwebVerification(edqAuthorizationToken, vDefaultCountry, ed
 		"edqAddressLine2Element":window.sfccConfig.edqAddressLine2Element, 
 		"edqCityLineElement":window.sfccConfig.edqCityLineElement, 
 		"edqStateLineElement":window.sfccConfig.edqStateLineElement, 
-		"edqPostalLineElement":window.sfccConfig.edqPostalLineElement});
+		"edqPostalLineElement":window.sfccConfig.edqPostalLineElement
+	});
 }
 export function edqValidateAddressCallBack1() {
-	edqValidateAddressCallBack({"formSubmitButton":document.querySelector("#form-submit"),
+	edqValidateAddressCallBack({
+		"formSubmitButton":document.querySelector("#form-submit"),
 		"edqStateLineElement":window.sfccConfig.edqStateLineElement,
 		"edqProWebCallbackValidation":edqProWebCallbackValidation,
 		"edqCustomCallbackName":edqCustomCallbackName,
-		"edqCurrentSubmitButton":window.sfccConfig.edqCurrentSubmitButton});
+		"edqCurrentSubmitButton":window.sfccConfig.edqCurrentSubmitButton
+	});
 }
+
 interface setUtilsConfigArgs {
 	defaultCountry: string;
 	emailEnable: boolean;
@@ -260,7 +286,7 @@ export function setUtilsConfig({defaultCountry, emailEnable, phoneEnable, valida
 	edqProWebCallbackValidation = proWebCallbackValidation;
 	edqCustomCallbackName = customCallbackName;
 }
-export function setUtilsGIConfig({globalIntuitiveStagging, edqUnicornJsPath}) {
-	edqGlobalIntuitiveStagging = globalIntuitiveStagging;
+export function setUtilsGIConfig({globalIntuitiveStaging, edqUnicornJsPath}) {
+	edqGlobalIntuitiveStaging = globalIntuitiveStaging;
 	window.sfccConfig.edqGlobalIntuitiveUnicornJsPath = edqUnicornJsPath;
 }

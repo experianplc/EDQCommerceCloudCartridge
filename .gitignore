@@ -1,0 +1,4 @@
+# Files #
+#########
+./tsSource/node_modules/*
+*.swp

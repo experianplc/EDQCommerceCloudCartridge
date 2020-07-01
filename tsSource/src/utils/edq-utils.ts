@@ -16,7 +16,9 @@ interface UtilsButtonActionsArgs {
 }
 export function enableButtonDisable({buttonToDisable, buttonStatus, formSubmitButton}: UtilsButtonActionsArgs) {
 	buttonToDisable.disabled = buttonStatus;
-	if (formSubmitButton) { formSubmitButton.disabled = buttonStatus; }
+	if (formSubmitButton) { 
+		formSubmitButton.disabled = buttonStatus; 
+	}
 }
 interface UtilsAddEventsArgs {
 	selector: string;
@@ -59,7 +61,8 @@ export function edqEmailPhoneValidationCallback({edqEmailEnable, edqEmailLineEle
 	 *	to set the button from the current stage we're on.
 	 */
 	if (checkoutStage == "shipping") {
-		document.querySelector("[value=submit-shipping]").addEventListener("focus", function () { edqEmailPhoneValidationCallback({
+		let setEmailPhoneCallback = function () {
+			edqEmailPhoneValidationCallback({
 				"edqEmailEnable":edqEmailEnable,
 				"edqEmailLineElement":edqEmailLineElement,
 				"edqPhoneEnable":edqPhoneEnable,
@@ -68,10 +71,13 @@ export function edqEmailPhoneValidationCallback({edqEmailEnable, edqEmailLineEle
 				"edqValidateEmail":edqValidateEmail,
 				"edqValidatePhone":edqValidatePhone,
 				"edqCurrentSubmitButton":window.sfccConfig.edqCurrentSubmitButton
-			})});
+			})
+		};
+		addEventOnElement({"selector":"[value=submit-shipping]", "event":"focus", "fn":setEmailPhoneCallback});
 	} else if (checkoutStage == "payment") {
 		window.sfccConfig.edqCurrentSubmitButton = document.querySelector("[value=submit-payment]");
-		document.querySelector("[value=submit-payment]").addEventListener("focus", function () { edqEmailPhoneValidationCallback({
+		let setEmailPhoneCallback = function () {
+			edqEmailPhoneValidationCallback({
 				"edqEmailEnable":edqEmailEnable,
 				"edqEmailLineElement":edqEmailLineElement,
 				"edqPhoneEnable":edqPhoneEnable,
@@ -80,31 +86,36 @@ export function edqEmailPhoneValidationCallback({edqEmailEnable, edqEmailLineEle
 				"edqValidateEmail":edqValidateEmail,
 				"edqValidatePhone":edqValidatePhone,
 				"edqCurrentSubmitButton":window.sfccConfig.edqCurrentSubmitButton
-			})});
+			})
+		};
+		addEventOnElement({"selector":"[value=submit-payment]", "event":"focus", "fn":setEmailPhoneCallback});
 	}
-	EdqEmailPhoneValidationHelper({"edqEmailEnable":edqEmailEnable,
+	EdqEmailPhoneValidationHelper({
+		"edqEmailEnable":edqEmailEnable,
 		"edqEmailLineElement":edqEmailLineElement,
 		"edqPhoneEnable":edqPhoneEnable,
 		"edqPhoneLineElements":edqPhoneLineElements,
 		"pageRestrictValidation":window.sfccConfig.pageRestrictValidation,
 		"edqValidateEmail":edqValidateEmail,
 		"edqValidatePhone":edqValidatePhone,
-		"edqCurrentSubmitButton":window.sfccConfig.edqCurrentSubmitButton});
+		"edqCurrentSubmitButton":window.sfccConfig.edqCurrentSubmitButton
+	});
 }
 export function EdqEmailPhoneValidationHelper({edqEmailEnable, edqEmailLineElement, edqPhoneEnable, edqPhoneLineElements, pageRestrictValidation, edqValidateEmail, edqValidatePhone, edqCurrentSubmitButton}: EmailPhoneValidationHelpers) {
 	if ((edqEmailEnable) && (edqEmailLineElement)) {
-		edqEmailValidationCallback({"edqValidateEmail":edqValidateEmail,
+		edqEmailValidationCallback({
+			"edqValidateEmail":edqValidateEmail,
 			"pageRestrictValidation":window.sfccConfig.pageRestrictValidation,
 			"edqEmailLineElement":edqEmailLineElement,
-			"edqCurrentSubmitButton":window.sfccConfig.edqCurrentSubmitButton});
+			"edqCurrentSubmitButton":window.sfccConfig.edqCurrentSubmitButton
+		});
 	}
 	if ((edqPhoneEnable) && (edqPhoneLineElements)) {
-		edqPhoneValidationCallback({"edqValidatePhone":edqValidatePhone,
+		edqPhoneValidationCallback({
+			"edqValidatePhone":edqValidatePhone,
 			"pageRestrictValidation":window.sfccConfig.pageRestrictValidation,
 			"edqPhoneLineElements":edqPhoneLineElements,
-			"edqCurrentSubmitButton":window.sfccConfig.edqCurrentSubmitButton});
+			"edqCurrentSubmitButton":window.sfccConfig.edqCurrentSubmitButton
+		});
 	}
-}
-interface UtilsStageButtonSelectorArgs extends EmailPhoneValidationHelpers {
-	stageContentLocation: string;
 }

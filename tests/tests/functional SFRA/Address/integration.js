@@ -3,6 +3,8 @@ const mySFRAUrl = "https://qas01.tech-prtnr-na01.dw.demandware.net/on/demandware
 const SfraAddressUrl = "https://qas01.tech-prtnr-na01.dw.demandware.net/on/demandware.store/Sites-Dev01Test-Site/default/Address-AddAddress";
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
+//var Command = require('leadfoot/Command');
+//var pollUntil = require('leadfoot/helpers/pollUntil');
 
 function fillInFluidAddressField() {
 	return function() {
@@ -37,7 +39,6 @@ function fillInPartialAddress() {
 			.findByName("dwfrm_address_address1")
 				.clearValue()
 				.type("53 State st lbby")
-				.sleep(500)
 				.end()
 			.findByName("dwfrm_address_country")
 				.type("United States")
@@ -54,9 +55,9 @@ function fillInPartialAddress() {
 registerSuite('Edq Cartridge Functional Test', {
 	before: function() {
 		return this.remote
-			.setFindTimeout(500)
+			//.setFindTimeout(500)
 			.get(SfraLogoutUrl)
-			.sleep(500)
+			//.sleep(500)
 			.get(mySFRAUrl)
 			.sleep(3000)
 			.findByCssSelector('.affirm')
@@ -77,7 +78,7 @@ registerSuite('Edq Cartridge Functional Test', {
 	tests: {
 		"SFRA Add Address Stage - Pro Web Address (Verification Engine / Correct Address)": function() {
 			return this.remote
-				.sleep(4000)
+				.sleep(2000)
 				.get(SfraAddressUrl)
 				.sleep(3000)
 				.then(fillInFluidAddressField())
@@ -95,6 +96,7 @@ registerSuite('Edq Cartridge Functional Test', {
 		},
 		"SFRA Add Address Stage - Pro Web Address (Verification Engine / User Interation box)": function() {
 			return this.remote
+				.sleep(2000)
 				.get(SfraAddressUrl)
 				.sleep(4000)
 				.then(fillInPartialAddress())
@@ -104,7 +106,8 @@ registerSuite('Edq Cartridge Functional Test', {
 					.end()
 				.sleep(5000)
 				.findByCssSelector("#interaction-address--select-field")
-					.type("53 state st lbby 1")
+					.clearValue()
+					.type("lbby 1")
 					.end()
 				.sleep(2000)
 				.findByXpath('//div[@class="edq-address-picklist" and text()="53 State St Lbby 1"]')

@@ -88,7 +88,7 @@ registerSuite('Edq Cartridge Functional Test 3', {
 		tests: {
 		"SGJC Create Account - Email Validation Succed": function() {
 			return this.remote
-				.sleep(3000)
+				//.sleep(3000)
 				.findByName('dwfrm_profile_customer_email')
 				.clearValue()
 				.type("jose.castillo@experian.com")
@@ -105,7 +105,7 @@ registerSuite('Edq Cartridge Functional Test 3', {
 		},
 		"SGJC Create Account - Email Validation Fail": function() {
 			return this.remote
-				.sleep(3000)
+				//.sleep(3000)
 				.findByName('dwfrm_profile_customer_email')
 				.clearValue()
 				.type("thisisnotanemailthisisnotanemail@gmail.com")

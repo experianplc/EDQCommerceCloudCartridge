@@ -1,5 +1,4 @@
 /*eslint no-unused-vars: "error"*/
-
 import {enableButtonDisable} from './edq-utils';
 
 interface EmailArgs {
