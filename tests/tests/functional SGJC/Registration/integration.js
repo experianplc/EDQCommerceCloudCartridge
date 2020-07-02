@@ -83,7 +83,7 @@ registerSuite('Experian SGJC Registration Touchpoint', {
 				.find("css selector", ".ui-button-text-only")
 					.click()
 					.end()
-				.catch(function(errorLog) { })
+				.catch(function(errorLog) { return errorLog; })
 		},
 		tests: {
 		"Registration - Email Validation Succeeds": function() {
