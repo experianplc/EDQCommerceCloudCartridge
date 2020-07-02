@@ -52,7 +52,7 @@ function fillInPartialAddress() {
 	}
 }
 
-registerSuite('Edq Cartridge Functional Test', {
+registerSuite('Experian SFRA Address Touchpoint', {
 	before: function() {
 		return this.remote
 			//.setFindTimeout(500)
@@ -76,7 +76,7 @@ registerSuite('Edq Cartridge Functional Test', {
 				.end()
 	},
 	tests: {
-		"SFRA Add Address Stage - Pro Web Address (Verification Engine / Correct Address)": function() {
+		"Add Address - Pro Web Address (Correct Address)": function() {
 			return this.remote
 				.sleep(2000)
 				.get(SfraAddressUrl)
@@ -94,7 +94,7 @@ registerSuite('Edq Cartridge Functional Test', {
 				})
 				.end()
 		},
-		"SFRA Add Address Stage - Pro Web Address (Verification Engine / User Interation box)": function() {
+		"Add Address - Pro Web Address (User Interation box)": function() {
 			return this.remote
 				.sleep(2000)
 				.get(SfraAddressUrl)
@@ -121,7 +121,7 @@ registerSuite('Edq Cartridge Functional Test', {
 				})
 				.end()
 		},
-		"SFRA Add Address Stage - Global Intuitive": function() {
+		"Add Address - Global Intuitive": function() {
 			return this.remote
 				.sleep(2000)
 				.get(SfraAddressUrl)

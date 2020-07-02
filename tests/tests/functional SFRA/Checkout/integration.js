@@ -11,29 +11,23 @@ function fillInFluidAddressField() {
 				.clearValue()
 				.type("53 State st")
 				.end()
-				.sleep(500)
 			.findByName("dwfrm_shipping_shippingAddress_addressFields_address2")
 				.clearValue()
 				.type("Lbby 1")
 				.end()
-				.sleep(500)
 			.findByName("dwfrm_shipping_shippingAddress_addressFields_city")
 				.clearValue()
 				.type("Boston")
 				.end()
-				.sleep(500)
 			.findByName("dwfrm_shipping_shippingAddress_addressFields_states_stateCode")
 				.type("Massachusetts")
 				.end()
-				.sleep(500)
 			.findByName("dwfrm_shipping_shippingAddress_addressFields_country")
 				.type("United States")
 				.end()
-				.sleep(500)
 			.findByName('dwfrm_shipping_shippingAddress_addressFields_postalCode')
 				.clearValue()
 				.end()
-				.sleep(500)
 	}
 }
 
@@ -44,31 +38,25 @@ function fillInPartialAddress() {
 				.clearValue()
 				.type("53 State st")
 				.end()
-				.sleep(500)
 			.findByName("dwfrm_shipping_shippingAddress_addressFields_address2")
 				.clearValue()
 				.end()
-				.sleep(500)
 			.findByName("dwfrm_shipping_shippingAddress_addressFields_states_stateCode")
 				.type("Massachusetts")
 				.end()
-				.sleep(500)
 			.findByName("dwfrm_shipping_shippingAddress_addressFields_country")
 				.type("United States")
 				.end()
-				.sleep(500)
 			.findByName("dwfrm_shipping_shippingAddress_addressFields_city")
 				.clearValue()
 				.end()
-				.sleep(500)
 			.findByName('dwfrm_shipping_shippingAddress_addressFields_postalCode')
 				.clearValue()
 				.end()
-				.sleep(500)
 	}
 }
 
-registerSuite('Edq Cartridge Functional Test 2', {
+registerSuite('Experian SFRA Checkout Touchpoint', {
 	beforeEach: function() {
 		return this.remote
 			//.setFindTimeout(500)
@@ -84,7 +72,7 @@ registerSuite('Edq Cartridge Functional Test 2', {
 			.end()
 	},
 	tests: {
-		"SFRA Checkout Stage - Pro Web Address (Verification Engine / Correct Address)": function() {
+		"Checkout - Pro Web Address (Correct Address)": function() {
 			return this.remote
 				.sleep(2000)
 				.get(SFRACheckoutStage)
@@ -102,17 +90,17 @@ registerSuite('Edq Cartridge Functional Test 2', {
 				})
 				.end()
 		},
-		"SFRA Checkout Stage - Pro Web Address (Verification Engine / User Interation box)": function() {
+		"Checkout - Pro Web Address (User Interation box)": function() {
 			return this.remote
 				.sleep(2000)
 				.get(SFRACheckoutStage)
 				.sleep(2000)
 				.then(fillInPartialAddress())
-				.sleep(2000)
+				.sleep(4000)
 				.findByCssSelector("#form-submit")
 					.click()
 					.end()
-				.sleep(2000)
+				.sleep(5000)
 				.findByCssSelector("#interaction-address--select-field")
 					.clearValue()
 					.type("lbby 1")
@@ -129,7 +117,7 @@ registerSuite('Edq Cartridge Functional Test 2', {
 				})
 				.end()
 		},
-		"SFRA Checkout Stage - Global Intuitive": function() {
+		"Checkout - Global Intuitive": function() {
 			return this.remote
 				.sleep(2000)
 				.get(SFRACheckoutStage)
@@ -150,7 +138,7 @@ registerSuite('Edq Cartridge Functional Test 2', {
 				})
 				.end()
 		},
-		"SFRA Fill country field - Global Intuitive": function() {
+		"Checkout - Global Intuitive (Fill country field)": function() {
 			return this.remote
 				.sleep(2000)
 				.get(SFRACheckoutStage)
@@ -176,7 +164,7 @@ registerSuite('Edq Cartridge Functional Test 2', {
 				})
 				.end()
 		},
-		"SFRA Check dropdown up/down keys - Global Intuitive": function() {
+		"Checkout - Global Intuitive (Dropdown up/down keys)": function() {
 			return this.remote
 				.sleep(2000)
 				.get(SFRACheckoutStage)
@@ -190,7 +178,7 @@ registerSuite('Edq Cartridge Functional Test 2', {
 					.clearValue()
 					.type("53 ST")
 					.end()
-				.sleep(3000)
+				.sleep(5000)
 				.findByCssSelector(".edq-global-intuitive-address-suggestion")
 					.pressKeys('\uE015')
 					.pressKeys('\uE015')
@@ -206,37 +194,34 @@ registerSuite('Edq Cartridge Functional Test 2', {
 				})
 				.end()
 		},
-		"SFRA Checkout Stage - Pro Web Address (Email Validation not restricting access)": function() {
+		"Checkout - Email Validation (Restricting Access Succeeds)": function() {
 			return this.remote
 				.sleep(2000)
 				.get(SFRACheckoutStage)
 				.sleep(2000)
 				.then(fillInFluidAddressField())
-				.sleep(500)
+				.sleep(2000)
 				.findByName('dwfrm_shipping_shippingAddress_addressFields_firstName')
 					.clearValue()
 					.type("Jose")
 					.end()
-				.sleep(500)
 				.findByName('dwfrm_shipping_shippingAddress_addressFields_lastName')
 					.clearValue()
 					.type("Castillo")
 					.end()
-				.sleep(500)
 				.findByName('dwfrm_shipping_shippingAddress_addressFields_phone')
 					.clearValue()
 					.type("3524445566")
 					.end()
-				.sleep(500)
 				.findByCssSelector("#form-submit")
 					.click()
 					.end()
-				.sleep(5000)
+				.sleep(6000)
 				.findByName('dwfrm_billing_contactInfoFields_email')
 					.clearValue()
 					.type("noreply@gmail.com")
 					.end()
-				.sleep(500)
+				.sleep(4000)
 				.findByXpath('//button[@name="submit" and @value="submit-payment"]')
 					.click()
 					.getAttribute("disabled")

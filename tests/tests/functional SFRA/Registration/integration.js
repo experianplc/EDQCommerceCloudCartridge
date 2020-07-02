@@ -3,7 +3,7 @@ const SfraLogoutUrl = "https://qas01.tech-prtnr-na01.dw.demandware.net/on/demand
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
-registerSuite('Edq Cartridge Functional Test 3', {
+registerSuite('Experian SFRA Registration Touchpoint', {
 	before: function() {
 		return this.remote
 			//.setFindTimeout(500)
@@ -19,7 +19,7 @@ registerSuite('Edq Cartridge Functional Test 3', {
 			.get(SfraLoginUrl)
 	},
 	tests: {
-		"SFRA Create Account - Email Validation Succed": function() {
+		"Registration - Email Validation Succeeds": function() {
 			return this.remote
 				.sleep(2000)
 				.findByCssSelector("a[href='#register']")
@@ -41,7 +41,7 @@ registerSuite('Edq Cartridge Functional Test 3', {
 				})
 				.end()
 		},
-		"SFRA Create Account - Email Validation Fail": function() {
+		"Registration - Email Validation Fails": function() {
 			return this.remote
 				.sleep(2000)
 				.findByCssSelector("a[href='#register']")
@@ -63,7 +63,7 @@ registerSuite('Edq Cartridge Functional Test 3', {
 				})
 				.end()
 		},
-		"SFRA Create Account - Phone Validation Succed": function() {
+		"Registration - Phone Validation Succeeds": function() {
 			return this.remote
 				.sleep(2000)
 				.findByCssSelector("a[href='#register']")
@@ -85,7 +85,7 @@ registerSuite('Edq Cartridge Functional Test 3', {
 				})
 				.end()
 		},
-		"SFRA Create Account - Phone Validation Fail": function() {
+		"Registration - Phone Validation Fails": function() {
 			return this.remote
 				.sleep(2000)
 				.findByCssSelector("a[href='#register']")

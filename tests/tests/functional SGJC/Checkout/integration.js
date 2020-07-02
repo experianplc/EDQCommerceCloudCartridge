@@ -55,7 +55,7 @@ function fillInPartialAddress() {
 	}
 }
 
-registerSuite('Edq Cartridge Functional Test 2', {
+registerSuite('Experian SGJC Checkout Touchpoint', {
 	beforeEach: function() {
 		return this.remote
 			//.setFindTimeout(500)
@@ -79,7 +79,7 @@ registerSuite('Edq Cartridge Functional Test 2', {
 				.end()
 	},
 	tests: {
-		"SGJC Checkout Stage - Pro Web Address (Verification Engine / Correct Address": function() {
+		"Checkout - Pro Web Address (Correct Address)": function() {
 			return this.remote
 				//.sleep(2000)
 				.then(fillInFluidAddressField())
@@ -95,19 +95,19 @@ registerSuite('Edq Cartridge Functional Test 2', {
 				})
 				.end()
 		},
-		"SGJC Checkout Stage - Pro Web Address (Verification Engine / User Interation box": function() {
+		"Checkout - Pro Web Address (User Interation box)": function() {
 			return this.remote
 				//.sleep(2000)
 				.then(fillInFluidAddressField())
-				.sleep(500)				
+				.sleep(1000)				
 				.findByName("dwfrm_singleshipping_shippingAddress_addressFields_address2")
 					.clearValue()
 					.end()
-				.sleep(500)
+				.sleep(4000)				
 				.findByCssSelector("#form-submit")
 					.click()
 					.end()
-				.sleep(2000)
+				.sleep(5000)
 				.findByCssSelector("#interaction-address--select-field")
 					.type("53 state st lbby 1")
 					.end()
@@ -123,7 +123,7 @@ registerSuite('Edq Cartridge Functional Test 2', {
 				})
 				.end()
 		},
-		"SGJC Checkout Stage - Global Intuitive": function() {
+		"Checkout - Global Intuitive": function() {
 			return this.remote
 				//.sleep(4000)
 				.findByName('dwfrm_singleshipping_shippingAddress_addressFields_address1')
@@ -142,7 +142,7 @@ registerSuite('Edq Cartridge Functional Test 2', {
 				})
 				.end()
 		},
-		"SGJC Create Account - Phone Validation Succed": function() {
+		"Checkout - Phone Validation Succeeds": function() {
 			return this.remote
 				//.sleep(2000)
 				.findByName('dwfrm_singleshipping_shippingAddress_addressFields_phone')
@@ -159,7 +159,7 @@ registerSuite('Edq Cartridge Functional Test 2', {
 					assert.equal('{"ResultCode":"3","AdditionalPhoneInfo":{"ValidatedPhoneNumber":"13524443322","CountryName":"United States of America","CountryCode":"1","OperatorName":"Sprint","PortedOperatorName":"Sprint (Sprint Corporation)","PortedCountryName":"United States","PortedCountryCode":"1","IsRoaming":"false","MCCMNC":"310120"},"Number":"13524443322","PhoneType":"Mobile","Certainty":"Verified"}', edqmetadata, "Getting a response from Phone Validation meta-data");
 				})
 		},
-		"SGJC Create Account - Phone Validation Fail": function() {
+		"Checkout - Phone Validation Fails": function() {
 			return this.remote
 				//.sleep(2000)
 				.findByName('dwfrm_singleshipping_shippingAddress_addressFields_phone')
@@ -176,45 +176,40 @@ registerSuite('Edq Cartridge Functional Test 2', {
 					assert.equal('{"ResultCode":"0","AdditionalPhoneInfo":{"ValidatedPhoneNumber":"13545556644","IsRoaming":"false"},"Number":"13545556644","PhoneType":"Provided number is Invalid","Certainty":"Unverified"}', edqmetadata, "Getting a response from Phone Validation meta-data");
 				})
 		},
-		"SGJC Create Account - Email Validation Restricting Access": function() {
+		"Checkout - Email Validation (Restricting Access Succeeds)": function() {
 			return this.remote
 				//.sleep(2000)
 				.then(fillInFluidAddressField())
-				.sleep(500)
+				.sleep(1000)
 				.findByName("dwfrm_singleshipping_shippingAddress_addressFields_firstName")
 					.clearValue()
 					.type("Jose")
 					.end()
-				.sleep(500)
 				.findByName("dwfrm_singleshipping_shippingAddress_addressFields_lastName")
 					.clearValue()
 					.type("Castillo")
 					.end()
-				.sleep(500)
 				.findByName("dwfrm_singleshipping_shippingAddress_addressFields_postal")
 					.clearValue()
 					.type("02109-3208")
 					.end()
-				.sleep(500)
 				.findByName("dwfrm_singleshipping_shippingAddress_addressFields_phone")
 					.clearValue()
 					.type("3525554433")
 					.end()
-				.sleep(500)
 				.findByCssSelector("#form-submit")
 					.click()
 					.end()
-				.sleep(3000)
+				.sleep(6000)
 				.findByName('dwfrm_billing_billingAddress_email_emailAddress')
 					.clearValue()
 					.type("noreply@gmail.com")
 					.end()
-				.sleep(500)
 				.findByName("dwfrm_billing_billingAddress_addressFields_phone")
 					.clearValue()
 					.type("3525554433")
 					.end()
-				.sleep(1000)
+				.sleep(3000)
 				.findByCssSelector("#form-submit")
 					.click()
 					.getAttribute("disabled")

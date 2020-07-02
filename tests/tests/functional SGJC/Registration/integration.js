@@ -73,7 +73,7 @@ function fillInPartialAddress() {
 	}
 }
 
-registerSuite('Edq Cartridge Functional Test 3', {
+registerSuite('Experian SGJC Registration Touchpoint', {
 		before: function() {
 			return this.remote
 				.setFindTimeout(500)
@@ -86,7 +86,7 @@ registerSuite('Edq Cartridge Functional Test 3', {
 				.catch(function(errorLog) { })
 		},
 		tests: {
-		"SGJC Create Account - Email Validation Succed": function() {
+		"Registration - Email Validation Succeeds": function() {
 			return this.remote
 				//.sleep(3000)
 				.findByName('dwfrm_profile_customer_email')
@@ -103,7 +103,7 @@ registerSuite('Edq Cartridge Functional Test 3', {
 					assert.equal('{"Email":"jose.castillo@experian.com","Certainty":"unknown","Message":"OK","VerboseOutput":"acceptAll"}', edqmetadata, "Getting a response from Email Validation meta-data");
 				})
 		},
-		"SGJC Create Account - Email Validation Fail": function() {
+		"Registration - Email Validation Fails": function() {
 			return this.remote
 				//.sleep(3000)
 				.findByName('dwfrm_profile_customer_email')
