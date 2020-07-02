@@ -2,7 +2,7 @@ import {edqEmailValidationCallback} from './edqEmailValidation';
 import {edqPhoneValidationCallback} from './edqPhoneValidation';
 import {countryAlpha3} from './edqCountry';
 /**
- * In the Business Manager there's an option that sets if the email and/or email will allow the user to prevent the 
+ * In the Business Manager there's an option that sets if the phone and/or email will allow the user to prevent the 
  * user going to the next page; so this function will set the button an event listener to catch the result if the 
  * configuration is set to true; button is disabled when the mouse is over the button and disabled when you focus 
  * on the email or phone fields.
