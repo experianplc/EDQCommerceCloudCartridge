@@ -166,7 +166,7 @@ registerSuite('Experian SFRA Checkout Touchpoint', {
 			return this.remote
 				.sleep(2000)
 				.get(SFRACheckoutStage)
-				.sleep(2000)
+				.sleep(4000)
 				.findByName('dwfrm_shipping_shippingAddress_addressFields_country')
 					.click()
 					.pressKeys('\uE015')
