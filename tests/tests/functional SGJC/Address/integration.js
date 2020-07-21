@@ -52,7 +52,6 @@ function fillInPartialAddress() {
 registerSuite('Experian SGJC Address Touchpoint', {
 	before: function() {
 		return this.remote
-			//.setFindTimeout(500)
 			.get(SgjcLogoutUrl)
 			.sleep(500)
 			.get(SgjcLoginUrl)
@@ -78,7 +77,6 @@ registerSuite('Experian SGJC Address Touchpoint', {
 	tests: {
 		"Add Address - Pro Web Address (Correct Address)": function() {
 			return this.remote
-				//.sleep(2000)
 				.get(SgjsAddressListUrl)
 				.sleep(2000)
 				.findByCssSelector(".address-create")
@@ -100,7 +98,6 @@ registerSuite('Experian SGJC Address Touchpoint', {
 		},
 		"Add Address - Pro Web Address (User Interation box)": function() {
 			return this.remote
-				//.sleep(2000)
 				.get(SgjsAddressListUrl)
 				.sleep(3000)
 				.findByCssSelector(".address-create")
@@ -130,7 +127,6 @@ registerSuite('Experian SGJC Address Touchpoint', {
 		},
 		"Add Address - Global Intuitive": function() {
 			return this.remote
-				//.sleep(2000)
 				.get(SgjsAddressAddUrl)
 				.sleep(3000)
 				.findByName('dwfrm_profile_address_address1')
@@ -149,7 +145,6 @@ registerSuite('Experian SGJC Address Touchpoint', {
 		},
 		"Add Address - Pro Web Address (Address modal box closes before user interaction box)": function() {
 			return this.remote
-				//.sleep(2000)
 				.get(SgjsAddressListUrl)
 				.sleep(2000)
 				.findByCssSelector(".address-create")

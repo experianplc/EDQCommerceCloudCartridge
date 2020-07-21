@@ -59,9 +59,7 @@ function fillInPartialAddress() {
 registerSuite('Experian SFRA Checkout Touchpoint', {
 	beforeEach: function() {
 		return this.remote
-			//.setFindTimeout(500)
 			.get(SfraLogoutUrl)
-			//.sleep(500)
 			.get(SFRAProductUrl)
 			.findByCssSelector('.affirm')
 			.click()

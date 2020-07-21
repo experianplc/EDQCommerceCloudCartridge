@@ -58,7 +58,6 @@ function fillInPartialAddress() {
 registerSuite('Experian SGJC Checkout Touchpoint', {
 	beforeEach: function() {
 		return this.remote
-			//.setFindTimeout(500)
 			.get(SgjcLogoutUrl)
 			.get(SgjcProductUrl)
 			.sleep(2000)
@@ -81,7 +80,6 @@ registerSuite('Experian SGJC Checkout Touchpoint', {
 	tests: {
 		"Checkout - Pro Web Address (Correct Address)": function() {
 			return this.remote
-				//.sleep(2000)
 				.then(fillInFluidAddressField())
 				.sleep(4000)
 				.findByCssSelector("#form-submit")
@@ -97,7 +95,6 @@ registerSuite('Experian SGJC Checkout Touchpoint', {
 		},
 		"Checkout - Pro Web Address (User Interation box)": function() {
 			return this.remote
-				//.sleep(2000)
 				.then(fillInFluidAddressField())
 				.sleep(1000)				
 				.findByName("dwfrm_singleshipping_shippingAddress_addressFields_address2")
@@ -125,7 +122,6 @@ registerSuite('Experian SGJC Checkout Touchpoint', {
 		},
 		"Checkout - Global Intuitive": function() {
 			return this.remote
-				//.sleep(4000)
 				.findByName('dwfrm_singleshipping_shippingAddress_addressFields_address1')
 					.clearValue()
 					.type("53 state st lbby")
@@ -144,7 +140,6 @@ registerSuite('Experian SGJC Checkout Touchpoint', {
 		},
 		"Checkout - Phone Validation Succeeds": function() {
 			return this.remote
-				//.sleep(2000)
 				.findByName('dwfrm_singleshipping_shippingAddress_addressFields_phone')
 				.clearValue()
 				.type("3524443322")
@@ -161,7 +156,6 @@ registerSuite('Experian SGJC Checkout Touchpoint', {
 		},
 		"Checkout - Phone Validation Fails": function() {
 			return this.remote
-				//.sleep(2000)
 				.findByName('dwfrm_singleshipping_shippingAddress_addressFields_phone')
 				.clearValue()
 				.type("3545556644")
@@ -178,7 +172,6 @@ registerSuite('Experian SGJC Checkout Touchpoint', {
 		},
 		"Checkout - Email Validation (Restricting Access Succeeds)": function() {
 			return this.remote
-				//.sleep(2000)
 				.then(fillInFluidAddressField())
 				.sleep(1000)
 				.findByName("dwfrm_singleshipping_shippingAddress_addressFields_firstName")

@@ -3,8 +3,6 @@ const mySFRAUrl = "https://qas01.tech-prtnr-na01.dw.demandware.net/on/demandware
 const SfraAddressUrl = "https://qas01.tech-prtnr-na01.dw.demandware.net/on/demandware.store/Sites-Dev01Test-Site/default/Address-AddAddress";
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
-//var Command = require('leadfoot/Command');
-//var pollUntil = require('leadfoot/helpers/pollUntil');
 
 function fillInFluidAddressField() {
 	return function() {
@@ -55,9 +53,7 @@ function fillInPartialAddress() {
 registerSuite('Experian SFRA Address Touchpoint', {
 	before: function() {
 		return this.remote
-			//.setFindTimeout(500)
 			.get(SfraLogoutUrl)
-			//.sleep(500)
 			.get(mySFRAUrl)
 			.sleep(3000)
 			.findByCssSelector('.affirm')

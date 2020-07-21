@@ -6,9 +6,7 @@ const { assert } = intern.getPlugin('chai');
 registerSuite('Experian SFRA Registration Touchpoint', {
 	before: function() {
 		return this.remote
-			//.setFindTimeout(500)
 			.get(SfraLogoutUrl)
-			//.sleep(500)
 			.get(SfraLoginUrl)
 			.findByCssSelector('.affirm')
 			.click()

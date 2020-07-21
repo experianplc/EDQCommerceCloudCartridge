@@ -88,7 +88,6 @@ registerSuite('Experian SGJC Registration Touchpoint', {
 		tests: {
 		"Registration - Email Validation Succeeds": function() {
 			return this.remote
-				//.sleep(3000)
 				.findByName('dwfrm_profile_customer_email')
 				.clearValue()
 				.type("jose.castillo@experian.com")
@@ -105,7 +104,6 @@ registerSuite('Experian SGJC Registration Touchpoint', {
 		},
 		"Registration - Email Validation Fails": function() {
 			return this.remote
-				//.sleep(3000)
 				.findByName('dwfrm_profile_customer_email')
 				.clearValue()
 				.type("thisisnotanemailthisisnotanemail@gmail.com")
