@@ -73,25 +73,21 @@ function fillInPartialAddress() {
 	}
 }
 
-registerSuite('Edq Cartridge Functional Test 3', {
+registerSuite('Experian SGJC Registration Touchpoint', {
 		before: function() {
 			return this.remote
-				.setFindTimeout(10000)
+				.setFindTimeout(500)
 				.get(SgjcLogoutUrl)
-				.sleep(1000)
-				.findByCssSelector('.ui-button-text-only')
-				.click()
-				.end()
-				.sleep(500)
 				.get(SgjcRegisterUrl)
-				.sleep(3000)
-				.end()
-		},	
+				.sleep(2000)
+				.find("css selector", ".ui-button-text-only")
+					.click()
+					.end()
+				.catch(function(errorLog) { return errorLog; })
+		},
 		tests: {
-		"SGJC Create Account - Email Validation Succed": function() {
+		"Registration - Email Validation Succeeds": function() {
 			return this.remote
-				//.get(SgjcRegisterUrl)
-				.sleep(4000)
 				.findByName('dwfrm_profile_customer_email')
 				.clearValue()
 				.type("jose.castillo@experian.com")
@@ -106,10 +102,8 @@ registerSuite('Edq Cartridge Functional Test 3', {
 					assert.equal('{"Email":"jose.castillo@experian.com","Certainty":"unknown","Message":"OK","VerboseOutput":"acceptAll"}', edqmetadata, "Getting a response from Email Validation meta-data");
 				})
 		},
-		"SGJC Create Account - Email Validation Fail": function() {
+		"Registration - Email Validation Fails": function() {
 			return this.remote
-				//.get(SgjcRegisterUrl)
-				.sleep(4000)
 				.findByName('dwfrm_profile_customer_email')
 				.clearValue()
 				.type("thisisnotanemailthisisnotanemail@gmail.com")

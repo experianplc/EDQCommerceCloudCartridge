@@ -1,0 +1,27 @@
+{
+  "types": [
+    "intern"
+  ],
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "checkJs": true,
+    "allowJs": true,
+    "outDir": "./lib",
+    "skipLibCheck": true,
+    "lib": ["es2015", "es2017", "dom"]
+
+  },
+  "typedocOptions": {
+    "mode": "modules",
+    "out": "typedocs"
+  },
+  "include": [
+    "src/**/*",
+    "test/**/*"
+  ],
+  "exclude": [
+    "node_modules/**/*",
+    "out"
+  ]
+}

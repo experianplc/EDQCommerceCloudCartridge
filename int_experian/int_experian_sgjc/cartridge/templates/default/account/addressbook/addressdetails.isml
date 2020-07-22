@@ -34,7 +34,7 @@
 				<button class="apply-button" type="submit" name="${pdict.Action == 'add' ? pdict.CurrentForms.profile.address.create.htmlName : pdict.CurrentForms.profile.address.edit.htmlName}" value="${Resource.msg('global.apply','locale',null)}">
 					${Resource.msg('global.apply','locale',null)}
 				</button>
-				<isinclude template="edq/edqUnicorn" />
+			<isinclude template="edq/edqUnicorn" />
 				<button class="cancel cancel-button simple" type="submit" name="${pdict.CurrentForms.profile.address.cancel.htmlName}" value="${Resource.msg('global.cancel','locale',null)}">
 					${Resource.msg('global.cancel','locale',null)}
 				</button>
