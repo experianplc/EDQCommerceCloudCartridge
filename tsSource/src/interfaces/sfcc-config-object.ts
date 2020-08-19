@@ -11,4 +11,5 @@ interface SfccConfigObject {
 	edqGlobalIntuitiveUnicornJsPath: string;
 	pageRestrictValidation: boolean;
 	edqProWebCallback: string;
+	edqGlobalIntuitiveUseCurrentLocation: boolean;
 }

@@ -11,6 +11,7 @@
 	edqDataSetUsage = ${dw.system.Site.current.preferences.custom.EDQDataSetUsage};
 	edqProWebCallbackValidation = ${dw.system.Site.current.preferences.custom.EDQProWebCallbackValidation};
 	edqCustomCallbackName = '${dw.system.Site.current.preferences.custom.EDQCustomCallbackName}';
+	edqGlobalIntuitiveUseCurrentLocation = ${dw.system.Site.current.preferences.custom.EDQGlobalIntuitiveUseCurrentLocation};
 	
 	window.EdqDemandware.sgjc.sgjcUtilsConfiguration();
 	
@@ -24,7 +25,8 @@
 		"dataSetCode":edqDataSetCode, 
 		"dataSetUsage":edqDataSetUsage, 
 		"proWebCallbackValidation":edqProWebCallbackValidation, 
-		"customCallbackName":edqCustomCallbackName
+		"customCallbackName":edqCustomCallbackName,
+		"edqGlobalIntuitiveUseCurrentLocation":edqGlobalIntuitiveUseCurrentLocation
 	});
 </script>
 <isif condition="${URLUtils.continueURL().toString().search('Address') != -1 || URLUtils.continueURL().toString().search('COShipping') != -1 || URLUtils.continueURL().toString().search('COBilling') != -1}">

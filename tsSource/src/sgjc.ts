@@ -218,8 +218,9 @@ interface setUtilsConfigArgs {
 	dataSetUsage: boolean;
 	proWebCallbackValidation: boolean;
 	customCallbackName: string;
+	edqGlobalIntuitiveUseCurrentLocation: boolean;
 }
-export function setUtilsConfig({defaultCountry, emailEnable, phoneEnable, validatePhone, validateEmail, authorizationToken, dataSetCode, dataSetUsage, proWebCallbackValidation, customCallbackName}: setUtilsConfigArgs) {
+export function setUtilsConfig({defaultCountry, emailEnable, phoneEnable, validatePhone, validateEmail, authorizationToken, dataSetCode, dataSetUsage, proWebCallbackValidation, customCallbackName, edqGlobalIntuitiveUseCurrentLocation}: setUtilsConfigArgs) {
 	vDefaultCountry = defaultCountry;
 	edqEmailEnable = emailEnable;
 	edqPhoneEnable = phoneEnable;
@@ -230,4 +231,5 @@ export function setUtilsConfig({defaultCountry, emailEnable, phoneEnable, valida
 	edqDataSetUsage = dataSetUsage;
 	edqProWebCallbackValidation = proWebCallbackValidation;
 	edqCustomCallbackName = customCallbackName;
+	window.sfccConfig.edqGlobalIntuitiveUseCurrentLocation = edqGlobalIntuitiveUseCurrentLocation;
 }
