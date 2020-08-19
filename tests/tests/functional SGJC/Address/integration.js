@@ -163,5 +163,42 @@ registerSuite('Experian SGJC Address Touchpoint', {
 				})
 				.end()
 		},
+		"Add Address - Global Intuitive (Geolocation)": function() {
+			let addressWithoutLocation;
+			let addressWithLocation;
+			return this.remote
+				.get(SgjsAddressAddUrl)
+				.findByName('dwfrm_profile_address_address1')
+					.clearValue()
+					.type("53 state st")
+					.end()
+				.sleep(2000)
+				.findByCssSelector(".edq-global-intuitive-address-suggestion")
+					.click()
+					.end()
+				.sleep(2000)
+				.findByName('dwfrm_profile_address_postal')
+					.getProperty('value')
+					.then((val) => { addressWithLocation = val; })
+					.end()
+					
+				.refresh()
+				.execute(function() { window.EdqConfig['GLOBAL_INTUITIVE_USE_CURRENT_LOCATION'] = null; })
+				.findByName('dwfrm_profile_address_address1')
+					.clearValue()
+					.type("53 state st")
+					.end()
+				.sleep(2000)
+				.findByCssSelector(".edq-global-intuitive-address-suggestion")
+					.click()
+					.end()
+				.sleep(2000)
+				.findByName('dwfrm_profile_address_postal')
+					.getProperty('value')
+					.then((val) => { 
+						addressWithoutLocation = val;
+						assert.equal(true, addressWithoutLocation != addressWithLocation, "Addresses with and without location are the same");})
+					.end()
+		},
 	}
 });
