@@ -33,6 +33,7 @@ let pageRestrictValidation: boolean = true;
 let inputSelector: NodeListOf<HTMLInputElement> = document.querySelectorAll("input[id]");
 let selectSelector: NodeListOf<HTMLSelectElement> = document.querySelectorAll("select[id]");
 let buttonSelector: NodeListOf<HTMLButtonElement> = document.querySelectorAll("button[name]");
+let edqGlobalIntuitiveUseCurrentLocation: boolean;
 
 let edqConfig = <EdqConfigObject>{};
 window.EdqConfig = window.EdqConfig || edqConfig;

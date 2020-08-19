@@ -41,6 +41,7 @@ let edqGlobalIntuitiveStaging: string;
 let inputSelector: NodeListOf<HTMLInputElement> = document.querySelectorAll("input[id]");
 let buttonSelector: NodeListOf<HTMLButtonElement> = document.querySelectorAll("button[name]");
 let edqGlobalIntuitiveIntegrityKey: string = "sha512-foiD3H9+U0MUfV3DOQ3nfb0X/mbdpMzCpXdzXQPEI+A8lFFKp6sIlHyvYN8++2cZEUH7j6lRcJgLEyD+as28Rw==";
+let edqGlobalIntuitiveUseCurrentLocation: boolean;
 
 let edqConfig = <EdqConfigObject>{};
 window.EdqConfig = window.EdqConfig || edqConfig;
