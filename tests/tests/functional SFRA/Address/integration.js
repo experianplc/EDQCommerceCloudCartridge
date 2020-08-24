@@ -142,46 +142,6 @@ registerSuite('Experian SFRA Address Touchpoint', {
 			let addressWithoutLocation;
 			let addressWithLocation;
 			return this.remote
-				.sleep(2000)
-				.get(SfraAddressUrl)
-				.sleep(4000)
-				.findByName('dwfrm_address_address1')
-					.clearValue()
-					.type("53 state st")
-					.end()
-				.sleep(2000)
-				.findByCssSelector(".edq-global-intuitive-address-suggestion")
-					.click()
-					.end()
-				.sleep(3000)
-				.findByName('dwfrm_address_postalCode')
-					.getProperty('value')
-					.then((val) => { addressWithLocation = val; })
-					.end()
-					
-				.refresh()
-				.execute(function() { window.EdqConfig['GLOBAL_INTUITIVE_USE_CURRENT_LOCATION'] = false; })
-				.findByName('dwfrm_address_address1')
-					.clearValue()
-					.type("53 state st")
-					.end()
-				.sleep(3000)
-				.findByCssSelector(".edq-global-intuitive-address-suggestion")
-					.click()
-					.end()
-				.sleep(5000)
-				.findByName('dwfrm_address_postalCode')
-					.getProperty('value')
-					.then((val) => { 
-						addressWithoutLocation = val;
-						assert.equal(true, addressWithoutLocation != addressWithLocation, "Addresses with and without location are the same");})
-					.end()
-		},
-		"Add Address - Global Intuitive (Geolocation)": function() {
-			let addressWithoutLocation;
-			let addressWithLocation;
-			return this.remote
-				//.sleep(2000)
 				.get(SfraAddressUrl)
 				.sleep(2000)
 				.findByName('dwfrm_address_address1')
