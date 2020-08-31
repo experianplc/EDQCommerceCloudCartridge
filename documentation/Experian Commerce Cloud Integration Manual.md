@@ -154,6 +154,7 @@ To configure Global Intuitive, you need to access the Business Manager and go to
 * The Activates or deactivates Data Set usage option will let you choose to activate or deactivate Data Set usage.
 * The Data Set Code will let you set the Data Set that will be use for an especific country.
 * The activates or deactivates Data Set usage will let you use the Data Set function; it should be false for countries that don't need Data Sets. 
+* The Global Intuitive Use Current Location enables the location feature to search the neareast addresses from your current location (only available for USA). 
 
 The store touchpoints for Global Intuitive are:
 * Add/Edit Address form.
@@ -216,7 +217,7 @@ To check the imported site preferences go to **Administration > Site Development
 
 ![Site Preferences 2](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/313SitePreferences2.png)
 
-###  3.2 Custom Code
+###  3.2 Touchpoints
 ####  3.2.1\. Sitegenesis JavaScript Controller
 **EDQHeaders integration**
 1.	Go to int_experian_sgjc cartridge and open the template located in **templates > default > components > header > htmlhead_UI.isml**
@@ -281,6 +282,12 @@ To check the imported site preferences go to **Administration > Site Development
 
 ### 3.3\. Testing
 For both (Sitegenesis and Storefront Reference Architecture) stores the testing touchpoints are the same.
+Automated tested are located in tests\tests\
+To run the tests:
+
+* Install intern ```npm i intern```.
+* If needed you'll have to install npx (```npm install -g npx```).
+* Run the command ```npx intern```.
 
 ####  3.3.1\. Email Validate
 In the create account page type your email in the email input field and the Email Validate will verify your email once you lose focus on the email field, the Email Validate will start working letting you know if is a valid or an invalid email.
@@ -325,22 +332,27 @@ For any support contact email are
 ##  5\. User Guide
 ### 5.1\. Business Manager
 Once the EDQ SitePreferences are uploaded in the business manager; choose your site and go to **Merchant Tools > Site Preferences > Custom Site Preferences Group** and choose Experian option.
-*	EDQ Token (String): credentials provided to use the service. 
+1.	EDQ Token (String): credentials provided to use the service. 
 * Set to the value supplied to you by your Experian Partner
-*	Email Enable (Boolean): set to enable/disable email validation. 
-*	Email Validation (Boolean): set enable/disable to force email validation to prevent the page going through.
-*	Phone Enable (Boolean): set to enable/disable phone validation.
-*	Phone Validation (Boolean): set enable/disable to force phone validation to prevent the page going through.
-* Preferred address search engine (Enum of String): Select one option between:
-   * Both
-   * Global Intuitive
-   * Verification Engine
-   * None
-* Address layout (String): Address layout format for the data.
-* Data Set Code (String): Code to use Data Sets in case the country ISO code requires it.
-* Activates or deactivates Data Set usage (Boolean): Activates or deactivates Data Set usage (only use for Non USA).
-* Pro Web Custom Transition Callback (String): Name for the custom customer function to be triggered.
-* Pro Web Callback validation (Boolean): Activates or deactivates page transition from the callback. 
+2.	Email Enable (Boolean): set to enable/disable email validation. 
+3.	Email Validation (Boolean): set enable/disable to force email validation to prevent the page going through.
+4.	Phone Enable (Boolean): set to enable/disable phone validation.
+5.	Phone Validation (Boolean): set enable/disable to force phone validation to prevent the page going through.
+6. Preferred address search engine (Enum of String): Select one option between:
+   1. Both
+   1. Global Intuitive
+   1. Verification Engine
+   1. None
+7. Global Intuitive Use Current Location (Boolean): enables to use your current location.
+8. Address layout (String): Address layout format for the data. Examples:
+   1. EDQ NA Integration 5 Line No Retention - North America Integration Layout Without Any Retention Elements
+   1. EDQ NA Integration 5 Line Default - North America Integration Layout With Sub Premise And Care Of Retention
+   1. EDQ NA Integration 5 Line Modified - North America Integration Layout With Sub Premise And Care Of Retention But With All Secondary Information Split Out For Concatenation
+   1. EDQ NA Integration 5 Line Full Retention - North America Integration Layout With Sub Premise, Care Of, Pre Street, and Post Street Retention
+9. Data Set Code (String): Code to use Data Sets in case the country ISO code requires it.
+10. Activates or deactivates Data Set usage (Boolean): Activates or deactivates Data Set usage (only use for Non USA).
+11. Pro Web Custom Transition Callback (String): Name for the custom customer function to be triggered.
+12. Pro Web Callback validation (Boolean): Activates or deactivates page transition from the callback. 
 
 ![EDQ Config](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/510EDQConfig.png)
 

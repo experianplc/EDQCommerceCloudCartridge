@@ -44,6 +44,7 @@ export function edqSetGlobalIntuitiveConfiguration({vDefaultCountry, edqAuthoriz
 		window.EdqConfig.GLOBAL_INTUITIVE_DATASET = edqDataSetCode; 
 	}
 	window.EdqConfig.GLOBAL_INTUITIVE_ELEMENT= window.sfccConfig.edqAddressLine1Element;
+	window.EdqConfig.GLOBAL_INTUITIVE_USE_CURRENT_LOCATION= window.sfccConfig.edqGlobalIntuitiveUseCurrentLocation;
 	window.EdqConfig.GLOBAL_INTUITIVE_MAPPING= [
 		{
 			field: window.sfccConfig.edqAddressLine1Element,

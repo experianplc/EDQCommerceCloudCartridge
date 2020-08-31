@@ -33,6 +33,7 @@ let pageRestrictValidation: boolean = true;
 let inputSelector: NodeListOf<HTMLInputElement> = document.querySelectorAll("input[id]");
 let selectSelector: NodeListOf<HTMLSelectElement> = document.querySelectorAll("select[id]");
 let buttonSelector: NodeListOf<HTMLButtonElement> = document.querySelectorAll("button[name]");
+let edqGlobalIntuitiveUseCurrentLocation: boolean;
 
 let edqConfig = <EdqConfigObject>{};
 window.EdqConfig = window.EdqConfig || edqConfig;
@@ -218,8 +219,9 @@ interface setUtilsConfigArgs {
 	dataSetUsage: boolean;
 	proWebCallbackValidation: boolean;
 	customCallbackName: string;
+	edqGlobalIntuitiveUseCurrentLocation: boolean;
 }
-export function setUtilsConfig({defaultCountry, emailEnable, phoneEnable, validatePhone, validateEmail, authorizationToken, dataSetCode, dataSetUsage, proWebCallbackValidation, customCallbackName}: setUtilsConfigArgs) {
+export function setUtilsConfig({defaultCountry, emailEnable, phoneEnable, validatePhone, validateEmail, authorizationToken, dataSetCode, dataSetUsage, proWebCallbackValidation, customCallbackName, edqGlobalIntuitiveUseCurrentLocation}: setUtilsConfigArgs) {
 	vDefaultCountry = defaultCountry;
 	edqEmailEnable = emailEnable;
 	edqPhoneEnable = phoneEnable;
@@ -230,4 +232,5 @@ export function setUtilsConfig({defaultCountry, emailEnable, phoneEnable, valida
 	edqDataSetUsage = dataSetUsage;
 	edqProWebCallbackValidation = proWebCallbackValidation;
 	edqCustomCallbackName = customCallbackName;
+	window.sfccConfig.edqGlobalIntuitiveUseCurrentLocation = edqGlobalIntuitiveUseCurrentLocation;
 }
