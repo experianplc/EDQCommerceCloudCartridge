@@ -1,5 +1,5 @@
 <iscontent type="text/html" charset="UTF-8" compact="true"/>
-<script src="${URLUtils.staticURL('/js/edqUtils.js')}"></script>
+
 <script type="text/javascript">
 	vDefaultCountry = '${dw.system.Site.current.preferences.custom.countryCode}';
 	edqAuthorizationToken = '${dw.system.Site.current.preferences.custom.EDQToken}';
@@ -11,8 +11,25 @@
 	edqDataSetUsage = ${dw.system.Site.current.preferences.custom.EDQDataSetUsage};
 	edqProWebCallbackValidation = ${dw.system.Site.current.preferences.custom.EDQProWebCallbackValidation};
 	edqCustomCallbackName = '${dw.system.Site.current.preferences.custom.EDQCustomCallbackName}';
+	edqGlobalIntuitiveUseCurrentLocation = ${dw.system.Site.current.preferences.custom.EDQGlobalIntuitiveUseCurrentLocation};
+	
+	window.EdqDemandware.sgjc.sgjcUtilsConfiguration();
+	
+	window.EdqDemandware.sgjc.setUtilsConfig({
+		"defaultCountry":vDefaultCountry, 
+		"emailEnable":edqEmailEnable, 
+		"phoneEnable":edqPhoneEnable, 
+		"validatePhone":edqValidatePhone, 
+		"validateEmail":edqValidateEmail, 
+		"authorizationToken":edqAuthorizationToken, 
+		"dataSetCode":edqDataSetCode, 
+		"dataSetUsage":edqDataSetUsage, 
+		"proWebCallbackValidation":edqProWebCallbackValidation, 
+		"customCallbackName":edqCustomCallbackName,
+		"edqGlobalIntuitiveUseCurrentLocation":edqGlobalIntuitiveUseCurrentLocation
+	});
 </script>
-<isif condition="${URLUtils.continueURL().toString().search('Address') != -1 || URLUtils.continueURL().toString().search('COShipping') != -1 || URLUtils.continueURL().toString().search('COBilling') != -1 || URLUtils.continueURL().toString().search('shipping') != -1}">
+<isif condition="${URLUtils.continueURL().toString().search('Address') != -1 || URLUtils.continueURL().toString().search('COShipping') != -1 || URLUtils.continueURL().toString().search('COBilling') != -1}">
 	<isif condition="${dw.system.Site.current.preferences.custom.EDQPreferedAddressSearchEngine.value == 'VerificationEngine'}">
 		<isinclude template="edq/verificationEngine" />
 	</isif>
@@ -24,12 +41,12 @@
 		<isinclude template="edq/verificationEngine" />
 	</isif>
 </isif>
-<isif condition="${URLUtils.continueURL().toString().search('COShipping') != -1 || URLUtils.continueURL().toString().search('Address') != -1 || URLUtils.continueURL().toString().search('COBilling') != -1 || URLUtils.continueURL().toString().search('billing') != -1}">
+<isif condition="${URLUtils.continueURL().toString().search('COShipping') != -1 || URLUtils.continueURL().toString().search('Address') != -1 || URLUtils.continueURL().toString().search('COBilling') != -1}">
 	<isif condition="${dw.system.Site.current.preferences.custom.EDQPhoneEnable == true}">
 		<isinclude template="edq/phoneValidation" />
 	</isif>
 </isif>
-<isif condition="${URLUtils.continueURL().toString().search('Account') != -1 || URLUtils.continueURL().toString().search('COBilling') != -1 || URLUtils.continueURL().toString().search('billing') != -1}">
+<isif condition="${URLUtils.continueURL().toString().search('Account') != -1 || URLUtils.continueURL().toString().search('COBilling') != -1}">
 	<isif condition="${dw.system.Site.current.preferences.custom.EDQEmailEnable == true}">
 		<isinclude template="edq/emailValidation" />
 	</isif>
