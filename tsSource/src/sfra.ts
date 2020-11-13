@@ -40,7 +40,6 @@ let reloadGIjs: boolean = true;
 let edqGlobalIntuitiveStaging: string;
 let inputSelector: NodeListOf<HTMLInputElement> = document.querySelectorAll("input[id]");
 let buttonSelector: NodeListOf<HTMLButtonElement> = document.querySelectorAll("button[name]");
-//let edqGlobalIntuitiveIntegrityKey: string = "sha512-xFGoFNir1GoNu0BffGlDOUr8iwdF8Uw9iRbCp5DBIGY3/4yy6OEOPBW9J3p5magoTY6OnY/BBNZZaakhozJMxQ==";
 let edqGlobalIntuitiveIntegrityKey: string;
 let edqGlobalIntuitiveUseCurrentLocation: boolean;
 
