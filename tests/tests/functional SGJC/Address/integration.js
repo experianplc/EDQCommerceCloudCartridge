@@ -1,7 +1,8 @@
-const SgjcLogoutUrl = "https://qas01-tech-prtnr-na01-dw.demandware.net/on/demandware.store/Sites-Demo_SG-Site/default/Login-Logout";
-const SgjcLoginUrl = "https://qas01.tech-prtnr-na01.dw.demandware.net/on/demandware.store/Sites-Demo_SG-Site/default/Login-Show?original=%2fon%2fdemandware%2estore%2fSites-Demo_SG-Site%2fdefault%2fAccount-Show";
-const SgjsAddressAddUrl = "https://qas01.tech-prtnr-na01.dw.demandware.net/on/demandware.store/Sites-Demo_SG-Site/default/Address-Add";
-const SgjsAddressListUrl = "https://qas01.tech-prtnr-na01.dw.demandware.net/on/demandware.store/Sites-Demo_SG-Site/default/Address-List";
+const SgjcLogoutUrl = "https://zzhi-002.sandbox.us01.dx.commercecloud.salesforce.com/on/demandware.store/Sites-SiteGenesis-Site/en_US/Login-Logout";
+const SgjcLoginUrl = "https://zzhi-002.sandbox.us01.dx.commercecloud.salesforce.com/on/demandware.store/Sites-SiteGenesis-Site/en_US/Login-Show";
+const SgjsAddressAddUrl = "https://zzhi-002.sandbox.us01.dx.commercecloud.salesforce.com/on/demandware.store/Sites-SiteGenesis-Site/en_US/Address-Add";
+const SgjsAddressListUrl = "https://zzhi-002.sandbox.us01.dx.commercecloud.salesforce.com/s/SiteGenesis/addressbook?lang=en_US";
+
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
@@ -67,7 +68,7 @@ registerSuite('Experian SGJC Address Touchpoint', {
 			.end()
 			.findByCssSelector('.form-row.password.required')
 				.findByCssSelector('.input-text.required')
-				.type("Experian082018.")
+				.type("Experian2020.")
 				.end()
 			.end()
 			.findByName('dwfrm_login_login')

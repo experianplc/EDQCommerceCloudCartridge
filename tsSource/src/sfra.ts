@@ -40,7 +40,8 @@ let reloadGIjs: boolean = true;
 let edqGlobalIntuitiveStaging: string;
 let inputSelector: NodeListOf<HTMLInputElement> = document.querySelectorAll("input[id]");
 let buttonSelector: NodeListOf<HTMLButtonElement> = document.querySelectorAll("button[name]");
-let edqGlobalIntuitiveIntegrityKey: string = "sha512-foiD3H9+U0MUfV3DOQ3nfb0X/mbdpMzCpXdzXQPEI+A8lFFKp6sIlHyvYN8++2cZEUH7j6lRcJgLEyD+as28Rw==";
+//let edqGlobalIntuitiveIntegrityKey: string = "sha512-xFGoFNir1GoNu0BffGlDOUr8iwdF8Uw9iRbCp5DBIGY3/4yy6OEOPBW9J3p5magoTY6OnY/BBNZZaakhozJMxQ==";
+let edqGlobalIntuitiveIntegrityKey: string;
 let edqGlobalIntuitiveUseCurrentLocation: boolean;
 
 let edqConfig = <EdqConfigObject>{};

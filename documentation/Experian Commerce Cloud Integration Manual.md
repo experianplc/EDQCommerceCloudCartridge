@@ -17,7 +17,7 @@ To configure your Email Validate, you need to access the Business Manager and go
 ![Email Options](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/211EmailOptions.png)
 
 * The email enable option will enable/disable Email Validate in your store.
-* The email validation option will enable/disable the page to prevent on going through. 
+* The email validation option will enable/disable the page to prevent on going through.
 
 The store touchpoints for Email Validate are:
 * Registration form.
@@ -133,6 +133,32 @@ ZIP Code: "02109"
 	else
 		return false;
 ```
+
+#### Interaction Modal Box Override 
+Text messages from Pro Web Address Validation can be overriden by changing the resource message located in cartridge\templates\resources\experian.properties; changing the following values will overriden the custom modal box messages with a customize messages (default messages are in English).
+* proweb.modalHeader.updated=Confirm updated address
+* proweb.modalHeader.unverified=Confirm unverified address
+* proweb.interactionRequired.updatedAddressHeader=Updated address
+* proweb.interactionRequired.originalAddressHeader=Original address
+* proweb.interactionRequired.useOriginalAddress=Use original address
+* proweb.interactionRequired.useUpdatedAddress=Use updated address
+* proweb.interactionRequired.searchPlaceholder=Address information
+
+Examples
+To change messages:
+1. Headers messages are located in "proweb.modalHeader".
+	* updated
+	* unverified
+2. Content messages are located in "proweb.interactionRequired".
+	* 2.1.updatedAddressHeader
+	* 2.2.originalAddressHeader
+	* 2.3.useOriginalAddress
+	* 2.4.useUpdatedAddress
+	* 2.5.searchPlaceholder
+
+![Modal Box Overriden One](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/edqModalBoxOverridenOne.png)
+
+![Modal Box Overriden Two](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/edqModalBoxOverridenTwo.png)
 
 ####  2.1.4\. Global Intuitive
 Global Intuitive will correct your address in real time while your typing down your address in the address field box.

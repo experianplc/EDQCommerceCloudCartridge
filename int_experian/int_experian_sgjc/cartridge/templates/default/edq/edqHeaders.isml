@@ -8,7 +8,7 @@
             <link rel="stylesheet" href="${dev.displayValue}" type="text/css" />
         </isif>
         <isif condition="${dev.value == 'EDQJS'}">
-            <script src="${dev.displayValue}" integrity="sha512-L23hwvucqXSQX9r/bCvFq92VmCXUJqPfpvjwlP0AxFUtLR304o1U1RcGrgfiv0S83bt7s+T+0m82JFEIyPAH3g==" crossorigin="anonymous"></script>
+			<script src="${dev.displayValue}" integrity="sha512-L23hwvucqXSQX9r/bCvFq92VmCXUJqPfpvjwlP0AxFUtLR304o1U1RcGrgfiv0S83bt7s+T+0m82JFEIyPAH3g==" crossorigin="anonymous"></script>
         </isif>
     </isloop>
 </isif>
@@ -25,5 +25,3 @@
         </isif>
     </isloop>
 </isif>
-
-<script src="${URLUtils.staticURL('/js/edqUtils.js')}"></script>

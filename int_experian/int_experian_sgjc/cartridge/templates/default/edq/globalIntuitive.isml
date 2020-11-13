@@ -1,11 +1,7 @@
 <iscontent type="text/html" charset="UTF-8" compact="true"/>
 <script type="text/javascript">
-	window.EdqDemandware.sgjc.useGlobalIntuitive(
-		vDefaultCountry,
-		edqAuthorizationToken,
-		edqDataSetUsage,
-		edqDataSetCode
-	);
+    edqSetGlobalIntuitiveConfiguration();
+    setGlobalIntuitiveEvents();
 </script>
 <isif condition="${dw.system.Site.current.preferences.custom.EDQStaging == 'Development'}">
     <isloop items="${dw.object.SystemObjectMgr.describe('SitePreferences').getCustomAttributeDefinition('EDQDevUrls').values}" var="dev">
@@ -16,7 +12,7 @@
 <iselseif condition="${dw.system.Site.current.preferences.custom.EDQStaging == 'Production'}">
     <isloop items="${dw.object.SystemObjectMgr.describe('SitePreferences').getCustomAttributeDefinition('EDQProdUrls').values}" var="prod">
         <isif condition="${prod.value == 'GlobalIntuitiveJS'}">
-            <script src="${prod.displayValue}" integrity="sha512-foiD3H9+U0MUfV3DOQ3nfb0X/mbdpMzCpXdzXQPEI+A8lFFKp6sIlHyvYN8++2cZEUH7j6lRcJgLEyD+as28Rw==" crossorigin="anonymous"></script>
+            <script src="${prod.displayValue}" integrity="sha512-BXn8voz3HDAMB3d3v4pWLsNkoqC5LBTEbVchEkLuisA0qeAxC8TCBjg8LT2O1sGn/fQfcD2540NnplYU5h35OQ==" crossorigin="anonymous"></script>
         </isif>
     </isloop>
 </iselseif>
