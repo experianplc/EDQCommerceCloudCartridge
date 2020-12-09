@@ -3,6 +3,7 @@
 <isinclude template="edq/edqHeaders" />
 
 <script src="${URLUtils.staticURL('/js/edqUtils.js')}"></script>
+
 <script type="text/javascript">
 	vDefaultCountry = '${dw.system.Site.current.preferences.custom.countryCode}';
 	edqEmailEnable = ${dw.system.Site.current.preferences.custom.EDQEmailEnable};

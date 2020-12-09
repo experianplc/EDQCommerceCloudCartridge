@@ -22,4 +22,5 @@ interface EdqConfigObject {
 	PRO_WEB_COUNTRY: string,
 	PRO_WEB_CALLBACK: string,
 	PRO_WEB_MAPPING: Array<any>,
+	VERIFICATION_MODAL_OVERRIDES: object,
 }

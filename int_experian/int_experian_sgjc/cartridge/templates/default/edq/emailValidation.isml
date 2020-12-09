@@ -11,7 +11,7 @@
 <iselseif condition="${dw.system.Site.current.preferences.custom.EDQStaging == 'Production'}">
     <isloop items="${dw.object.SystemObjectMgr.describe('SitePreferences').getCustomAttributeDefinition('EDQProdUrls').values}" var="prod">
         <isif condition="${prod.value == 'EmailValidationJS'}">
-            <script src="${prod.displayValue}" integrity="sha512-cqOaq8x2ZH5Fywf4M5C7DYzBtlPCRZZ/AyFzlQqseyumNeX9MYaVKP3TYWoaxMfDUgeiNf3778mWbbp0TLaeNA==" crossorigin="anonymous"></script>
+        	<script src="${prod.displayValue}" integrity="sha512-zkUH57O3W/eJjvWex2n3+9MeZXcEG2ej/NrNpRDyLWv7sme8GbR7SOhcKFVQRTNw6XfGb/kEF5ENox5D/bbDpg==" crossorigin="anonymous"></script>
         </isif>
     </isloop>
 </iselseif>

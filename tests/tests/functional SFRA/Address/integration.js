@@ -1,6 +1,6 @@
-const SfraLogoutUrl = "https://qas01.tech-prtnr-na01.dw.demandware.net/on/demandware.store/Sites-Dev01Test-Site/default/Login-Logout";
-const mySFRAUrl = "https://qas01.tech-prtnr-na01.dw.demandware.net/on/demandware.store/Sites-Dev01Test-Site/default/Login-Show";
-const SfraAddressUrl = "https://qas01.tech-prtnr-na01.dw.demandware.net/on/demandware.store/Sites-Dev01Test-Site/default/Address-AddAddress";
+const SfraLogoutUrl = "https://zzhi-002.sandbox.us01.dx.commercecloud.salesforce.com/on/demandware.store/Sites-RefArch-Site/en_US/Login-Logout";
+const mySFRAUrl = "https://zzhi-002.sandbox.us01.dx.commercecloud.salesforce.com/on/demandware.store/Sites-RefArch-Site/en_US/Login-Show";
+const SfraAddressUrl = "https://zzhi-002.sandbox.us01.dx.commercecloud.salesforce.com/on/demandware.store/Sites-RefArch-Site/en_US/Address-AddAddress";
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
@@ -64,7 +64,7 @@ registerSuite('Experian SFRA Address Touchpoint', {
 			.type("jose.castillo@experian.com")
 			.end()
 			.findByCssSelector('#login-form-password')
-			.type("Experian082018.")
+			.type("Experian2020.")
 			.end()
 			.sleep(1000)
 			.findByCssSelector('.login')

@@ -1,6 +1,6 @@
-const SfraLogoutUrl = "https://qas01.tech-prtnr-na01.dw.demandware.net/on/demandware.store/Sites-Dev01Test-Site/default/Login-Logout";
-const SFRAProductUrl = "https://qas01.tech-prtnr-na01.dw.demandware.net/s/Dev01Test/ubi-soft-quick-yoga-training-nintendods.html";
-const SFRACheckoutStage = "https://qas01.tech-prtnr-na01.dw.demandware.net/on/demandware.store/Sites-Dev01Test-Site/en_US/Checkout-Begin?stage=shipping#shipping";
+const SfraLogoutUrl = "https://zzhi-002.sandbox.us01.dx.commercecloud.salesforce.com/on/demandware.store/Sites-RefArch-Site/en_US/Login-Logout";
+const SFRAProductUrl = "https://zzhi-002.sandbox.us01.dx.commercecloud.salesforce.com/s/RefArch/electronics/gaming/games/ubi-soft-quick-yoga-training-nintendodsM.html?lang=en_US";
+const SFRACheckoutStage = "https://zzhi-002.sandbox.us01.dx.commercecloud.salesforce.com/on/demandware.store/Sites-RefArch-Site/en_US/Checkout-Begin?stage=shipping#shipping";
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
@@ -112,6 +112,40 @@ registerSuite('Experian SFRA Checkout Touchpoint', {
 					.getProperty("value")
 				.then(function(postalCode) {
 					assert.equal("02109-3208", postalCode, "Postal code value populated. Integration functioning");
+				})
+				.end()
+		},
+		"Checkout - Pro Web Address (Modal Box Override)": function() {
+			return this.remote
+				.sleep(2000)
+				.get(SFRACheckoutStage)
+				.sleep(5000)
+				.execute(function() { 
+					window.EdqConfig['VERIFICATION_MODAL_OVERRIDES'] = {
+						modalHeader: {
+							updated: "Test",
+							unverified: "Test",
+						},
+						interactionRequired: {
+							updatedAddressHeader: "Test",
+							originalAddressHeader: "Test",
+							useOriginalAddress: "Test",
+							useUpdatedAddress: "Test",
+							searchPlaceholder: "Test",
+						}
+					};
+				})
+				.sleep(2000)
+				.then(fillInPartialAddress())
+				.sleep(4000)
+				.findByCssSelector("#form-submit")
+					.click()
+					.end()
+				.sleep(5000)
+				.findByCssSelector("#edq-modal-header")
+					.getProperty("innerText")
+				.then(function(headerText) {
+					assert.equal("Test", headerText, "Header text changed. Integration functioning");
 				})
 				.end()
 		},

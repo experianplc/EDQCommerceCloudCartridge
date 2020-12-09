@@ -12,4 +12,12 @@ interface SfccConfigObject {
 	pageRestrictValidation: boolean;
 	edqProWebCallback: string;
 	edqGlobalIntuitiveUseCurrentLocation: boolean;
+	
+	headerUpdateAddressText: string;
+	headerUnverifiedAddressText: string;
+	headerInteractionUpdateAddressText: string;
+	labelOriginalAddressText: string;
+	labelUseOriginalAddressText: string;
+	labelUseUpdatedAddressText: string;
+	searchPlaceHolderAddressText: string;
 }

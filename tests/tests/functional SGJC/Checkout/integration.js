@@ -1,7 +1,8 @@
-const SgjcLogoutUrl = "https://qas01-tech-prtnr-na01-dw.demandware.net/on/demandware.store/Sites-Demo_SG-Site/default/Login-Logout";
-const SgjcProductUrl = "https://qas01-tech-prtnr-na01-dw.demandware.net/s/Demo_SG/ubi-soft-my-spanish-coach-psp.html?cgid=electronics-gaming#start=1";
-const SgjcCheckoutStage = "https://qas01.tech-prtnr-na01.dw.demandware.net/on/demandware.store/Sites-Demo_SG-Site/default/COShipping-Start";
-const SgjcCartUrl = "https://qas01.tech-prtnr-na01.dw.demandware.net/on/demandware.store/Sites-Demo_SG-Site/default/Cart-Show";
+const SgjcLogoutUrl = "https://zzhi-002.sandbox.us01.dx.commercecloud.salesforce.com/on/demandware.store/Sites-SiteGenesis-Site/en_US/Login-Logout";
+const SgjcProductUrl = "https://zzhi-002.sandbox.us01.dx.commercecloud.salesforce.com/s/SiteGenesis/electronics/gaming/ubi-soft-quick-yoga-training-nintendods.html?lang=en_US&cgid=electronics-gaming#lang=en_US&start=6";
+const SgjcCheckoutStage = "https://zzhi-002.sandbox.us01.dx.commercecloud.salesforce.com/s/SiteGenesis/shipping?lang=en_US";
+const SgjcCartUrl = "https://zzhi-002.sandbox.us01.dx.commercecloud.salesforce.com/s/SiteGenesis/cart?lang=en_US";
+
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
@@ -117,6 +118,38 @@ registerSuite('Experian SGJC Checkout Touchpoint', {
 					.getProperty("value")
 				.then(function(postalCode) {
 					assert.equal("02109-3208", postalCode, "Postal code value populated. Integration functioning");
+				})
+				.end()
+		},
+		"Checkout - Pro Web Address (Modal Box Override)": function() {
+			return this.remote
+				.sleep(2000)
+				.execute(function() { 
+					window.EdqConfig['VERIFICATION_MODAL_OVERRIDES'] = {
+						modalHeader: {
+							updated: "Test",
+							unverified: "Test",
+						},
+						interactionRequired: {
+							updatedAddressHeader: "Test",
+							originalAddressHeader: "Test",
+							useOriginalAddress: "Test",
+							useUpdatedAddress: "Test",
+							searchPlaceholder: "Test",
+						}
+					};
+				})
+				.sleep(2000)
+				.then(fillInPartialAddress())
+				.sleep(4000)
+				.findByCssSelector("#form-submit")
+					.click()
+					.end()
+				.sleep(5000)
+				.findByCssSelector("#edq-modal-header")
+					.getProperty("innerText")
+				.then(function(headerText) {
+					assert.equal("Test", headerText, "Header text changed. Integration functioning");
 				})
 				.end()
 		},

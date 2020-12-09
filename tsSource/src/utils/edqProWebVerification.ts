@@ -76,6 +76,19 @@ export function edqSetProWebConfiguration({formSubmitButton, vDefaultCountry, ed
 			modalFieldSelector:"#interaction-address--original-postal-code",
 		},
     ];
+	window.EdqConfig.VERIFICATION_MODAL_OVERRIDES= {
+		modalHeader: {
+			updated:window.sfccConfig.headerUpdateAddressText,
+			unverified:window.sfccConfig.headerUnverifiedAddressText,
+		},
+		interactionRequired: {
+			updatedAddressHeader:window.sfccConfig.headerInteractionUpdateAddressText,
+			originalAddressHeader:window.sfccConfig.labelOriginalAddressText,
+			useOriginalAddress:window.sfccConfig.labelUseOriginalAddressText,
+			useUpdatedAddress:window.sfccConfig.labelUseUpdatedAddressText,
+			searchPlaceholder:window.sfccConfig.searchPlaceHolderAddressText,
+		}
+	};
 }
 interface ProWebTransitioCallbackbArgs {
 	edqProWebMetaDataJSON: object;
