@@ -32,7 +32,7 @@ interface GlobalIntuitiveConfigArgs {
 export function edqSetGlobalIntuitiveConfiguration({vDefaultCountry, edqAuthorizationToken, edqDataSetUsage, edqDataSetCode, edqCountryElement, edqAddressLine1Element, edqAddressLine2Element, edqCityLineElement, edqStateLineElement, edqPostalLineElement}: GlobalIntuitiveConfigArgs) {
 	let globalIntuitiveIsoCountry: string = vDefaultCountry;
 	if (window.sfccConfig.edqCountryElement != null) {
-		globalIntuitiveIsoCountry = window.sfccConfig.edqCountryElement.value;
+		globalIntuitiveIsoCountry = window.sfccConfig.edqCountryElement.value.toUpperCase();
 	}
 	window.EdqConfig.GLOBAL_INTUITIVE_AUTH_TOKEN = edqAuthorizationToken;
 	window.EdqConfig.GLOBAL_INTUITIVE_ISO3_COUNTRY = countryAlpha3({"incomingCountryIso2":globalIntuitiveIsoCountry, "vDefaultCountry":vDefaultCountry});
@@ -67,6 +67,10 @@ export function edqSetGlobalIntuitiveConfiguration({vDefaultCountry, edqAuthoriz
 			elements: ["address.postalCode"]
 		},
 	];
+	window.EdqConfig.AUTOCOMPLETION_SETTINGS= {
+		cache: false
+	};
+	window.EdqConfig.GLOBAL_INTUITIVE_AFTER_FORMAT_CHANGE=changedAddress();
 }
 interface GlobalIntuitiveSetCountryArgs {
 	edqCountryElement: HTMLSelectElement;
@@ -223,4 +227,8 @@ export function removeMultipleEDQSuggestion({edqSuggestionBox}: GlobalIntuitiveR
 	for (let i: number = 0; i < edqSuggestionBox.length; i++) {
 		edqSuggestionBox[i].parentNode.removeChild(edqSuggestionBox[i]);
 	}
+}
+export function changedAddress() {
+	window.sfccConfig.addressChanged = true;
+	//return window.addressChanged;
 }

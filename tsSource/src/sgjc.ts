@@ -151,6 +151,7 @@ export function usePhoneValidation(edqAuthorizationToken) {
  * Sets the configuration to use Global Intuitive
  */
 export function useGlobalIntuitive(vDefaultCountry, edqAuthorizationToken, edqDataSetUsage, edqDataSetCode) {
+	//window.sfccConfig.edqCountryElement
 	edqSetGlobalIntuitiveConfiguration({
 		"vDefaultCountry":vDefaultCountry,
 		"edqAuthorizationToken":edqAuthorizationToken,
@@ -163,6 +164,21 @@ export function useGlobalIntuitive(vDefaultCountry, edqAuthorizationToken, edqDa
 		"edqStateLineElement":window.sfccConfig.edqStateLineElement,
 		"edqPostalLineElement":window.sfccConfig.edqPostalLineElement
 	});
+	
+	const setEventsForCountryChangeGI = function() {
+		edqSetGlobalIntuitiveConfiguration({
+			"vDefaultCountry":vDefaultCountry,
+			"edqAuthorizationToken":edqAuthorizationToken,
+			"edqDataSetUsage":edqDataSetUsage,
+			"edqDataSetCode":edqDataSetCode,
+			"edqCountryElement":window.sfccConfig.edqCountryElement,
+			"edqAddressLine1Element":window.sfccConfig.edqAddressLine1Element,
+			"edqAddressLine2Element":window.sfccConfig.edqAddressLine2Element,
+			"edqCityLineElement":window.sfccConfig.edqCityLineElement,
+			"edqStateLineElement":window.sfccConfig.edqStateLineElement,
+			"edqPostalLineElement":window.sfccConfig.edqPostalLineElement});
+	};
+	addEventOnElement({"selector":"[name=" + window.sfccConfig.edqCountryElement.name + "]", "event":"change", "fn":setEventsForCountryChangeGI});
 }
 /**
  * Pro Web - Address (Verification Engine)
@@ -198,6 +214,20 @@ export function useProwebVerification(edqAuthorizationToken, vDefaultCountry, ed
 		"edqStateLineElement":window.sfccConfig.edqStateLineElement, 
 		"edqPostalLineElement":window.sfccConfig.edqPostalLineElement
 	});
+	const setEventsForCountryChangePW = function() {
+		edqSetProWebConfiguration({
+			"formSubmitButton":document.querySelector("#form-submit"), 
+			"vDefaultCountry":vDefaultCountry, 
+			"edqAuthorizationToken":edqAuthorizationToken, 
+			"edqCountryElement":window.sfccConfig.edqCountryElement, 
+			"edqProWebAddressLayout":edqProWebAddressLayout, 
+			"edqAddressLine1Element":window.sfccConfig.edqAddressLine1Element, 
+			"edqAddressLine2Element":window.sfccConfig.edqAddressLine2Element, 
+			"edqCityLineElement":window.sfccConfig.edqCityLineElement, 
+			"edqStateLineElement":window.sfccConfig.edqStateLineElement, 
+			"edqPostalLineElement":window.sfccConfig.edqPostalLineElement});
+	};
+	addEventOnElement({"selector":"[name=" + window.sfccConfig.edqCountryElement.name + "]", "event":"change", "fn":setEventsForCountryChangePW});
 }
 export function edqValidateAddressCallBack1() {
 	edqValidateAddressCallBack({

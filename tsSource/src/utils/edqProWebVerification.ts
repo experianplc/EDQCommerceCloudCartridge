@@ -34,7 +34,7 @@ interface ProWebConfigArgs extends ProWebformButton {
 export function edqSetProWebConfiguration({formSubmitButton, vDefaultCountry, edqAuthorizationToken, edqCountryElement, edqProWebAddressLayout, edqAddressLine1Element, edqAddressLine2Element, edqCityLineElement, edqStateLineElement, edqPostalLineElement}: ProWebConfigArgs) {
 	let proWebIsoCountry: string = vDefaultCountry;
 	if (edqCountryElement != null) {
-		proWebIsoCountry = edqCountryElement.value;
+		proWebIsoCountry = edqCountryElement.value.toUpperCase();
 	}
 	window.EdqConfig.PRO_WEB_TIMEOUT = '3500';
 	window.EdqConfig.PRO_WEB_AUTH_TOKEN = edqAuthorizationToken;
@@ -121,17 +121,21 @@ interface ProWebEventsForListenersArgs extends ProWebConfigArgs {
  * @param {string} edqCurrentSubmitButton
  */
 export function setEventsForListenersProWeb({checkoutStage, edqCurrentSubmitButton, formSubmitButton, vDefaultCountry, edqAuthorizationToken, edqCountryElement, edqProWebAddressLayout, edqAddressLine1Element, edqAddressLine2Element, edqCityLineElement, edqStateLineElement, edqPostalLineElement}: ProWebEventsForListenersArgs) {
-	setEdqInputSelectors({"stageContentLocation":checkoutStage});
-	buttonCssSeetings({"formSubmitButton":window.sfccConfig.edqCurrentSubmitButton, "edqCurrentSubmitButton":formSubmitButton});
-	edqSetProWebConfiguration({"formSubmitButton":formSubmitButton, 
-		"vDefaultCountry":vDefaultCountry, 
-		"edqAuthorizationToken":edqAuthorizationToken, 
-		"edqCountryElement":edqCountryElement, 
-		"edqProWebAddressLayout":edqProWebAddressLayout, 
-		"edqAddressLine1Element":edqAddressLine1Element, 
-		"edqAddressLine2Element":edqAddressLine2Element, 
-		"edqCityLineElement":edqCityLineElement, "edqStateLineElement":edqStateLineElement, 
-		"edqPostalLineElement":edqPostalLineElement});
+	if (window.sfccConfig.addressChanged) {
+		setEdqInputSelectors({"stageContentLocation":checkoutStage});
+		buttonCssSeetings({"formSubmitButton":window.sfccConfig.edqCurrentSubmitButton, "edqCurrentSubmitButton":formSubmitButton});
+		edqSetProWebConfiguration({"formSubmitButton":formSubmitButton,
+			"vDefaultCountry":vDefaultCountry,
+			"edqAuthorizationToken":edqAuthorizationToken,
+			"edqCountryElement":edqCountryElement,
+			"edqProWebAddressLayout":edqProWebAddressLayout,
+			"edqAddressLine1Element":edqAddressLine1Element,
+			"edqAddressLine2Element":edqAddressLine2Element,
+			"edqCityLineElement":edqCityLineElement, "edqStateLineElement":edqStateLineElement,
+			"edqPostalLineElement":edqPostalLineElement});
+	} else {
+		buttonCssSeetings({"formSubmitButton":formSubmitButton, "edqCurrentSubmitButton":window.sfccConfig.edqCurrentSubmitButton});
+	}
 }
 interface ProWebCheckoutPageWorkflowArgs extends ProWebConfigArgs {
 	edqCurrentSubmitButton: HTMLButtonElement;

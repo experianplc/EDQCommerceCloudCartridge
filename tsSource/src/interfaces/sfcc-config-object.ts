@@ -20,4 +20,6 @@ interface SfccConfigObject {
 	labelUseOriginalAddressText: string;
 	labelUseUpdatedAddressText: string;
 	searchPlaceHolderAddressText: string;
+	
+	addressChanged: boolean;
 }
