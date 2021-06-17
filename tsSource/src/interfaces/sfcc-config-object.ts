@@ -22,4 +22,5 @@ interface SfccConfigObject {
 	searchPlaceHolderAddressText: string;
 	
 	addressChanged: boolean;
+	edqDpvIndicator: HTMLInputElement;
 }

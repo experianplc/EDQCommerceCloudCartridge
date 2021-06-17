@@ -121,7 +121,7 @@ interface ProWebEventsForListenersArgs extends ProWebConfigArgs {
  * @param {string} edqCurrentSubmitButton
  */
 export function setEventsForListenersProWeb({checkoutStage, edqCurrentSubmitButton, formSubmitButton, vDefaultCountry, edqAuthorizationToken, edqCountryElement, edqProWebAddressLayout, edqAddressLine1Element, edqAddressLine2Element, edqCityLineElement, edqStateLineElement, edqPostalLineElement}: ProWebEventsForListenersArgs) {
-	if (window.sfccConfig.addressChanged) {
+	//if (window.sfccConfig.addressChanged || window.sfccConfig.edqDpvIndicator.value === 'N') {
 		setEdqInputSelectors({"stageContentLocation":checkoutStage});
 		buttonCssSeetings({"formSubmitButton":window.sfccConfig.edqCurrentSubmitButton, "edqCurrentSubmitButton":formSubmitButton});
 		edqSetProWebConfiguration({"formSubmitButton":formSubmitButton,
@@ -133,9 +133,9 @@ export function setEventsForListenersProWeb({checkoutStage, edqCurrentSubmitButt
 			"edqAddressLine2Element":edqAddressLine2Element,
 			"edqCityLineElement":edqCityLineElement, "edqStateLineElement":edqStateLineElement,
 			"edqPostalLineElement":edqPostalLineElement});
-	} else {
-		buttonCssSeetings({"formSubmitButton":formSubmitButton, "edqCurrentSubmitButton":window.sfccConfig.edqCurrentSubmitButton});
-	}
+	//} else {
+		//buttonCssSeetings({"formSubmitButton":formSubmitButton, "edqCurrentSubmitButton":window.sfccConfig.edqCurrentSubmitButton});
+	//}
 }
 interface ProWebCheckoutPageWorkflowArgs extends ProWebConfigArgs {
 	edqCurrentSubmitButton: HTMLButtonElement;
@@ -216,6 +216,10 @@ export function edqCheckoutPageWorkflows({edqCurrentSubmitButton,
 	addEventOnElement({"selector":"#editPayment", "event":"mousedown", "fn":setEventsForBillingStage});
 	addEventOnElement({"selector":".billing-address", "event":"click", "fn":setEventsForBillingStage});
 	addEventOnElement({"selector":"#dwfrm_billing", "event":"focus", "fn":setEventsForBillingStage});
+	//'onmouseover'
+	//addEventOnElement({"selector":"#form-submit", "event":"onmouseover", "fn":setEventsForShippingStage});
+	//addEventOnElement({"selector":"[value=submit-shipping]", "event":"onmouseover", "fn":setEventsForShippingStage});
+	//addEventOnElement({"selector":"[value=submit-payment]", "event":"onmouseover", "fn":setEventsForBillingStage});
 }
 interface ProWebCallbackbArgs extends ProWebformButton {
 	edqStateLineElement: HTMLSelectElement;

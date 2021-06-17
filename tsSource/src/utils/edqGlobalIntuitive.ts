@@ -1,6 +1,7 @@
 import {countryAlpha3, countryAlpha2} from './edqCountry';
 import {enableButtonDisable, addEventOnElement} from './edq-utils';
 import {setEdqInputSelectors} from '../sfra';
+import {buttonCssSeetings} from './edqProWebVerification';
 
 interface GlobalIntuitiveConfigArgs {
 	vDefaultCountry: string;
@@ -12,8 +13,7 @@ interface GlobalIntuitiveConfigArgs {
 	edqAddressLine2Element: HTMLInputElement;
 	edqCityLineElement: HTMLInputElement;
 	edqStateLineElement: HTMLSelectElement;
-	edqPostalLineElement: HTMLInputElement;
-	
+	edqPostalLineElement: HTMLInputElement;	
 }
 /**
  * Global Intuitive
@@ -41,7 +41,8 @@ export function edqSetGlobalIntuitiveConfiguration({vDefaultCountry, edqAuthoriz
 	 * For more information refer to feature #118583.
 	 */
 	if (edqDataSetUsage) { 
-		window.EdqConfig.GLOBAL_INTUITIVE_DATASET = edqDataSetCode; 
+		//window.EdqConfig.GLOBAL_INTUITIVE_DATASET = edqDataSetCode;
+		window.EdqConfig.GLOBAL_INTUITIVE_DATASET = datasetSetCode({"vDefaultCountry":vDefaultCountry, "edqCountryElement":window.sfccConfig.edqCountryElement, "edqDataSetCode":edqDataSetCode});
 	}
 	window.EdqConfig.GLOBAL_INTUITIVE_ELEMENT= window.sfccConfig.edqAddressLine1Element;
 	window.EdqConfig.GLOBAL_INTUITIVE_USE_CURRENT_LOCATION= window.sfccConfig.edqGlobalIntuitiveUseCurrentLocation;
@@ -66,11 +67,16 @@ export function edqSetGlobalIntuitiveConfiguration({vDefaultCountry, edqAuthoriz
 			field: window.sfccConfig.edqPostalLineElement,
 			elements: ["address.postalCode"]
 		},
+		{
+			field: window.sfccConfig.edqDpvIndicator,
+			elements: ['metadata.dpv.dpvIndicator']
+		},
 	];
 	window.EdqConfig.AUTOCOMPLETION_SETTINGS= {
 		cache: false
 	};
-	window.EdqConfig.GLOBAL_INTUITIVE_AFTER_FORMAT_CHANGE=changedAddress();
+	window.EdqConfig.GLOBAL_INTUITIVE_CALLBACK=function() {globalIntuitiveCallback(false)};
+	window.EdqConfig.GLOBAL_INTUITIVE_AFTER_FORMAT_CHANGE=function() {changedAddress(true)};
 }
 interface GlobalIntuitiveSetCountryArgs {
 	edqCountryElement: HTMLSelectElement;
@@ -171,6 +177,7 @@ export function setCheckoutFormEvents({reloadGIjs, edqGlobalIntuitiveUnicornJsPa
 				crossorigin:"anonymous"
 			}).appendTo("body");
 			reloadGIjs = false;
+			//window.sfccConfig.addressChanged = true;
 		}
 	};
 	const setEventsForShipping = function(e: Event) { 
@@ -228,7 +235,46 @@ export function removeMultipleEDQSuggestion({edqSuggestionBox}: GlobalIntuitiveR
 		edqSuggestionBox[i].parentNode.removeChild(edqSuggestionBox[i]);
 	}
 }
-export function changedAddress() {
-	window.sfccConfig.addressChanged = true;
-	//return window.addressChanged;
+//export function changedAddress(changed) {
+	//window.sfccConfig.addressChanged = changed;
+//}
+export function changedAddress(changed) {
+	window.sfccConfig.addressChanged = changed;
+	if (changed) {
+		buttonCssSeetings({"formSubmitButton":window.sfccConfig.edqCurrentSubmitButton, "edqCurrentSubmitButton":document.querySelector("#form-submit")});
+	}
+}
+export function globalIntuitiveCallback(changed) {
+	window.sfccConfig.addressChanged = changed;
+	
+	if (window.sfccConfig.edqDpvIndicator.value === 'Y') {
+		buttonCssSeetings({"formSubmitButton":document.querySelector("#form-submit"), "edqCurrentSubmitButton":window.sfccConfig.edqCurrentSubmitButton});
+	}
+	else {
+		buttonCssSeetings({"formSubmitButton":window.sfccConfig.edqCurrentSubmitButton, "edqCurrentSubmitButton":document.querySelector("#form-submit")});
+	}
+}
+interface GlobalIntuitiveDatasetArgs {
+	vDefaultCountry: string;
+	edqDataSetCode: string;
+	edqCountryElement: HTMLSelectElement;
+}
+export function datasetSetCode({vDefaultCountry, edqCountryElement, edqDataSetCode}: GlobalIntuitiveDatasetArgs) {
+	let noDataSet: string = "";
+	let globalIntuitiveIsoCountry: string = vDefaultCountry;
+	let dataSetCode: string = "";
+	let countryDataSetCode: Array<any> = [];
+	if (window.sfccConfig.edqCountryElement != null) {
+		globalIntuitiveIsoCountry = window.sfccConfig.edqCountryElement.value.toUpperCase();
+	}
+	if (edqDataSetCode) {
+		let datasetsCodes: Array<any> = edqDataSetCode.split(',');
+		datasetsCodes.forEach(function(val) {
+			let setKeyValue: Array<any> = val.split(':');
+			countryDataSetCode.push({ key: setKeyValue[0], value: setKeyValue[1] });
+		});
+		let countryISO: string = countryAlpha3({"incomingCountryIso2":globalIntuitiveIsoCountry, "vDefaultCountry":vDefaultCountry});
+		countryDataSetCode.forEach(function(val) { dataSetCode = (countryISO.match(val.key)) ? val.value : dataSetCode });
+	}
+	return dataSetCode || noDataSet;
 }
