@@ -1,5 +1,5 @@
 # EDQ for Salesforce Commerce Cloud
-######  Version 19.1.0
+######  Version 20.0.0
 
 ![Salesforce Logo](https://account.demandware.com/dwsso/XUI/themes/salesforce/images/2016sf_CommerceCloud_logo_RGB.png?v=14.1.0)
 
