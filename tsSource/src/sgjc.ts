@@ -152,6 +152,7 @@ export function usePhoneValidation(edqAuthorizationToken) {
  * Sets the configuration to use Global Intuitive
  */
 export function useGlobalIntuitive(vDefaultCountry, edqAuthorizationToken, edqDataSetUsage, edqDataSetCode) {
+	window.sfccConfig.edqDpvIndicator = document.querySelector("#edqDpvIndicator");
 	edqSetGlobalIntuitiveConfiguration({
 		"vDefaultCountry":vDefaultCountry,
 		"edqAuthorizationToken":edqAuthorizationToken,

@@ -123,14 +123,15 @@ interface ProWebEventsForListenersArgs extends ProWebConfigArgs {
 export function setEventsForListenersProWeb({checkoutStage, edqCurrentSubmitButton, formSubmitButton, vDefaultCountry, edqAuthorizationToken, edqCountryElement, edqProWebAddressLayout, edqAddressLine1Element, edqAddressLine2Element, edqCityLineElement, edqStateLineElement, edqPostalLineElement}: ProWebEventsForListenersArgs) {
 	setEdqInputSelectors({"stageContentLocation":checkoutStage});
 	buttonCssSeetings({"formSubmitButton":window.sfccConfig.edqCurrentSubmitButton, "edqCurrentSubmitButton":formSubmitButton});
-	edqSetProWebConfiguration({"formSubmitButton":formSubmitButton,
-		"vDefaultCountry":vDefaultCountry,
-		"edqAuthorizationToken":edqAuthorizationToken,
-		"edqCountryElement":edqCountryElement,
-		"edqProWebAddressLayout":edqProWebAddressLayout,
-		"edqAddressLine1Element":edqAddressLine1Element,
-		"edqAddressLine2Element":edqAddressLine2Element,
-		"edqCityLineElement":edqCityLineElement, "edqStateLineElement":edqStateLineElement,
+	edqSetProWebConfiguration({"formSubmitButton":formSubmitButton, 
+		"vDefaultCountry":vDefaultCountry, 
+		"edqAuthorizationToken":edqAuthorizationToken, 
+		"edqCountryElement":edqCountryElement, 
+		"edqProWebAddressLayout":edqProWebAddressLayout, 
+		"edqAddressLine1Element":edqAddressLine1Element, 
+		"edqAddressLine2Element":edqAddressLine2Element, 
+		"edqCityLineElement":edqCityLineElement, 
+		"edqStateLineElement":edqStateLineElement, 
 		"edqPostalLineElement":edqPostalLineElement});
 }
 interface ProWebCheckoutPageWorkflowArgs extends ProWebConfigArgs {

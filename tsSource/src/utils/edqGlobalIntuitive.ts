@@ -176,7 +176,6 @@ export function setCheckoutFormEvents({reloadGIjs, edqGlobalIntuitiveUnicornJsPa
 				crossorigin:"anonymous"
 			}).appendTo("body");
 			reloadGIjs = false;
-			//window.sfccConfig.addressChanged = true;
 		}
 	};
 	const setEventsForShipping = function(e: Event) { 
