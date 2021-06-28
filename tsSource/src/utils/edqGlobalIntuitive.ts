@@ -41,7 +41,6 @@ export function edqSetGlobalIntuitiveConfiguration({vDefaultCountry, edqAuthoriz
 	 * For more information refer to feature #118583.
 	 */
 	if (edqDataSetUsage) { 
-		//window.EdqConfig.GLOBAL_INTUITIVE_DATASET = edqDataSetCode;
 		window.EdqConfig.GLOBAL_INTUITIVE_DATASET = datasetSetCode({"vDefaultCountry":vDefaultCountry, "edqCountryElement":window.sfccConfig.edqCountryElement, "edqDataSetCode":edqDataSetCode});
 	}
 	window.EdqConfig.GLOBAL_INTUITIVE_ELEMENT= window.sfccConfig.edqAddressLine1Element;
@@ -235,9 +234,6 @@ export function removeMultipleEDQSuggestion({edqSuggestionBox}: GlobalIntuitiveR
 		edqSuggestionBox[i].parentNode.removeChild(edqSuggestionBox[i]);
 	}
 }
-//export function changedAddress(changed) {
-	//window.sfccConfig.addressChanged = changed;
-//}
 export function changedAddress(changed) {
 	window.sfccConfig.addressChanged = changed;
 	if (changed) {

@@ -34,6 +34,7 @@ let inputSelector: NodeListOf<HTMLInputElement> = document.querySelectorAll("inp
 let selectSelector: NodeListOf<HTMLSelectElement> = document.querySelectorAll("select[id]");
 let buttonSelector: NodeListOf<HTMLButtonElement> = document.querySelectorAll("button[name]");
 let edqGlobalIntuitiveUseCurrentLocation: boolean;
+window.sfccConfig.addressChanged = true;
 
 let edqConfig = <EdqConfigObject>{};
 window.EdqConfig = window.EdqConfig || edqConfig;
@@ -151,7 +152,6 @@ export function usePhoneValidation(edqAuthorizationToken) {
  * Sets the configuration to use Global Intuitive
  */
 export function useGlobalIntuitive(vDefaultCountry, edqAuthorizationToken, edqDataSetUsage, edqDataSetCode) {
-	//window.sfccConfig.edqCountryElement
 	edqSetGlobalIntuitiveConfiguration({
 		"vDefaultCountry":vDefaultCountry,
 		"edqAuthorizationToken":edqAuthorizationToken,
