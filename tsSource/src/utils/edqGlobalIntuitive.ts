@@ -233,20 +233,35 @@ export function removeMultipleEDQSuggestion({edqSuggestionBox}: GlobalIntuitiveR
 		edqSuggestionBox[i].parentNode.removeChild(edqSuggestionBox[i]);
 	}
 }
+/**
+ * Function attached to the window.EdqConfig.GLOBAL_INTUITIVE_AFTER_FORMAT_CHANGE configuration 
+ * that will allow to check if the user changed the address provided by clicking one option from Global Intuitive suggestion box; 
+ * if the address has been changed Pro Web will verify the address, if not Pro Web will not verify the address. 
+ * (Only if Pro Web and Global Intuitive are active).
+ * @param changed - Contains the default country value provided by the store configuration
+**/
 export function changedAddress(changed) {
 	window.sfccConfig.addressChanged = changed;
-	if (changed) {
+	if ((changed) && (document.querySelector("#form-submit"))) {
 		buttonCssSeetings({"formSubmitButton":window.sfccConfig.edqCurrentSubmitButton, "edqCurrentSubmitButton":document.querySelector("#form-submit")});
 	}
 }
+/**
+ * Function attached to the window.EdqConfig.GLOBAL_INTUITIVE_CALLBACK configuration 
+ * Will check if the address provided by clicking one option from Global Intuitive suggestion box has DPV; in case the DPV is "Y"
+ * Pro Web will not be active, if DPV isn't "Y" Pro Web will validate the address 
+ * (Only if Pro Web and Global Intuitive are active).
+ * @param changed - Contains the default country value provided by the store configuration
+**/
 export function globalIntuitiveCallback(changed) {
 	window.sfccConfig.addressChanged = changed;
-	
-	if (window.sfccConfig.edqDpvIndicator.value === 'Y') {
-		buttonCssSeetings({"formSubmitButton":document.querySelector("#form-submit"), "edqCurrentSubmitButton":window.sfccConfig.edqCurrentSubmitButton});
-	}
-	else {
-		buttonCssSeetings({"formSubmitButton":window.sfccConfig.edqCurrentSubmitButton, "edqCurrentSubmitButton":document.querySelector("#form-submit")});
+	if (document.querySelector("#form-submit")) {
+		if (window.sfccConfig.edqDpvIndicator.value === 'Y') {
+			buttonCssSeetings({"formSubmitButton":document.querySelector("#form-submit"), "edqCurrentSubmitButton":window.sfccConfig.edqCurrentSubmitButton});
+		}
+		else {
+			buttonCssSeetings({"formSubmitButton":window.sfccConfig.edqCurrentSubmitButton, "edqCurrentSubmitButton":document.querySelector("#form-submit")});
+		}
 	}
 }
 interface GlobalIntuitiveDatasetArgs {
@@ -254,6 +269,15 @@ interface GlobalIntuitiveDatasetArgs {
 	edqDataSetCode: string;
 	edqCountryElement: HTMLSelectElement;
 }
+/**
+ * datasetSetCode function will allow the user to add an specific country it's dataset code 
+ * Change on the dataset code to receive country and dataset code; the string layout should be separate by the char ":"; e.g "country:DatasetCode".
+ * In case the user wants to add more than one country and dataset code, the countries should be separate by the char ","; e.g "country1:DatasetCode,country2:DatasetCode"
+ * 
+ * @param vDefaultCountry - Contains the default country value provided by the store configuration
+ * @param edqCountryElement - Contains the selector of the country input
+ * @param edqDataSetCode - Contains the code for the dataset to be used
+**/
 export function datasetSetCode({vDefaultCountry, edqCountryElement, edqDataSetCode}: GlobalIntuitiveDatasetArgs) {
 	let noDataSet: string = "";
 	let globalIntuitiveIsoCountry: string = vDefaultCountry;
