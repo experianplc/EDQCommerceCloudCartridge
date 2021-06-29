@@ -238,7 +238,7 @@ export function removeMultipleEDQSuggestion({edqSuggestionBox}: GlobalIntuitiveR
  * that will allow to check if the user changed the address provided by clicking one option from Global Intuitive suggestion box; 
  * if the address has been changed Pro Web will verify the address, if not Pro Web will not verify the address. 
  * (Only if Pro Web and Global Intuitive are active).
- * @param changed - Contains the default country value provided by the store configuration
+ * @param changed - Boolean that will let the workflow know if Pro Web Validation should validate the address or not
 **/
 export function changedAddress(changed) {
 	window.sfccConfig.addressChanged = changed;
@@ -251,7 +251,7 @@ export function changedAddress(changed) {
  * Will check if the address provided by clicking one option from Global Intuitive suggestion box has DPV; in case the DPV is "Y"
  * Pro Web will not be active, if DPV isn't "Y" Pro Web will validate the address 
  * (Only if Pro Web and Global Intuitive are active).
- * @param changed - Contains the default country value provided by the store configuration
+ * @param changed - Boolean that will let the workflow know if Pro Web Validation should validate the address or not
 **/
 export function globalIntuitiveCallback(changed) {
 	window.sfccConfig.addressChanged = changed;
