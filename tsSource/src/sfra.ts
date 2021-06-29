@@ -49,6 +49,7 @@ window.EdqConfig = window.EdqConfig || edqConfig;
 window.sfccConfig.edqPhoneLineElements = [];
 
 window.sfccConfig.pageRestrictValidation = true;
+window.sfccConfig.addressChanged = true;
 /** 
  * Set values for the input selectors depending on the touchpoint (Address/Billing/Shipping).
  * @param {string} stageContentLocation
@@ -181,6 +182,7 @@ export function usePhoneValidation(edqAuthorizationToken) {
  */
  export function useGlobalIntuitive(vDefaultCountry, edqAuthorizationToken, edqDataSetUsage, edqDataSetCode, edqGlobalIntuitiveUseCurrentLocation) {
 	window.sfccConfig.edqGlobalIntuitiveUseCurrentLocation = edqGlobalIntuitiveUseCurrentLocation;
+	window.sfccConfig.edqDpvIndicator = document.querySelector("#edqDpvIndicator");
 	edqSetGlobalIntuitiveConfiguration({
 		"vDefaultCountry":vDefaultCountry,
 		"edqAuthorizationToken":edqAuthorizationToken,

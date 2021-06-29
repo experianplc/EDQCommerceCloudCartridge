@@ -34,7 +34,7 @@ interface ProWebConfigArgs extends ProWebformButton {
 export function edqSetProWebConfiguration({formSubmitButton, vDefaultCountry, edqAuthorizationToken, edqCountryElement, edqProWebAddressLayout, edqAddressLine1Element, edqAddressLine2Element, edqCityLineElement, edqStateLineElement, edqPostalLineElement}: ProWebConfigArgs) {
 	let proWebIsoCountry: string = vDefaultCountry;
 	if (edqCountryElement != null) {
-		proWebIsoCountry = edqCountryElement.value;
+		proWebIsoCountry = edqCountryElement.value.toUpperCase();
 	}
 	window.EdqConfig.PRO_WEB_TIMEOUT = '3500';
 	window.EdqConfig.PRO_WEB_AUTH_TOKEN = edqAuthorizationToken;
@@ -130,7 +130,8 @@ export function setEventsForListenersProWeb({checkoutStage, edqCurrentSubmitButt
 		"edqProWebAddressLayout":edqProWebAddressLayout, 
 		"edqAddressLine1Element":edqAddressLine1Element, 
 		"edqAddressLine2Element":edqAddressLine2Element, 
-		"edqCityLineElement":edqCityLineElement, "edqStateLineElement":edqStateLineElement, 
+		"edqCityLineElement":edqCityLineElement, 
+		"edqStateLineElement":edqStateLineElement, 
 		"edqPostalLineElement":edqPostalLineElement});
 }
 interface ProWebCheckoutPageWorkflowArgs extends ProWebConfigArgs {
