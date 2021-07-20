@@ -1,5 +1,5 @@
 # EDQ for Salesforce Commerce Cloud
-######  Version 19.1.0
+######  Version 19.3.0
 
 ![Salesforce Logo](https://account.demandware.com/dwsso/XUI/themes/salesforce/images/2016sf_CommerceCloud_logo_RGB.png?v=14.1.0)
 
@@ -186,6 +186,30 @@ The store touchpoints for Global Intuitive are:
 * Add/Edit Address form.
 * Billing/Payment form.
 
+### DataSets
+The optional dataset parameter allows you to specify the dataset the address you're searching for is sourced from.
+
+Currently, dataset supports 3 countries:
+* Australia
+* Ireland
+* New Zealand
+
+[For more information.](https://www.edq.com/documentation/apis-r/address-validate/global-intuitive/#/datasets)
+
+#### Using Datasets
+* Enable the option Activates or deactivates Data Set usage
+
+![DatasetActivates](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/datasetOption1.png)
+
+* Set the the country and dataset code
+
+![DatasetCode](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/datasetOption2.png)
+
+To set a country and a dataset:
+* Country ISO-3 code.
+* ":" character.
+* Dataset code for the country to be used. 
+
 ###  2.2\. Compatibility
 EDQ cartridge was created with Commerce Cloud version 19.2 and may use the following touchpoints for its integration
 
@@ -243,7 +267,7 @@ To check the imported site preferences go to **Administration > Site Development
 
 ![Site Preferences 2](https://raw.githubusercontent.com/JoseCastilloExperian/edqCommerceCloud/master/EDQ%20Cartridge%20Manual%20imgs/313SitePreferences2.png)
 
-###  3.2 Touchpoints
+###  3.2 Files
 ####  3.2.1\. Sitegenesis JavaScript Controller
 **EDQHeaders integration**
 1.	Go to int_experian_sgjc cartridge and open the template located in **templates > default > components > header > htmlhead_UI.isml**
@@ -376,7 +400,7 @@ Once the EDQ SitePreferences are uploaded in the business manager; choose your s
    1. EDQ NA Integration 5 Line Modified - North America Integration Layout With Sub Premise And Care Of Retention But With All Secondary Information Split Out For Concatenation
    1. EDQ NA Integration 5 Line Full Retention - North America Integration Layout With Sub Premise, Care Of, Pre Street, and Post Street Retention
 9. Data Set Code (String): Code to use Data Sets in case the country ISO code requires it.
-10. Activates or deactivates Data Set usage (Boolean): Activates or deactivates Data Set usage (only use for Non USA).
+10. Activates or deactivates Data Set usage (Boolean): Activates or deactivates Data Set usage.
 11. Pro Web Custom Transition Callback (String): Name for the custom customer function to be triggered.
 12. Pro Web Callback validation (Boolean): Activates or deactivates page transition from the callback. 
 

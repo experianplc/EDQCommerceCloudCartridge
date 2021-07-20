@@ -34,7 +34,7 @@ interface ProWebConfigArgs extends ProWebformButton {
 export function edqSetProWebConfiguration({formSubmitButton, vDefaultCountry, edqAuthorizationToken, edqCountryElement, edqProWebAddressLayout, edqAddressLine1Element, edqAddressLine2Element, edqCityLineElement, edqStateLineElement, edqPostalLineElement}: ProWebConfigArgs) {
 	let proWebIsoCountry: string = vDefaultCountry;
 	if (edqCountryElement != null) {
-		proWebIsoCountry = edqCountryElement.value;
+		proWebIsoCountry = edqCountryElement.value.toUpperCase();
 	}
 	window.EdqConfig.PRO_WEB_TIMEOUT = '3500';
 	window.EdqConfig.PRO_WEB_AUTH_TOKEN = edqAuthorizationToken;
@@ -122,7 +122,7 @@ interface ProWebEventsForListenersArgs extends ProWebConfigArgs {
  */
 export function setEventsForListenersProWeb({checkoutStage, edqCurrentSubmitButton, formSubmitButton, vDefaultCountry, edqAuthorizationToken, edqCountryElement, edqProWebAddressLayout, edqAddressLine1Element, edqAddressLine2Element, edqCityLineElement, edqStateLineElement, edqPostalLineElement}: ProWebEventsForListenersArgs) {
 	setEdqInputSelectors({"stageContentLocation":checkoutStage});
-	buttonCssSeetings({"formSubmitButton":window.sfccConfig.edqCurrentSubmitButton, "edqCurrentSubmitButton":formSubmitButton});
+	buttonCssSettings({"formSubmitButton":window.sfccConfig.edqCurrentSubmitButton, "edqCurrentSubmitButton":formSubmitButton});
 	edqSetProWebConfiguration({"formSubmitButton":formSubmitButton, 
 		"vDefaultCountry":vDefaultCountry, 
 		"edqAuthorizationToken":edqAuthorizationToken, 
@@ -130,7 +130,8 @@ export function setEventsForListenersProWeb({checkoutStage, edqCurrentSubmitButt
 		"edqProWebAddressLayout":edqProWebAddressLayout, 
 		"edqAddressLine1Element":edqAddressLine1Element, 
 		"edqAddressLine2Element":edqAddressLine2Element, 
-		"edqCityLineElement":edqCityLineElement, "edqStateLineElement":edqStateLineElement, 
+		"edqCityLineElement":edqCityLineElement, 
+		"edqStateLineElement":edqStateLineElement, 
 		"edqPostalLineElement":edqPostalLineElement});
 }
 interface ProWebCheckoutPageWorkflowArgs extends ProWebConfigArgs {
@@ -235,11 +236,11 @@ export function edqValidateAddressCallBack({formSubmitButton, edqStateLineElemen
 	}
 	if (edqProWebCallbackValidation) {
 		if (edqProWebExecuteTransitionCallBack({edqProWebMetaDataJSON, edqCustomCallbackName})) {
-			buttonCssSeetings({"formSubmitButton":formSubmitButton, "edqCurrentSubmitButton":window.sfccConfig.edqCurrentSubmitButton});
+			buttonCssSettings({"formSubmitButton":formSubmitButton, "edqCurrentSubmitButton":window.sfccConfig.edqCurrentSubmitButton});
 			window.sfccConfig.edqCurrentSubmitButton.click();
 		}
 	} else {
-		buttonCssSeetings({"formSubmitButton":formSubmitButton, "edqCurrentSubmitButton":window.sfccConfig.edqCurrentSubmitButton});
+		buttonCssSettings({"formSubmitButton":formSubmitButton, "edqCurrentSubmitButton":window.sfccConfig.edqCurrentSubmitButton});
 		window.sfccConfig.edqCurrentSubmitButton.click();
 	}
 }
@@ -252,7 +253,7 @@ interface ButtonCssSettingsArgs extends ProWebformButton {
  * @param formSubmitButton - Contains the form submit created by the cartridge
  * @param edqCurrentSubmitButton - Contains the current submit page button 
  */
-export function buttonCssSeetings({formSubmitButton, edqCurrentSubmitButton}: ButtonCssSettingsArgs) {
+export function buttonCssSettings({formSubmitButton, edqCurrentSubmitButton}: ButtonCssSettingsArgs) {
 	formSubmitButton.style.display = "none";
 	edqCurrentSubmitButton.style.display = "block";
 	edqCurrentSubmitButton.removeAttribute("style");
