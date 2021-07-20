@@ -1,7 +1,7 @@
 import {countryAlpha3, countryAlpha2} from './edqCountry';
 import {enableButtonDisable, addEventOnElement} from './edq-utils';
 import {setEdqInputSelectors} from '../sfra';
-import {buttonCssSeetings} from './edqProWebVerification';
+import {buttonCssSettings} from './edqProWebVerification';
 
 interface GlobalIntuitiveConfigArgs {
 	vDefaultCountry: string;
@@ -76,6 +76,7 @@ export function edqSetGlobalIntuitiveConfiguration({vDefaultCountry, edqAuthoriz
 	};
 	window.EdqConfig.GLOBAL_INTUITIVE_CALLBACK=function() {globalIntuitiveCallback(false)};
 	window.EdqConfig.GLOBAL_INTUITIVE_AFTER_FORMAT_CHANGE=function() {changedAddress(true)};
+	window.EdqConfig.GLOBAL_INTUITIVE_REFERENCE_ID=window.sfccConfig.edqVersion;
 }
 interface GlobalIntuitiveSetCountryArgs {
 	edqCountryElement: HTMLSelectElement;
@@ -240,27 +241,27 @@ export function removeMultipleEDQSuggestion({edqSuggestionBox}: GlobalIntuitiveR
  * (Only if Pro Web and Global Intuitive are active).
  * @param changed - Boolean that will let the workflow know if Pro Web Validation should validate the address or not
 **/
-export function changedAddress(changed) {
+export function changedAddress(changed: boolean) {
 	window.sfccConfig.addressChanged = changed;
 	if ((changed) && (document.querySelector("#form-submit"))) {
-		buttonCssSeetings({"formSubmitButton":window.sfccConfig.edqCurrentSubmitButton, "edqCurrentSubmitButton":document.querySelector("#form-submit")});
+		buttonCssSettings({"formSubmitButton":window.sfccConfig.edqCurrentSubmitButton, "edqCurrentSubmitButton":document.querySelector("#form-submit")});
 	}
 }
 /**
  * Function attached to the window.EdqConfig.GLOBAL_INTUITIVE_CALLBACK configuration 
  * Will check if the address provided by clicking one option from Global Intuitive suggestion box has DPV; in case the DPV is "Y"
- * Pro Web will not be active, if DPV isn't "Y" Pro Web will validate the address 
+ * Pro Web will not be active, if DPV isn't "Y" Pro Web will validate the address
  * (Only if Pro Web and Global Intuitive are active).
  * @param changed - Boolean that will let the workflow know if Pro Web Validation should validate the address or not
 **/
-export function globalIntuitiveCallback(changed) {
+export function globalIntuitiveCallback(changed: boolean) {
 	window.sfccConfig.addressChanged = changed;
 	if (document.querySelector("#form-submit")) {
 		if (window.sfccConfig.edqDpvIndicator.value === 'Y') {
-			buttonCssSeetings({"formSubmitButton":document.querySelector("#form-submit"), "edqCurrentSubmitButton":window.sfccConfig.edqCurrentSubmitButton});
+			buttonCssSettings({"formSubmitButton":document.querySelector("#form-submit"), "edqCurrentSubmitButton":window.sfccConfig.edqCurrentSubmitButton});
 		}
 		else {
-			buttonCssSeetings({"formSubmitButton":window.sfccConfig.edqCurrentSubmitButton, "edqCurrentSubmitButton":document.querySelector("#form-submit")});
+			buttonCssSettings({"formSubmitButton":window.sfccConfig.edqCurrentSubmitButton, "edqCurrentSubmitButton":document.querySelector("#form-submit")});
 		}
 	}
 }
@@ -279,21 +280,20 @@ interface GlobalIntuitiveDatasetArgs {
  * @param edqDataSetCode - Contains the code for the dataset to be used
 **/
 export function datasetSetCode({vDefaultCountry, edqCountryElement, edqDataSetCode}: GlobalIntuitiveDatasetArgs) {
-	let noDataSet: string = "";
 	let globalIntuitiveIsoCountry: string = vDefaultCountry;
 	let dataSetCode: string = "";
-	let countryDataSetCode: Array<any> = [];
+	let countryDataSetCode: any[] = [];
 	if (window.sfccConfig.edqCountryElement != null) {
 		globalIntuitiveIsoCountry = window.sfccConfig.edqCountryElement.value.toUpperCase();
 	}
 	if (edqDataSetCode) {
-		let datasetsCodes: Array<any> = edqDataSetCode.split(',');
+		let datasetsCodes: any[] = edqDataSetCode.split(',');
 		datasetsCodes.forEach(function(val) {
-			let setKeyValue: Array<any> = val.split(':');
+			let setKeyValue: any[] = val.split(':');
 			countryDataSetCode.push({ key: setKeyValue[0], value: setKeyValue[1] });
 		});
 		let countryISO: string = countryAlpha3({"incomingCountryIso2":globalIntuitiveIsoCountry, "vDefaultCountry":vDefaultCountry});
 		countryDataSetCode.forEach(function(val) { dataSetCode = (countryISO.match(val.key)) ? val.value : dataSetCode });
 	}
-	return dataSetCode || noDataSet;
+	return dataSetCode;
 }

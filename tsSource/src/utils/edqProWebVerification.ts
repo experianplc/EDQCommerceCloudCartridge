@@ -122,7 +122,7 @@ interface ProWebEventsForListenersArgs extends ProWebConfigArgs {
  */
 export function setEventsForListenersProWeb({checkoutStage, edqCurrentSubmitButton, formSubmitButton, vDefaultCountry, edqAuthorizationToken, edqCountryElement, edqProWebAddressLayout, edqAddressLine1Element, edqAddressLine2Element, edqCityLineElement, edqStateLineElement, edqPostalLineElement}: ProWebEventsForListenersArgs) {
 	setEdqInputSelectors({"stageContentLocation":checkoutStage});
-	buttonCssSeetings({"formSubmitButton":window.sfccConfig.edqCurrentSubmitButton, "edqCurrentSubmitButton":formSubmitButton});
+	buttonCssSettings({"formSubmitButton":window.sfccConfig.edqCurrentSubmitButton, "edqCurrentSubmitButton":formSubmitButton});
 	edqSetProWebConfiguration({"formSubmitButton":formSubmitButton, 
 		"vDefaultCountry":vDefaultCountry, 
 		"edqAuthorizationToken":edqAuthorizationToken, 
@@ -236,11 +236,11 @@ export function edqValidateAddressCallBack({formSubmitButton, edqStateLineElemen
 	}
 	if (edqProWebCallbackValidation) {
 		if (edqProWebExecuteTransitionCallBack({edqProWebMetaDataJSON, edqCustomCallbackName})) {
-			buttonCssSeetings({"formSubmitButton":formSubmitButton, "edqCurrentSubmitButton":window.sfccConfig.edqCurrentSubmitButton});
+			buttonCssSettings({"formSubmitButton":formSubmitButton, "edqCurrentSubmitButton":window.sfccConfig.edqCurrentSubmitButton});
 			window.sfccConfig.edqCurrentSubmitButton.click();
 		}
 	} else {
-		buttonCssSeetings({"formSubmitButton":formSubmitButton, "edqCurrentSubmitButton":window.sfccConfig.edqCurrentSubmitButton});
+		buttonCssSettings({"formSubmitButton":formSubmitButton, "edqCurrentSubmitButton":window.sfccConfig.edqCurrentSubmitButton});
 		window.sfccConfig.edqCurrentSubmitButton.click();
 	}
 }
@@ -253,7 +253,7 @@ interface ButtonCssSettingsArgs extends ProWebformButton {
  * @param formSubmitButton - Contains the form submit created by the cartridge
  * @param edqCurrentSubmitButton - Contains the current submit page button 
  */
-export function buttonCssSeetings({formSubmitButton, edqCurrentSubmitButton}: ButtonCssSettingsArgs) {
+export function buttonCssSettings({formSubmitButton, edqCurrentSubmitButton}: ButtonCssSettingsArgs) {
 	formSubmitButton.style.display = "none";
 	edqCurrentSubmitButton.style.display = "block";
 	edqCurrentSubmitButton.removeAttribute("style");

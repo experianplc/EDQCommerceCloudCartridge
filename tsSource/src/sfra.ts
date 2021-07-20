@@ -42,6 +42,7 @@ let inputSelector: NodeListOf<HTMLInputElement> = document.querySelectorAll("inp
 let buttonSelector: NodeListOf<HTMLButtonElement> = document.querySelectorAll("button[name]");
 let edqGlobalIntuitiveIntegrityKey: string;
 let edqGlobalIntuitiveUseCurrentLocation: boolean;
+window.sfccConfig.edqVersion = 'SFCCsfra-1_9_1-GIV3';
 
 let edqConfig = <EdqConfigObject>{};
 window.EdqConfig = window.EdqConfig || edqConfig;

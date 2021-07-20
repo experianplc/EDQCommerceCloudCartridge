@@ -35,6 +35,7 @@ let selectSelector: NodeListOf<HTMLSelectElement> = document.querySelectorAll("s
 let buttonSelector: NodeListOf<HTMLButtonElement> = document.querySelectorAll("button[name]");
 let edqGlobalIntuitiveUseCurrentLocation: boolean;
 window.sfccConfig.addressChanged = true;
+window.sfccConfig.edqVersion = 'SFCCsgjc-1_9_1-GIV3';
 
 let edqConfig = <EdqConfigObject>{};
 window.EdqConfig = window.EdqConfig || edqConfig;

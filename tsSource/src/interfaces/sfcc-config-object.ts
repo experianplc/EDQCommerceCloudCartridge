@@ -12,6 +12,7 @@ interface SfccConfigObject {
 	pageRestrictValidation: boolean;
 	edqProWebCallback: string;
 	edqGlobalIntuitiveUseCurrentLocation: boolean;
+	edqVersion: string;
 	
 	headerUpdateAddressText: string;
 	headerUnverifiedAddressText: string;

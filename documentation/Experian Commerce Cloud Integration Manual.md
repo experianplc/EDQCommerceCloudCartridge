@@ -1,5 +1,5 @@
 # EDQ for Salesforce Commerce Cloud
-######  Version 20.0.0
+######  Version 19.3.0
 
 ![Salesforce Logo](https://account.demandware.com/dwsso/XUI/themes/salesforce/images/2016sf_CommerceCloud_logo_RGB.png?v=14.1.0)
 
@@ -187,7 +187,7 @@ The store touchpoints for Global Intuitive are:
 * Billing/Payment form.
 
 ### DataSets
-The dataset option allows you to specify the dataset for the address you're searching for is sourced from.
+The optional dataset parameter allows you to specify the dataset the address you're searching for is sourced from.
 
 Currently, dataset supports 3 countries:
 * Australia

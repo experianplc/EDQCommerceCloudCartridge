@@ -45,12 +45,32 @@
                 <div class="alert alert-danger error-message" role="alert">
                     <p class="error-message-text"></p>
                 </div>
+                
+                <!-- SFRA v6.0 compatibility -->
+                <!-- Comment/delete this section for compatibility with older versions -->
+                <!-- Step 1: Customer -->
+                <iscomment>We only allow edits for non-registered customers</iscomment>
+                <isif condition="${!pdict.customer.registeredUser}">
+                    <isinclude template="checkout/customer/customer" />
+                </isif>
+                 <div class="card customer-summary">
+                    <div class="card-header clearfix">
+                        <h2 class="pull-left card-header-custom">${Resource.msg('heading.checkout.customer', 'checkout', null)}</h2>
+                        <isif condition="${!pdict.customer.registeredUser}">
+                            <button class="edit-button pull-right" aria-label="${Resource.msg('action.edit.step.msg.customer', 'checkout', null)}">${Resource.msg('action.edit.step', 'checkout', null)}</button>
+                        </isif>
+                    </div>
+                    <div class="card-body">
+                        <isinclude template="checkout/customer/customerSummary" />
+                    </div>
+                </div>
+                <!-- Finish SFRA v6.0 compatibility -->
 
                 <!-- Step 1: Shipping -->
                 <isinclude template="checkout/shipping/shipping" />
                 <div class="card shipping-summary">
                     <div class="card-header clearfix">
-                        <h4 class="pull-left">${Resource.msg('heading.checkout.shipping', 'checkout', null)}</h4>
+                        <h2 class="pull-left">${Resource.msg('heading.checkout.shipping', 'checkout', null)}</h4>
                         <span id="editShipping" class="edit-button pull-right">${Resource.msg('action.edit.step', 'checkout', null)}</span>
                     </div>
                     <div class="card-body">
@@ -62,7 +82,7 @@
                 <isinclude template="checkout/billing/billing" />
                 <div class="card payment-summary">
                     <div class="card-header clearfix">
-                        <h4 class="pull-left">${Resource.msg('heading.payment', 'checkout', null)}</h4>
+                        <h2 class="pull-left">${Resource.msg('heading.payment', 'checkout', null)}</h4>
                         <span id="editPayment" class="edit-button pull-right">${Resource.msg('action.edit.step', 'checkout', null)}</span>
                     </div>
 
