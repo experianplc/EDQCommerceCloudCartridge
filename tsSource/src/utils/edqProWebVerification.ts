@@ -56,13 +56,11 @@ export function edqSetProWebConfiguration({formSubmitButton, vDefaultCountry, ed
 		{
 			field: window.sfccConfig.edqAddressLine2Element,
 			elements: ["address.addressLine2"],
-			transformation: function(el) { return "@" + (el.value || el.innerText) },
 			modalFieldSelector:"#interaction-address--original-address-line-two",
 		},
 		{
 			field: window.sfccConfig.edqCityLineElement,
 			elements: ["address.locality"],
-			transformation: function(el) { return "@" + (el.value || el.innerText) },
 			modalFieldSelector:"#interaction-address--original-locality",
 		},
 		{
