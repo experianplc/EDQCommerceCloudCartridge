@@ -16,7 +16,7 @@
     "eslint": "^6.1.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",
-    "intern": "^4.4.3",
+    "intern": "^4.10.1",
     "istanbul": "^0.4.4",
     "mocha": "^2.5.3",
     "node-sass": "^4.9.0",
