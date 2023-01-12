@@ -25,11 +25,11 @@
 <iselseif condition="${dw.system.Site.current.preferences.custom.EDQStaging == 'Production'}">
     <isloop items="${dw.object.SystemObjectMgr.describe('SitePreferences').getCustomAttributeDefinition('EDQProdUrls').values}" var="prod">
         <isif condition="${prod.value == 'GlobalIntuitiveJS'}">
-			<script src="${prod.displayValue}" integrity="sha512-BXn8voz3HDAMB3d3v4pWLsNkoqC5LBTEbVchEkLuisA0qeAxC8TCBjg8LT2O1sGn/fQfcD2540NnplYU5h35OQ==" crossorigin="anonymous"></script>
+			<script src="${prod.displayValue}" integrity="sha512-3VRQWbhXR1juzAph+cYBJYcxy+lVH6Sarbgu/INKNXe7kTNJXMusC8w6B7+9v7JbNRRerHvqosNV2NqdqGPo3g==" crossorigin="anonymous"></script>
         	<script type="text/javascript">
 				edqGlobalIntuitiveStaging = true;
 				edqGlobalIntuitiveUnicornJsPath = '${prod.displayValue}';
-				edqGlobalIntuitiveIntegrityKey = 'sha512-BXn8voz3HDAMB3d3v4pWLsNkoqC5LBTEbVchEkLuisA0qeAxC8TCBjg8LT2O1sGn/fQfcD2540NnplYU5h35OQ==';
+				edqGlobalIntuitiveIntegrityKey = 'sha512-3VRQWbhXR1juzAph+cYBJYcxy+lVH6Sarbgu/INKNXe7kTNJXMusC8w6B7+9v7JbNRRerHvqosNV2NqdqGPo3g==';
 				window.EdqDemandware.sfra.setUtilsGIConfig({
 					"globalIntuitiveStaging":edqGlobalIntuitiveStaging,
 					"edqUnicornJsPath":edqGlobalIntuitiveUnicornJsPath

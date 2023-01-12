@@ -46,6 +46,24 @@
                     <p class="error-message-text"></p>
                 </div>
 
+                <!-- Step 1: Customer - Delete this step for compatibility with version 5-->
+                <iscomment>We only allow edits for non-registered customers</iscomment>
+                <isif condition="${!pdict.customer.registeredUser}">
+                    <isinclude template="checkout/customer/customer" />
+                </isif>
+                 <div class="card customer-summary">
+                    <div class="card-header clearfix">
+                        <h2 class="pull-left card-header-custom">${Resource.msg('heading.checkout.customer', 'checkout', null)}</h2>
+                        <isif condition="${!pdict.customer.registeredUser}">
+                            <button class="edit-button pull-right" aria-label="${Resource.msg('action.edit.step.msg.customer', 'checkout', null)}">${Resource.msg('action.edit.step', 'checkout', null)}</button>
+                        </isif>
+                    </div>
+                    <div class="card-body">
+                        <isinclude template="checkout/customer/customerSummary" />
+                    </div>
+                </div>
+				<!-- End of step -->
+
                 <!-- Step 1: Shipping -->
                 <isinclude template="checkout/shipping/shipping" />
                 <div class="card shipping-summary">
@@ -70,6 +88,7 @@
                         <isinclude template="checkout/billing/billingSummary" />
                     </div>
                 </div>
+
 
                 <!----------------------------------------------------------------------------------->
                 <!-- Checkout Workflow Buttons -->
